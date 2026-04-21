@@ -381,10 +381,18 @@
 const subjects = [
   {
     id:"reasoning", label:"Reasoning", emoji:"🧩", btnClass:"reasoning",
-    iconBg:"#d1fae5", iconColor:"#059669",
-    quizzes:[
-      {title:"Reasoning 1 — Basic Aptitude",    time:"20 min", questions:25, marks:25},
-      {title:"Reasoning 2 — Logical Patterns",  time:"25 min", questions:30, marks:30},
+    iconBg:"#d1fae5", iconColor:"#059669",quizzes: [
+  {
+    title:"Reasoning 1 – Basic Aptitude", time:"20 min", questions:25, marks:20, link:"reasoning1.html"
+  },
+  {
+    title:"Reasoning 2 – Logical Patterns",
+    time:"25 min",
+    questions:30,
+    marks:30,
+    link:"reasoning2.html"
+  }
+]
       {title:"Reasoning 3 — Analytical Series", time:"30 min", questions:35, marks:35},
     ]
   },
@@ -442,7 +450,9 @@ function quizCardHTML(q, s){
         <span class="meta-badge mb-marks">⭐ ${q.marks} Marks</span>
       </div>
     </div>
-    <button class="attempt-btn" onclick="alert('Starting: ${q.title.replace(/'/g,"\\'")}')">Attempt →</button>
+    <button class="attempt-btn" onclick="openQuiz('${q.link}')">
+  Attempt →
+</button>
   </div>`;
 }
 
@@ -508,6 +518,11 @@ document.getElementById('searchInput').addEventListener('input', function(){
 });
 
 buildCategories();
+</script>
+ <script>
+function openQuiz(link) {
+  window.location.href = link;
+}
 </script>
 </body>
 </html>
