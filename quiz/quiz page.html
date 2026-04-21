@@ -393,7 +393,7 @@ const subjects = [
     questions:30,
     marks:30,
     link:"reasoning2.html"
-  }
+  },
 ]
       {title:"Reasoning 3 — Analytical Series", time:"30 min", questions:35, marks:35},
     ]
@@ -452,7 +452,7 @@ function quizCardHTML(q, s){
         <span class="meta-badge mb-marks">⭐ ${q.marks} Marks</span>
       </div>
     </div>
-    <button class="attempt-btn" onclick="openQuiz('${q.link}')">
+<button class="attempt-btn" onclick="openQuiz('${q.link || "#"}')">
   Attempt →
 </button>
   </div>`;
