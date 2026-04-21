@@ -379,50 +379,57 @@
 
 </div>
 
-<script>
+<script><script>
 const subjects = [
   {
-    id:"reasoning", label:"Reasoning", emoji:"🧩", btnClass:"reasoning",
-    iconBg:"#d1fae5", iconColor:"#059669",quizzes: [
-  {
-    title:"Reasoning 1 – Basic Aptitude", time:"20 min", questions:25, marks:20, link:"reasoning1.html"
-  },
-  {
-    title:"Reasoning 2 – Logical Patterns",
-    time:"25 min",
-    questions:30,
-    marks:30,
-    link:"reasoning2.html"
-  },
-]
-      {title:"Reasoning 3 — Analytical Series", time:"30 min", questions:35, marks:35},
+    id:"reasoning",
+    label:"Reasoning",
+    emoji:"🧩",
+    btnClass:"reasoning",
+    iconBg:"#d1fae5",
+    quizzes: [
+      {title:"Reasoning 1 – Basic Aptitude", time:"20 min", questions:25, marks:20, link:"reasoning1.html"},
+      {title:"Reasoning 2 – Logical Patterns", time:"25 min", questions:30, marks:30, link:"reasoning2.html"},
+      {title:"Reasoning 3 – Analytical Series", time:"30 min", questions:35, marks:35, link:"reasoning3.html"}
     ]
   },
+
   {
-    id:"quant", label:"Quantitative Aptitude", emoji:"📐", btnClass:"quant",
-    iconBg:"#fef9c3", iconColor:"#b45309",
+    id:"quant",
+    label:"Quantitative Aptitude",
+    emoji:"📐",
+    btnClass:"quant",
+    iconBg:"#fef9c3",
     quizzes:[
-      {title:"Quantitative Aptitude 1 — Basics",       time:"20 min", questions:20, marks:20},
-      {title:"Quantitative Aptitude 2 — Percentages",  time:"25 min", questions:25, marks:25},
-      {title:"Quantitative Aptitude 3 — Speed & Time", time:"30 min", questions:30, marks:30},
+      {title:"Quant 1 – Basics", time:"20 min", questions:20, marks:20, link:"quant1.html"},
+      {title:"Quant 2 – Percentages", time:"25 min", questions:25, marks:25, link:"quant2.html"},
+      {title:"Quant 3 – Speed & Time", time:"30 min", questions:30, marks:30, link:"quant3.html"}
     ]
   },
+
   {
-    id:"english", label:"English", emoji:"📖", btnClass:"english",
-    iconBg:"#dbeafe", iconColor:"#1d4ed8",
+    id:"english",
+    label:"English",
+    emoji:"📖",
+    btnClass:"english",
+    iconBg:"#dbeafe",
     quizzes:[
-      {title:"English 1 — Grammar Basics",         time:"15 min", questions:20, marks:20},
-      {title:"English 2 — Vocabulary Builder",     time:"20 min", questions:25, marks:25},
-      {title:"English 3 — Reading Comprehension",  time:"30 min", questions:20, marks:40},
+      {title:"English 1 – Grammar Basics", time:"15 min", questions:20, marks:20, link:"english1.html"},
+      {title:"English 2 – Vocabulary", time:"20 min", questions:25, marks:25, link:"english2.html"},
+      {title:"English 3 – Comprehension", time:"30 min", questions:20, marks:40, link:"english3.html"}
     ]
   },
+
   {
-    id:"computer", label:"Computer Aptitude", emoji:"💻", btnClass:"computer",
-    iconBg:"#fce7f3", iconColor:"#be185d",
+    id:"computer",
+    label:"Computer Aptitude",
+    emoji:"💻",
+    btnClass:"computer",
+    iconBg:"#fce7f3",
     quizzes:[
-      {title:"Computer Aptitude 1 — Basics",       time:"20 min", questions:25, marks:25},
-      {title:"Computer Aptitude 2 — Networking",   time:"25 min", questions:30, marks:30},
-      {title:"Computer Aptitude 3 — OS & Software",time:"30 min", questions:35, marks:35},
+      {title:"Computer 1 – Basics", time:"20 min", questions:25, marks:25, link:"computer1.html"},
+      {title:"Computer 2 – Networking", time:"25 min", questions:30, marks:30, link:"computer2.html"},
+      {title:"Computer 3 – OS & Software", time:"30 min", questions:35, marks:35, link:"computer3.html"}
     ]
   }
 ];
@@ -435,15 +442,22 @@ function buildCategories(){
   subjects.forEach(s => {
     const btn = document.createElement('button');
     btn.className = 'cat-btn ' + s.btnClass;
-    btn.innerHTML = `<span class="cat-emoji">${s.emoji}</span><span class="cat-name">${s.label}</span>`;
+    btn.innerHTML = `
+      <span class="cat-emoji">${s.emoji}</span>
+      <span class="cat-name">${s.label}</span>
+    `;
     btn.onclick = () => openSubject(s);
     grid.appendChild(btn);
   });
 }
 
 function quizCardHTML(q, s){
-  return `<div class="quiz-card">
-    <div class="quiz-icon" style="background:${s.iconBg};font-size:22px">${s.emoji}</div>
+  return `
+  <div class="quiz-card">
+    <div class="quiz-icon" style="background:${s.iconBg};font-size:22px">
+      ${s.emoji}
+    </div>
+
     <div class="quiz-info">
       <div class="quiz-title">${q.title}</div>
       <div class="quiz-meta">
@@ -452,9 +466,10 @@ function quizCardHTML(q, s){
         <span class="meta-badge mb-marks">⭐ ${q.marks} Marks</span>
       </div>
     </div>
-<button class="attempt-btn" onclick="openQuiz('${q.link || "#"}')">
-  Attempt →
-</button>
+
+    <button class="attempt-btn" onclick="openQuiz('${q.link}')">
+      Attempt →
+    </button>
   </div>`;
 }
 
@@ -464,7 +479,8 @@ function openSubject(s){
   document.getElementById('searchView').style.display  = 'none';
   document.getElementById('quizView').style.display    = 'block';
   document.getElementById('quizViewLabel').textContent  = s.emoji + ' ' + s.label + ' Quizzes';
-  document.getElementById('quizList').innerHTML = s.quizzes.map(q => quizCardHTML(q, s)).join('');
+  document.getElementById('quizList').innerHTML =
+    s.quizzes.map(q => quizCardHTML(q, s)).join('');
 }
 
 document.getElementById('backSubjectBtn').onclick = () => {
@@ -475,6 +491,10 @@ document.getElementById('backSubjectBtn').onclick = () => {
   document.getElementById('searchInput').value = '';
   document.getElementById('searchClear').classList.remove('visible');
 };
+
+function openQuiz(link){
+  window.location.href = link;
+}
 
 function clearSearch(){
   const inp = document.getElementById('searchInput');
@@ -500,9 +520,13 @@ document.getElementById('searchInput').addEventListener('input', function(){
   document.getElementById('searchView').style.display  = 'block';
 
   let html = '', count = 0;
+
   subjects.forEach(s => {
     const subjectHit = s.label.toLowerCase().includes(q) || s.id.includes(q);
-    const matched = s.quizzes.filter(quiz => subjectHit || quiz.title.toLowerCase().includes(q));
+    const matched = s.quizzes.filter(quiz =>
+      subjectHit || quiz.title.toLowerCase().includes(q)
+    );
+
     if(matched.length){
       html += `<div class="search-sub-label">${s.emoji} ${s.label}</div>`;
       html += matched.map(quiz => quizCardHTML(quiz, s)).join('');
@@ -510,16 +534,16 @@ document.getElementById('searchInput').addEventListener('input', function(){
     }
   });
 
-  const lbl = document.getElementById('searchLabel');
-  lbl.textContent = count
-    ? count + ' result' + (count > 1 ? 's' : '') + ' for "' + this.value.trim() + '"'
-    : 'No results for "' + this.value.trim() + '"';
+  document.getElementById('searchLabel').textContent =
+    count ? `${count} result(s) for "${this.value.trim()}"`
+          : `No results for "${this.value.trim()}"`;
 
-  document.getElementById('searchList').innerHTML = html ||
-    '<div class="no-result">🔎 No quizzes match your search.<br>Try a subject name or quiz title.</div>';
+  document.getElementById('searchList').innerHTML =
+    html || `<div class="no-result">No quizzes found</div>`;
 });
 
 buildCategories();
+</script>
 </script>
  <script>
 function openQuiz(link) {
