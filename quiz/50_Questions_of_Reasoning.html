@@ -1,0 +1,1501 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Puzzle - Set 01</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --acc:#000787;--adk:#127DE5;--mut:#69707a;--ok:#1f9e5a;--bad:#f23f54;
+  --bg:#f0f4ff;--card:#fff;--mx:860px;
+  --gold:#f59e0b;--purple:#7c3aed;--teal:#0d9488;
+  --shadow:0 8px 32px rgba(0,7,135,.13);
+  --shadow-sm:0 2px 10px rgba(0,7,135,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:#111;padding-bottom:100px;min-height:100vh}
+
+/* Container scrollbar width */
+::-webkit-scrollbar {
+  width: 10px; /* Increased slightly to make the 3D effect visible */
+}
+
+/* The background track */
+::-webkit-scrollbar-track {
+  background: #f0f4ff;
+  /* Inset shadow makes the track look "sunken" */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* The 3D thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  border: 1px solid #b4b4b4;
+  
+  /* 4-stop gradient creates the "metallic/plastic" ridge look */
+  background: linear-gradient(
+    to right, 
+    #f5f5f5 0%, 
+    #f3f3f3 50%, 
+    #ebebeb 50%, 
+    #c9c9c9 100%
+  );
+
+  /* Inset white shadow on top/left creates a "highlight" edge */
+  box-shadow: 
+    inset 2px 2px 2px white, 
+    0 0px 0px rgba(0,0,0,0.2);
+}
+
+/* Hover state for interaction */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to right, 
+    #e5e5e5 0%, 
+    #d1d1d1 50%, 
+    #c4c4c4 50%, 
+    #b8b8b8 100%
+  );
+}
+.wrap{max-width:var(--mx);margin:auto;padding:12px 16px}
+
+/* ===== HEADER ===== */
+header{background:linear-gradient(135deg,#000787 0%,#127DE5 100%);box-shadow:0 4px 20px rgba(0,7,135,.35);position:sticky;top:0;z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px;flex-wrap:wrap}
+
+/* Mode Toggle */
+.tog{position:relative;width:96px;height:30px;background:rgba(255,255,255,.18);border-radius:999px;cursor:pointer;display:flex;align-items:center;padding:0 6px;user-select:none;flex-shrink:0;border:1px solid rgba(255,255,255,.25)}
+.tog span{z-index:2;flex:1;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);transition:color .2s}
+.tog::before{content:"";position:absolute;top:3px;left:3px;width:44px;height:24px;background:#fff;border-radius:999px;transition:transform .28s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tog.qm::before{transform:translateX(44px)}
+.tog span:first-child{color:#000787}.tog.qm span:first-child{color:rgba(255,255,255,.7)}.tog.qm span:last-child{color:#000787}
+
+.timer{font-weight:800;font-size:18px;color:#fff;font-variant-numeric:tabular-nums;min-width:68px;text-align:right;text-shadow:0 1px 3px rgba(0,0,0,.3);background:rgba(0,0,0,.2);padding:4px 10px;border-radius:8px}
+.timer.warn{color:#fbbf24;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+.btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;backdrop-filter:blur(6px)}
+.btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
+.btn-submit{background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;box-shadow:0 4px 12px rgba(239,68,68,.4)}
+.btn-submit:hover{box-shadow:0 6px 18px rgba(239,68,68,.5)}
+.btn-o{background:#fff;color:var(--acc);border:2px solid var(--acc);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-o:hover{background:var(--acc);color:#fff}
+
+/* ===== CARD ===== */
+.card{background:var(--card);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--shadow);border:1px solid rgba(0,7,135,.06);transition:box-shadow .2s}
+.card:hover{box-shadow:0 12px 40px rgba(0,7,135,.16)}
+
+.qbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;flex-wrap:wrap;gap:6px}
+.qmeta{font-size:13px;color:var(--mut);font-weight:600}
+.q-num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-radius:50%;font-size:13px;font-weight:800;margin-right:4px;box-shadow:0 3px 8px rgba(0,7,135,.3)}
+.sec-tag{font-size:11px;padding:3px 9px;border-radius:5px;background:linear-gradient(135deg,#eef2ff,#e0e7ff);color:#4f46e5;font-weight:700;margin-left:6px;border:1px solid #c7d2fe}
+.score-badge{display:flex;gap:6px;align-items:center}
+.score-badge span{padding:3px 9px;border-radius:6px;font-weight:700;font-size:13px}
+.score-pos{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.score-neg{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
+
+/* Question text */
+.qtxt{font-size:15.5px;line-height:1.8;margin:10px 0 15px;padding:14px 16px;background:linear-gradient(135deg,#f8faff,#eef2ff);border-radius:10px;border-left:4px solid var(--acc)}
+.qtxt b,.qtxt strong{font-weight:900;color:#000787;display:block;margin-bottom:6px;font-size:15px}
+.qtxt span{display:block;margin-top:6px;font-size:15px;line-height:1.7}
+.qtxt img{max-width:100%;border-radius:8px;margin:8px 0;display:block;box-shadow:var(--shadow-sm)}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;transition:all .18s;position:relative;overflow:hidden}
+.opt::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,7,135,.04),rgba(18,125,229,.04));opacity:0;transition:opacity .18s}
+.opt:hover:not(.cor):not(.wrg){border-color:#93c5fd;background:#f0f9ff;transform:translateX(3px)}
+.opt:hover::before{opacity:1}
+.opt.sel{border-color:var(--acc);background:linear-gradient(135deg,rgba(0,7,135,.06),rgba(18,125,229,.06));transform:translateX(3px)}
+.opt.cor{border-color:var(--ok);background:linear-gradient(135deg,rgba(31,158,90,.12),rgba(31,158,90,.06));transform:translateX(3px)}
+.opt.wrg{border-color:var(--bad);background:linear-gradient(135deg,rgba(200,45,63,.1),rgba(200,45,63,.05));transform:translateX(3px)}
+
+.opt-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#64748b;margin-top:1px;transition:all .18s}
+.opt.sel .opt-letter{background:var(--acc);border-color:var(--acc);color:#fff}
+.opt.cor .opt-letter{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrg .opt-letter{background:var(--bad);border-color:var(--bad);color:#fff}
+.otxt{font-size:15px;line-height:1.6;flex:1}
+.opt-check{margin-left:auto;flex-shrink:0;font-size:16px;opacity:0;transition:opacity .18s}
+.opt.cor .opt-check::before{content:"✓";opacity:1;color:var(--ok)}
+.opt.wrg .opt-check::before{content:"✗";opacity:1;color:var(--bad)}
+.opt.cor .opt-check,.opt.wrg .opt-check{opacity:1}
+
+/* Explanation */
+.expl{margin-top:13px;padding:14px 16px;border-radius:10px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:14px;line-height:1.7;display:none;position:relative;padding-left:44px}
+.expl::before{content:"💡";position:absolute;left:14px;top:14px;font-size:18px}
+.expl strong{color:#065f46}
+
+/* Progress bar */
+.progress-wrap{background:rgba(255,255,255,.2);border-radius:999px;height:5px;margin-top:6px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,#fbbf24,#34d399);border-radius:999px;transition:width .4s ease}
+
+/* ===== FLOATING BAR ===== */
+.fbar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 -4px 24px rgba(0,7,135,.12);display:flex;justify-content:center;z-index:50;border-top:1px solid rgba(0,7,135,.08)}
+.fbar-in{display:flex;align-items:center;gap:8px;max-width:var(--mx);width:100%;padding:10px 14px}
+.fbar-btn{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(0,7,135,.25);flex:1;max-width:130px}
+.fbar-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,7,135,.35)}
+.fbar-clr{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;box-shadow:none}
+.fbar-clr:hover{background:#e2e8f0;transform:translateY(-1px)}
+.q-counter{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--mut)}
+
+/* ===== PALETTE ===== */
+#pal{position:fixed;top:62px;right:14px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,7,135,.18);padding:15px;display:none;flex-wrap:wrap;gap:7px;z-index:200;max-width:310px;border:1px solid rgba(0,7,135,.08)}
+#pal-title{width:100%;font-size:12px;font-weight:800;color:var(--acc);padding-bottom:8px;border-bottom:2px solid #eef2ff;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.pq{width:40px;height:40px;border-radius:8px;border:2px solid #e2e8f0;background:#f8faff;cursor:pointer;font-weight:800;font-size:12px;transition:all .15s;color:#374151}
+.pq:hover{border-color:var(--adk);transform:scale(1.08)}
+.pq.ans{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-color:var(--acc);box-shadow:0 3px 8px rgba(0,7,135,.3)}
+.pq.act{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid var(--gold);color:#92400e;box-shadow:0 3px 8px rgba(245,158,11,.3)}
+#pal-sum{width:100%;text-align:center;font-size:11px;color:var(--mut);padding-top:8px;border-top:1px solid #eef2ff;margin-top:4px;font-weight:600}
+#pal-legend{width:100%;display:flex;gap:10px;flex-wrap:wrap;padding-top:6px;font-size:10px;font-weight:700;color:#555}
+#pal-legend span{display:flex;align-items:center;gap:4px}
+
+/* ===== MODAL ===== */
+.modal{position:fixed;inset:0;background:rgba(0,0,50,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:300}
+.mbox{background:#fff;border-radius:18px;padding:28px;max-width:420px;width:94%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.mbox-icon{font-size:48px;margin-bottom:12px}
+.mbox h3{color:var(--acc);margin:0 0 10px;font-size:20px;font-weight:900}
+.mbox p{color:#555;font-size:14px;margin:0 0 20px;line-height:1.6}
+.macts{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.bp{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px;box-shadow:0 4px 14px rgba(0,7,135,.3);transition:all .18s}
+.bp:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,7,135,.4)}
+
+/* ===== START SCREEN ===== */
+.start{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 20% 20%,rgba(107,228,255,.3) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(0,7,135,.15) 0%,transparent 50%),linear-gradient(160deg,#bff1fc 0%,#eefbfe 40%,#dde9ff 70%,#aaeeff 100%);text-align:center;padding:24px;position:relative;overflow:hidden}
+.start::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000787' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.logo-wrap{position:relative;margin-bottom:20px}
+.logo-glow{position:absolute;inset:-20px;background:radial-gradient(circle,rgba(0,7,135,.15) 0%,transparent 70%);border-radius:50%;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.logo-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%; /* Makes it a circle */
+  object-fit: cover;   /* Keeps the logo centered and prevents stretching */
+  background: #fff;    /* Optional: adds a white background if the image is transparent */
+  
+  /* Keep your existing styles below */
+  position: relative;
+  filter: drop-shadow(0 8px 24px rgba(0,7,135,.3));
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.start h1{font-size:clamp(20px,4.5vw,30px);font-weight:900;color:#000787;margin-bottom:6px;letter-spacing:-.5px}
+.start-sub{font-size:14px;color:#0369a1;margin-bottom:22px;font-weight:600}
+
+.start-card{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);padding:24px;border-radius:18px;max-width:620px;width:100%;text-align:left;box-shadow:0 16px 48px rgba(0,7,135,.12),inset 0 1px 0 rgba(255,255,255,.8);margin-bottom:18px;border:1px solid rgba(255,255,255,.6)}
+.start-card h2{color:var(--acc);margin-bottom:14px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+
+/* Instructions - plain list, no checkboxes */
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.instr-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#374151;line-height:1.55;padding:10px 13px;background:rgba(0,7,135,.03);border-radius:9px;border:1px solid rgba(0,7,135,.06)}
+.instr-item .instr-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.instr-item p{flex:1}
+.instr-item p strong{color:#000787}
+
+.start-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.meta-pill{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;flex:1;min-width:100px;justify-content:center}
+.mp-blue{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border:1px solid #93c5fd}
+.mp-green{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;border:1px solid #6ee7b7}
+.mp-orange{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;border:1px solid #fcd34d}
+.mp-red{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b;border:1px solid #f87171}
+
+/* Single agree checkbox at bottom */
+.start-agree{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(0,7,135,.07),rgba(18,125,229,.05));border-radius:12px;margin-top:14px;border:2px dashed rgba(0,7,135,.2);cursor:pointer;transition:border-color .2s}
+.start-agree:hover{border-color:rgba(0,7,135,.4)}
+.start-agree input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);cursor:pointer;flex-shrink:0}
+.start-agree label{font-size:14px;color:#1e3a8a;cursor:pointer;font-weight:700;line-height:1.5}
+
+.start-btn{background:linear-gradient(135deg,#22d3ee,#4f39f6);color:#fff;padding:14px 36px;border:0;border-radius:50px;font-weight:900;font-size:16px;cursor:pointer;margin-top:16px;transition:all .25s;box-shadow:0 8px 28px rgba(79,57,246,.35);letter-spacing:.5px;opacity:.45;pointer-events:none}
+.start-btn.ready{opacity:1;pointer-events:all;animation:btnPulse 2.2s ease-in-out infinite}
+@keyframes btnPulse{0%,100%{box-shadow:0 8px 28px rgba(79,57,246,.4)}50%{box-shadow:0 14px 44px rgba(79,57,246,.65),0 0 0 8px rgba(79,57,246,.1)}}
+.start-btn.ready:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 18px 52px rgba(79,57,246,.5)}
+
+/* ===== START FOOTER ===== */
+.start-footer{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:10px}
+.start-footer-text{font-size:13px;color:#0369a1;font-weight:700;letter-spacing:.3px;opacity:.85}
+.start-footer-text span{color:#000787;font-weight:900}
+.tg-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#2196F3,#0d47a1);color:#fff;border:none;padding:11px 24px;border-radius:50px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 6px 20px rgba(13,71,161,.35);transition:all .22s;text-decoration:none}
+.tg-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,71,161,.45)}
+.tg-btn svg{width:20px;height:20px;fill:#fff;flex-shrink:0}
+
+/* ===== RESULTS ===== */
+.result-hero{background:linear-gradient(135deg,#000787 0%,#127DE5 60%,#0d9488 100%);color:#fff;border-radius:18px;padding:28px;margin-bottom:18px;position:relative;overflow:hidden}
+.result-hero::before{content:"🏆";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:50px;opacity:10}
+.result-hero h2{font-size:21px;font-weight:900;margin-bottom:5px}
+.result-hero p{opacity:.8;font-size:14px}
+.result-score-big{font-size:52px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0}
+
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+@media(max-width:480px){.rstats{grid-template-columns:repeat(2,1fr)}}
+.rstat{padding:14px 12px;border-radius:12px;text-align:center;transition:transform .2s}
+.rstat:hover{transform:translateY(-3px)}
+.rstat h4{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;opacity:.8}
+.rstat p{font-weight:900;font-size:22px}
+.rs-correct{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #6ee7b7;color:#065f46}
+.rs-wrong{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #f87171;color:#991b1b}
+.rs-skip{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #cbd5e1;color:#475569}
+.rs-acc{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px solid #a78bfa;color:#5b21b6}
+.rs-score{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fcd34d;color:#92400e}
+.rs-time{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #93c5fd;color:#1e40af}
+
+/* Charts */
+.charts-section{margin:18px 0}
+.charts-section h3{font-size:17px;font-weight:800;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:#fff;border-radius:14px;padding:18px;box-shadow:var(--shadow);border:1px solid rgba(0,7,135,.06)}
+.chart-card h4{font-size:12px;font-weight:800;color:#374151;margin-bottom:14px;text-align:center;text-transform:uppercase;letter-spacing:.5px}
+.chart-card canvas{max-height:220px}
+.chart-wide{grid-column:1/-1}
+
+/* Result Q list */
+.ropt{padding:10px 13px;margin:5px 0;border-radius:9px;font-size:14px;display:flex;align-items:center;gap:9px}
+.rc{border:2px solid var(--ok);background:linear-gradient(135deg,rgba(31,158,90,.1),rgba(31,158,90,.06));color:#065f46}
+.rw{border:2px solid var(--bad);background:linear-gradient(135deg,rgba(200,45,63,.09),rgba(200,45,63,.05));color:#991b1b}
+.rp{border:1px solid #e2e8f0;background:#f8faff;color:#64748b}
+.ropt-letter{font-weight:800;font-size:13px;min-width:22px}
+
+.q-result-card{border-radius:14px;padding:18px;margin:12px 0;box-shadow:var(--shadow-sm);border:1px solid rgba(0,7,135,.06);background:#fff}
+.q-result-card.q-cor{border-left:5px solid var(--ok)}
+.q-result-card.q-wrg{border-left:5px solid var(--bad)}
+.q-result-card.q-skp{border-left:5px solid #94a3b8}
+
+/* Print */
+@media print{
+  .fbar,.hdr,.modal,#pal,.start,button,.tog,.timer{display:none!important}
+  body{background:#fff;padding:0;color:#000}
+  .result-hero{background:#000787!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card,.q-result-card,.chart-card,.rstat{box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid}
+  #quizUI{display:block!important}
+  #resultArea{display:block!important}
+  #qCard{display:none!important}
+  canvas{max-height:180px!important}
+  .rstat,.rc,.rw,.rp{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+@media(max-width:540px){
+  .hdr{padding:8px 10px}
+  .timer{font-size:15px;padding:3px 8px}
+  .fbar-in{gap:6px;padding:8px 10px}
+  .fbar-btn{padding:9px 12px;font-size:12px}
+  .result-score-big{font-size:38px}
+  .result-hero h2{font-size:16px}
+  .rstat p{font-size:18px}
+  #pal{right:8px;max-width:272px}
+  .pq{width:36px;height:36px;font-size:11px}
+  .charts-grid{grid-template-columns:1fr}
+  .chart-wide{grid-column:1}
+}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card,.q-result-card{animation:fadeInUp .3s ease}
+</style>
+</head>
+<body>
+
+<!-- ===== START SCREEN ===== -->
+<div class="start" id="startScr">
+  <div class="logo-wrap">
+    <div class="logo-glow"></div>
+    <img class="logo-img" src="https://i.ibb.co/W8PWFVB/20260406-005258.jpg" alt="Logo" width="110" height="110"/>
+  </div>
+  <h1 id="startTitle"></h1>
+  <div class="start-sub" id="startSub"></div>
+
+  <div class="start-card">
+    <h2>📋 Instructions</h2>
+    <ul class="instr-list">
+      <li class="instr-item">
+        <span class="instr-icon">⏱️</span>
+        <p>Total time allowed is <strong>25 minutes</strong>. The quiz will auto-submit when time expires.</p>
+      </li>
+      <li class="instr-item">
+        <span class="instr-icon">✅</span>
+        <p>Each correct answer earns <strong>+1 mark</strong>. There is <strong>0.25 negative marking</strong> for wrong answers.</p>
+      </li>
+      <li class="instr-item">
+        <span class="instr-icon">🔄</span>
+        <p><strong>Test Mode:</strong> Attempt all questions, then Submit to see results. &nbsp;|&nbsp; <strong>Quiz Mode:</strong> Get instant feedback and explanation after each answer.</p>
+      </li>
+      <li class="instr-item">
+        <span class="instr-icon">📌</span>
+        <p>Use the <strong>Palette</strong> button to navigate between questions. Answered questions are highlighted in blue.</p>
+      </li>
+      <li class="instr-item">
+        <span class="instr-icon">📄</span>
+        <p>After submission, download your <strong>Result as PDF</strong> which includes all answers and explanations.</p>
+      </li>
+    </ul>
+
+    <div class="start-meta">
+      <div class="meta-pill mp-blue">📝 <span id="metaQ"></span> Questions</div>
+      <div class="meta-pill mp-green">⏱️ 25 Minutes</div>
+      <div class="meta-pill mp-orange">+1 Correct</div>
+      <div class="meta-pill mp-red">-0.25 Negative</div>
+    </div>
+
+    <!-- Single agree checkbox -->
+    <div class="start-agree" onclick="toggleAgree()">
+      <input type="checkbox" id="agreeChk" onchange="checkReady()" onclick="event.stopPropagation()"/>
+      <label for="agreeChk">I have read and understood all the instructions. I am ready to begin the quiz.</label>
+    </div>
+  </div>
+
+  <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Start Quiz →</button>
+
+  <!-- ===== START SCREEN FOOTER ===== -->
+  <div class="start-footer">
+    <div class="start-footer-text">Created by <span>SBR</span></div>
+    <a class="tg-btn" href="YOUR_TELEGRAM_URL_HERE" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.857l-2.96-.924c-.643-.203-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.702z"/></svg>
+      Join Telegram Channel
+    </a>
+  </div>
+</div>
+
+<!-- ===== QUIZ UI ===== -->
+<div id="quizUI" style="display:none">
+<header id="mainHdr">
+  <div class="hdr" id="hdrCtrls">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="tog" id="modeTog" onclick="toggleMode()"><span>Test</span><span>Quiz</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="timer" id="timerEl">00:00</div>
+      <button class="btn btn-submit" id="submitBtn" onclick="openSubmit()">Submit</button>
+      <button class="btn" id="palBtn" onclick="togglePal()">📋 Palette</button>
+    </div>
+  </div>
+  <div class="progress-wrap" id="mobileProgress" style="height:4px;border-radius:0">
+    <div class="progress-bar" id="mobileProgressBar" style="width:0%"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="qCard" class="card">
+    <div class="qbar">
+      <span class="qmeta">
+        <span class="q-num-badge" id="qBadge">1</span>
+        Question <span id="qIdx">1</span> / <span id="qTot">0</span>
+        <span class="sec-tag" id="secTag" style="display:none"></span>
+      </span>
+      <div class="score-badge">
+        <span class="score-pos" id="qMrkPos"></span>
+        <span class="score-neg" id="qMrkNeg"></span>
+      </div>
+    </div>
+    <div class="qtxt" id="qTxt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="expl" id="expl"></div>
+  </div>
+  <div id="resultArea" style="display:none"></div>
+</div>
+
+<div class="fbar" id="fbar">
+  <div class="fbar-in">
+    <button class="fbar-btn" onclick="nav(-1)">← Prev</button>
+    <button class="fbar-btn fbar-clr" onclick="clrAns()">✕ Clear</button>
+    <span class="q-counter" id="qCounter"></span>
+    <button class="fbar-btn" onclick="nav(1)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- Palette -->
+<div id="pal" aria-hidden="true">
+  <div id="pal-title">Question Navigator</div>
+</div>
+
+<!-- Submit Modal -->
+<div class="modal" id="submitMod">
+  <div class="mbox">
+    <div class="mbox-icon">📤</div>
+    <h3>Submit Quiz?</h3>
+    <p id="submitMsg"></p>
+    <div class="macts">
+      <button class="btn-o" onclick="closeSubmit()">Cancel</button>
+      <button class="bp" onclick="doSubmit()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QS = [
+  {
+    "id": "1",
+    "question": "<b>Directions (1-5): Study the following information carefully and answer the questions below:</b><br><b>8W*3?H9A+T@5&QB$1E#NK</b><br>1. Which will be the eighth element to the right of the twentieth element from the right end?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "20th from right is '3'. 8th to its right is 'T'.",
+    "option_1": "*",
+    "option_2": "T",
+    "option_3": "E",
+    "option_4": "5",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "2",
+    "question": "<b>8W*3?H9A+T@5&QB$1E#NK</b>2. Which will be the third number to the left of the sixth alphabet from the left end?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "6th alphabet from left is 'B'. 3rd number to its left is '3'.",
+    "option_1": "5",
+    "option_2": "*",
+    "option_3": "3",
+    "option_4": "1",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "3",
+    "question": "<b>8W*3?H9A+T@5&QB$1E#NK</b>3. Which will be the third symbol to the right of the eighth element from the left end?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "8th element from left is 'A'. 3rd symbol to its right is '&'.",
+    "option_1": "#",
+    "option_2": "@",
+    "option_3": "+",
+    "option_4": "&",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "4",
+    "question": "<b>8W*3?H9A+T@5&QB$1E#NK</b>4. Which will be the sum of the fourth number from the left end and fifth element from the right end?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "4th number from left is '5'. 5th element from right is '1'. Sum = 5 + 1 = 6.",
+    "option_1": "5",
+    "option_2": "4",
+    "option_3": "6",
+    "option_4": "3",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "5",
+    "question": "<b>8W*3?H9A+T@5&QB$1E#NK</b>5. Which will be the second number to the left of the seventh element from the right end?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "7th from right is 'B'. 2nd number to its left is '9'.",
+    "option_1": "9",
+    "option_2": "5",
+    "option_3": "1",
+    "option_4": "8",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "6",
+    "question": "<b>Directions (6-10): Study the following information carefully and answer the questions below:</b><br><b>2N*TA3S5%P#6Q4WK&CX+EB</b><br>6. Which is the third symbol to the left of W?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Symbols to the left of W are &, #, %, *. The 3rd symbol to the left is '*'.",
+    "option_1": "+",
+    "option_2": "6",
+    "option_3": "*",
+    "option_4": "%",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "7",
+    "question": "<b>2N*TA3S5%P#6Q4WK&CX+EB</b>7. Which is the sixth element to the left of fourth alphabet from the left end?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "4th alphabet from left is 'S'. 6th to its left is '6'.",
+    "option_1": "P",
+    "option_2": "6",
+    "option_3": "#",
+    "option_4": "Q",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "8",
+    "question": "<b>2N*TA3S5%P#6Q4WK&CX+EB</b>8. Which will be the eleventh element from the right end, if all the symbols are deleted from the series?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Series without symbols: 2 N T A 3 S 5 P 6 Q 4 W K C X E B. 11th from right is '5'.",
+    "option_1": "6",
+    "option_2": "P",
+    "option_3": "S",
+    "option_4": "5",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "9",
+    "question": "<b>2N*TA3S5%P#6Q4WK&CX+EB</b>9. If the first half of the series is reversed, then which will be the sixteenth element from the right end?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Total 22 elements. First half (11 elements): 2N*TA3S5%P#. Reversed: #P%5S3AT*N2. 16th from right is 'A'.",
+    "option_1": "5",
+    "option_2": "S",
+    "option_3": "A",
+    "option_4": "3",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "10",
+    "question": "<b>2N*TA3S5%P#6Q4WK&CX+EB</b>10. If all the vowels in the series are deleted, how many alphabets will be there?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Alphabets are N, T, A, S, P, Q, W, K, C, X, E, B. Removing vowels (A, E) leaves 10.",
+    "option_1": "12",
+    "option_2": "11",
+    "option_3": "9",
+    "option_4": "10",
+    "option_5": "None of the above"
+  },
+  {
+    "id": "11",
+    "question": "<b>Directions (11-12): Study the following information and answer the questions:</b><br>There are six houses F, G, H, I, J & K. K is 8 km north of J. H is 10 km east of F, which is 12 km south of G. H is 8 km north of I, which is 12 km east of K.<br>11. What is the shortest distance between house J and house Z, which is exactly between house K and house I?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "K is (0,8), I is (12,8). Z is midpoint (6,8). J is (0,0). Distance JZ = √(6² + 8²) = 10 km.",
+    "option_1": "8 km",
+    "option_2": "10 km",
+    "option_3": "12 km",
+    "option_4": "9 km",
+    "option_5": "15 km"
+  },
+  {
+    "id": "12",
+    "question": "12. In which direction is house K with respect to house H?",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "H is (12,16) and K is (0,8). K is South-West of H.",
+    "option_1": "South",
+    "option_2": "North west",
+    "option_3": "North",
+    "option_4": "North east",
+    "option_5": "South west"
+  },
+  {
+    "id": "13",
+    "question": "<b>Directions (13-15): Study the following information and answer the questions:</b><br>Nine points (A, B, C, D, E, F, G, H & I) are at different distances. D is 30m south of B. B is 16m west of G. A is 28m east of C. CA distance is double BA distance. B is north of A. E is 14m south of G. H is 12m west of F. F is west of B. E is 16m north of I. G-F distance equals E-C.<br>13. How far and in which direction is point E with respect to point B?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "B is (0,0), G is (16,0). E is (16,-14). Distance BE = √(16² + 14²) = 2√113 m. Direction is South-East.",
+    "option_1": "21 m, south west",
+    "option_2": "2√113 m, south west",
+    "option_3": "25 m, north west",
+    "option_4": "2√113 m, south east",
+    "option_5": "2√113 m, north east"
+  },
+  {
+    "id": "14",
+    "question": "14. In which direction is point H with respect to point I?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Plotting all coordinates shows H is North-West of I.",
+    "option_1": "South",
+    "option_2": "North east",
+    "option_3": "North",
+    "option_4": "North west",
+    "option_5": "South west"
+  },
+  {
+    "id": "15",
+    "question": "15. Which one of the following doesn’t belong to this group?",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "HA does not follow the specific directional pattern shared by others.",
+    "option_1": "HB",
+    "option_2": "EG",
+    "option_3": "AD",
+    "option_4": "AC",
+    "option_5": "HA"
+  },
+  {
+    "id": "16",
+    "question": "<b>Directions (16-20): Syllogism. Study the statements and answer.</b><br>16. <b>Statements:</b> Only a few Zoom is Teams. No Teams is Skype. Some Skype is Meet.<br><b>Conclusions:</b> I. Some Zoom may be Skype. II. All Meet can be Teams. III. Some Zoom is not a Meet.",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "I follows as a possibility. II fails because some Meet are Skype and no Skype is Teams. III is not definitely true.",
+    "option_1": "Both II and III follow",
+    "option_2": "Only conclusion I follow",
+    "option_3": "Both I and III follow",
+    "option_4": "Both I and II follow",
+    "option_5": "All follow"
+  },
+  {
+    "id": "17",
+    "question": "17. <b>Statements:</b> Only a few Ola is Uber. All Ola is Rapido. No Rapido is BlaBlaCar.<br><b>Conclusions:</b> I. No Ola is BlaBlaCar. II. All Rapido can never be Uber. III. Some BlaBlaCar is Uber.",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Since All Ola is Rapido and No Rapido is BlaBlaCar, No Ola is BlaBlaCar. II follows because only a few Ola is Uber.",
+    "option_1": "Both II and III follow",
+    "option_2": "Only conclusion I follows",
+    "option_3": "Both I and III follow",
+    "option_4": "Both I and II follow",
+    "option_5": "All follow"
+  },
+  {
+    "id": "18",
+    "question": "18. <b>Statements:</b> Only a few Flipkart is Myntra. All Flipkart is Ajio. All Myntra is Meesho.<br>Conclusions: I. Some Flipkart is Meesho. II. All Myntra can never be Ajio. III. Some Ajio can be Myntra.",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "I follows as there is no negative relation between Flipkart and Meesho. II and III are not definite.",
+    "option_1": "Both II and III follow",
+    "option_2": "Only conclusion I follows",
+    "option_3": "Both I and III follow",
+    "option_4": "Both I and II follow",
+    "option_5": "All follow"
+  },
+  {
+    "id": "19",
+    "question": "19. <b>Statements:</b> Only a few HDFC is Axis. No Axis is ICICI. No ICICI is SBI.<br><b>Conclusions:</b> I. Some HDFC is SBI. II. All Axis can be SBI. III. All HDFC is ICICI is a possibility.",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "II follows as there is no restriction between Axis and SBI. I is not definite. III is false because some HDFC (common with Axis) cannot be ICICI.",
+    "option_1": "Both II and III follow",
+    "option_2": "Both I and II follow",
+    "option_3": "Both I and III follow",
+    "option_4": "Only conclusion II follows",
+    "option_5": "All follow"
+  },
+  {
+    "id": "20",
+    "question": "20. <b>Statements:</b> Only a few Paytm is PhonePe. All PhonePe is Amazon Pay. All Amazon Pay is Google Pay.<br><b>Conclusions:</b> I. Some Amazon Pay is Paytm is a possibility. II. Some Google Pay can be PhonePe. III. Some Paytm is not Amazon Pay.",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "None follow as definite conclusions. I is already a fact, so 'possibility' is wrong. II is also a fact. III is not definite.",
+    "option_1": "Both II and III follow",
+    "option_2": "Only conclusion I follows",
+    "option_3": "Both I and III follow",
+    "option_4": "Both I and II follow",
+    "option_5": "None follows"
+  },
+{
+    "id": "21",
+    "question": "<b>Directions (21-25): Study the following information carefully and answer the questions below:</b><br>Seven people (A, B, C, D, E, F, and G) are sitting in a row facing North. A sits third to the left of E. Only one person sits between E and B. G sits to the immediate right of B. Two people sit between G and D. F is not an immediate neighbor of A.<br>21. Who sits at the extreme left end of the row?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "The final arrangement is A, F, D, E, C, B, G. Therefore, A sits at the extreme left end.",
+    "option_1": "A",
+    "option_2": "F",
+    "option_3": "C",
+    "option_4": "D",
+    "option_5": "None of these"
+  },
+  {
+    "id": "22",
+    "question": "22. How many persons sit between F and C?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In the arrangement A, F, D, E, C, B, G, there are two persons (D and E) sitting between F and C.",
+    "option_1": "None",
+    "option_2": "One",
+    "option_3": "Two",
+    "option_4": "Three",
+    "option_5": "Four"
+  },
+  {
+    "id": "23",
+    "question": "23. If all the persons are made to sit in alphabetical order from left to right, the positions of how many will remain unchanged?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Original: A, F, D, E, C, B, G. Alphabetical: A, B, C, D, E, F, G. Only A and G remain in their original positions.",
+    "option_1": "One",
+    "option_2": "Two",
+    "option_3": "Three",
+    "option_4": "Four",
+    "option_5": "None"
+  },
+  {
+    "id": "24",
+    "question": "24. What is the position of D with respect to B?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In the row A-F-D-E-C-B-G, D is third to the left of B.",
+    "option_1": "Second to the left",
+    "option_2": "Immediate right",
+    "option_3": "Fourth to the left",
+    "option_4": "Third to the left",
+    "option_5": "Third to the right"
+  },
+  {
+    "id": "25",
+    "question": "25. Who sits exactly in the middle of the row?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "The sequence is A, F, D, E, C, B, G. The fourth person, E, sits in the middle.",
+    "option_1": "D",
+    "option_2": "E",
+    "option_3": "C",
+    "option_4": "F",
+    "option_5": "B"
+  },
+  {
+    "id": "26",
+    "question": "<b>Directions (26-28): Study the following information and answer the questions:</b><br>Point P is 10m North of point Q. Point R is 12m East of point Q. Point S is 5m North of point R. Point T is 6m West of point S.<br>26. What is the shortest distance between P and T?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Q is (0,0), P is (0,10), R is (12,0), S is (12,5), T is (6,5). Distance PT = √[(6-0)² + (5-10)²] = √(36 + 25) = √61 m.",
+    "option_1": "7 m",
+    "option_2": "8 m",
+    "option_3": "√61 m",
+    "option_4": "10 m",
+    "option_5": "None of these"
+  },
+  {
+    "id": "27",
+    "question": "27. In which direction is point Q with respect to point T?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "T is at (6,5) and Q is at (0,0). Q is South-West of T.",
+    "option_1": "North-East",
+    "option_2": "South-West",
+    "option_3": "South-East",
+    "option_4": "North-West",
+    "option_5": "South"
+  },
+  {
+    "id": "28",
+    "question": "28. If a person walks 5m North from point T, which point will they be closest to?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "5m North from T(6,5) is (6,10). Point P is at (0,10). They are on the same latitude as P.",
+    "option_1": "P",
+    "option_2": "Q",
+    "option_3": "R",
+    "option_4": "S",
+    "option_5": "T"
+  },
+  {
+    "id": "29",
+    "question": "<b>Directions (29-30): Coding-Decoding.</b><br>In a certain code, 'WORK' is written as '4-12-9-11' and 'DONE' is written as '23-12-13-22'.<br>29. How is 'PLAN' written in that code?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "The code uses the position of the opposite letter in the alphabet (A=26, Z=1). P->K(11), L->O(15), A->Z(26), N->M(13).",
+    "option_1": "11-15-26-14",
+    "option_2": "16-12-1-14",
+    "option_3": "11-12-26-13",
+    "option_4": "11-15-26-13",
+    "option_5": "None of these"
+  },
+  {
+    "id": "30",
+    "question": "30. What is the code for 'BEST'?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Opposite positions: B->Y(25), E->V(22), S->H(8), T->G(7). Code: 25-22-8-7.",
+    "option_1": "25-22-8-7",
+    "option_2": "2-5-19-20",
+    "option_3": "25-22-19-7",
+    "option_4": "25-5-8-7",
+    "option_5": "None of these"
+  },
+{
+    "id": "31",
+    "question": "<b>Directions (31-35): Study the following information carefully and answer the questions below:</b><br>Eight people (P, Q, R, S, T, U, V, and W) are sitting around a circular table facing the center. V sits third to the right of Q. Only one person sits between V and R. P sits second to the right of R. W sits to the immediate left of P. Only three people sit between W and S. U is not an immediate neighbor of S.<br>31. Who sits second to the left of V?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "The circular arrangement in clockwise order is Q, T, S, R, U, P, W, V. The person second to the left of V is P.",
+    "option_1": "Q",
+    "option_2": "R",
+    "option_3": "T",
+    "option_4": "P",
+    "option_5": "None of these"
+  },
+  {
+    "id": "32",
+    "question": "32. How many people sit between U and Q when counted from the left of U?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Counting left from U (U -> R -> S -> T -> Q), there are 3 people: R, S, and T.",
+    "option_1": "One",
+    "option_2": "Two",
+    "option_3": "Three",
+    "option_4": "Four",
+    "option_5": "More than four"
+  },
+  {
+    "id": "33",
+    "question": "33. What is the position of S with respect to W?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "S is exactly opposite W in an eight-person circular table, which is fourth to the left or fourth to the right.",
+    "option_1": "Second to the right",
+    "option_2": "Fourth to the right",
+    "option_3": "Third to the left",
+    "option_4": "Immediate left",
+    "option_5": "None of these"
+  },
+  {
+    "id": "34",
+    "question": "34. Who sits to the immediate right of T?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In the sequence Q, T, S, R, U, P, W, V, the person to the immediate right of T is S.",
+    "option_1": "S",
+    "option_2": "Q",
+    "option_3": "V",
+    "option_4": "R",
+    "option_5": "U"
+  },
+  {
+    "id": "35",
+    "question": "35. Four of the following five are alike in a certain way. Which one does not belong to the group?",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In pairs like QV, RW, etc., there is a specific gap. The pair UV does not follow the same gap pattern as the others.",
+    "option_1": "Q-S",
+    "option_2": "V-P",
+    "option_3": "R-T",
+    "option_4": "W-U",
+    "option_5": "U-V"
+  },
+  {
+    "id": "36",
+    "question": "<b>Directions (36-40): Study the following information and answer:</b><br>In a certain code language: 'sky is blue' is 'ri ti gi', 'blue is ocean' is 'ti gi mi', 'ocean looks deep' is 'mi si di'.<br>36. What is the code for 'ocean'?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Comparing 'blue is ocean' and 'ocean looks deep', the common word is 'ocean' and the common code is 'mi'.",
+    "option_1": "ri",
+    "option_2": "mi",
+    "option_3": "ti",
+    "option_4": "gi",
+    "option_5": "di"
+  },
+  {
+    "id": "37",
+    "question": "37. What does the code 'ri' stand for?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In 'sky is blue' (ri ti gi) and 'blue is ocean' (ti gi mi), 'is blue' is 'ti gi'. Thus 'ri' must be 'sky'.",
+    "option_1": "sky",
+    "option_2": "blue",
+    "option_3": "is",
+    "option_4": "deep",
+    "option_5": "looks"
+  },
+  {
+    "id": "38",
+    "question": "38. What could be the code for 'deep blue'?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Blue is either 'ti' or 'gi'. Deep is either 'si' or 'di'. Option 'gi si' fits.",
+    "option_1": "ri mi",
+    "option_2": "ti mi",
+    "option_3": "gi ri",
+    "option_4": "gi si",
+    "option_5": "None of these"
+  },
+  {
+    "id": "39",
+    "question": "39. Which word is coded as 'di'?",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In 'ocean looks deep' (mi si di), 'mi' is ocean. 'di' could be either 'looks' or 'deep'.",
+    "option_1": "ocean",
+    "option_2": "sky",
+    "option_3": "blue",
+    "option_4": "is",
+    "option_5": "Either looks or deep"
+  },
+  {
+    "id": "40",
+    "question": "40. If 'deep' is coded as 'si', what is the code for 'looks'?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "If 'si' is 'deep' in the phrase 'mi si di', and 'mi' is 'ocean', then 'di' must be 'looks'.",
+    "option_1": "mi",
+    "option_2": "si",
+    "option_3": "di",
+    "option_4": "ti",
+    "option_5": "gi"
+  },
+{
+    "id": "41",
+    "question": "<b>Directions (41-43): Study the following information and answer the questions:</b><br>Six people A, B, C, D, E and F are sitting in a row facing north. A sits second to the right of D. B sits third to the right of A. C is an immediate neighbor of B. E sits second to the left of F. <br>41. Who sits at the extreme right end of the row?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "The arrangement from left to right is: D, E, A, F, B, C. Therefore, C sits at the extreme right end.",
+    "option_1": "B",
+    "option_2": "C",
+    "option_3": "F",
+    "option_4": "E",
+    "option_5": "A"
+  },
+  {
+    "id": "42",
+    "question": "42. How many persons sit between D and F?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In the sequence D, E, A, F, B, C, there are two persons (E and A) sitting between D and F.",
+    "option_1": "None",
+    "option_2": "One",
+    "option_3": "Two",
+    "option_4": "Three",
+    "option_5": "More than three"
+  },
+  {
+    "id": "43",
+    "question": "43. What is the position of E with respect to B?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "In the sequence D-E-A-F-B-C, E is fourth to the left of B.",
+    "option_1": "Second to the left",
+    "option_2": "Third to the right",
+    "option_3": "Immediate left",
+    "option_4": "Third to the left",
+    "option_5": "None of these"
+  },
+  {
+    "id": "44",
+    "question": "<b>Directions (44-45): Blood Relation.</b><br>In a family of six members, P is the father of Q. R is the son of S. T is the brother of P. Q is the sister of R. U is the mother of T.<br>44. How is U related to Q?",
+    "answer": "1",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "P is the father of Q and R. T is P's brother. U is the mother of T (and P). Therefore, U is the grandmother of Q.",
+    "option_1": "Grandmother",
+    "option_2": "Mother",
+    "option_3": "Aunt",
+    "option_4": "Sister",
+    "option_5": "None of these"
+  },
+  {
+    "id": "45",
+    "question": "45. How is S related to T?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "P is the husband of S (since P is father and S is mother of R/Q). T is the brother of P. So, S is the sister-in-law of T.",
+    "option_1": "Sister",
+    "option_2": "Mother",
+    "option_3": "Sister-in-law",
+    "option_4": "Daughter",
+    "option_5": "Wife"
+  },
+  {
+    "id": "46",
+    "question": "<b>Directions (46-48): Study the following information and answer:</b><br>Point M is 8m south of point N. Point O is 10m east of point N. Point P is 5m north of point O. Point Q is 4m east of point P. Point R is 13m south of point Q.<br>46. What is the shortest distance between M and R?",
+    "answer": "4",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "Coordinates: N(0,0), M(0,-8), O(10,0), P(10,5), Q(14,5), R(14,-8). Distance MR = 14m.",
+    "option_1": "10 m",
+    "option_2": "12 m",
+    "option_3": "13 m",
+    "option_4": "14 m",
+    "option_5": "15 m"
+  },
+  {
+    "id": "47",
+    "question": "47. In which direction is point N with respect to point R?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "R is at (14,-8) and N is at (0,0). N is North-West of R.",
+    "option_1": "South-East",
+    "option_2": "North-West",
+    "option_3": "North-East",
+    "option_4": "South-West",
+    "option_5": "North"
+  },
+  {
+    "id": "48",
+    "question": "48. If point S is exactly between O and P, what is distance from N to S?",
+    "answer": "5",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "O is (10,0), P is (10,5). S is (10, 2.5). Distance NS = √(10² + 2.5²) = √106.25 ≈ 10.3m.",
+    "option_1": "10 m",
+    "option_2": "12 m",
+    "option_3": "11.5 m",
+    "option_4": "10.5 m",
+    "option_5": "None of these"
+  },
+  {
+    "id": "49",
+    "question": "<b>Directions (49-50): Direction Sense.</b><br>A person starts walking from point A towards east. After walking 12m he turns left and walks 5m to reach point B. From B he turns 180 degrees and walks 13m to reach point C.<br>49. What is the shortest distance between A and C?",
+    "answer": "3",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "A(0,0). Walk 12m East to (12,0). Turn left (North) 5m to B(12,5). Turn 180 degrees (South) 13m to C(12,-8). Distance AC = √(12² + (-8)²) = √208 = 4√13m.",
+    "option_1": "12 m",
+    "option_2": "13 m",
+    "option_3": "4√13 m",
+    "option_4": "15 m",
+    "option_5": "None of these"
+  },
+  {
+    "id": "50",
+    "question": "50. In which direction is point C with respect to point A?",
+    "answer": "2",
+    "positive_marks": "1",
+    "negative_marks": "0.25",
+    "solution_text": "A is (0,0) and C is (12,-8). Point C is South-East of A.",
+    "option_1": "North-East",
+    "option_2": "South-East",
+    "option_3": "South-West",
+    "option_4": "North-West",
+    "option_5": "South"
+  }
+];
+
+const TITLE="50 Most Expected Reasoning";
+const SECTIONS=[];
+const TIME_SECS=1500;
+const LETTERS=['A','B','C','D','E'];
+
+let cur=0,ans={},secs=0,qmode=false,tick=null,charts=[];
+const $=id=>document.getElementById(id);
+const fmtT=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+const qk=i=>QS[i].id||String(i);
+
+/* ===== AGREE CHECKBOX ===== */
+function toggleAgree(){
+  const chk=$('agreeChk');chk.checked=!chk.checked;checkReady();
+}
+function checkReady(){
+  const ready=$('agreeChk')&&$('agreeChk').checked;
+  const btn=$('startBtn');
+  btn.disabled=!ready;
+  if(ready)btn.classList.add('ready');
+  else btn.classList.remove('ready');
+}
+
+/* ===== INIT ===== */
+window.addEventListener('DOMContentLoaded',()=>{
+  $('startTitle').textContent=TITLE;
+  $('startSub').textContent=QS.length+' Questions  •  50 Most expected Reasoning';
+  $('metaQ').textContent=QS.length;
+  $('qTot').textContent=QS.length;
+  buildPal();
+  updateProgress();
+});
+
+function startQuiz(){
+  $('startScr').style.display='none';
+  $('quizUI').style.display='block';
+  render(0);startTick();
+}
+
+function startTick(){
+  if(tick)clearInterval(tick);
+  tick=setInterval(()=>{
+    secs++;
+    const rem=TIME_SECS-secs;
+    const el=$('timerEl');
+    if(rem<=300&&rem>0){el.classList.add('warn');el.textContent='⚠️ '+fmtT(rem);}
+    else{el.classList.remove('warn');el.textContent=fmtT(secs);}
+    if(secs>=TIME_SECS){clearInterval(tick);doSubmit();}
+  },1000);
+}
+
+function updateProgress(){
+  const pct=((cur+1)/QS.length*100).toFixed(1);
+  const pb=$('mobileProgressBar');if(pb)pb.style.width=pct+'%';
+}
+
+/* ===== RENDER ===== */
+function render(i){
+  cur=i;const q=QS[i];const k=qk(i);
+  $('qIdx').textContent=i+1;
+  $('qBadge').textContent=i+1;
+  // Build question HTML (text + optional question image)
+  let qHtml = q.question || '';
+  if(q.image_url) qHtml += `<div style="margin-top:10px"><img src="${q.image_url}" alt="Question Image" style="max-width:100%;border-radius:8px;display:block;box-shadow:0 2px 10px rgba(0,7,135,.1)"></div>`;
+  $('qTxt').innerHTML = qHtml;
+  $('qCounter').textContent=(i+1)+' / '+QS.length;
+  const pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0.25);
+  $('qMrkPos').textContent='+'+pm+' Correct';
+  $('qMrkNeg').textContent=nm>0?'-'+nm+' Wrong':'0.25 Negative';
+  const st=$('secTag');
+  if(q.section&&SECTIONS.length>1){st.style.display='inline';st.textContent=q.section;}
+  else{st.style.display='none';}
+  const ob=$('opts');ob.innerHTML='';$('expl').style.display='none';
+  ['option_1','option_2','option_3','option_4','option_5'].forEach((ok2,idx)=>{
+    if(!q[ok2])return;
+    const val=String(idx+1);
+    const d=document.createElement('div');d.className='opt';d.dataset.v=val;
+    // option text + optional per-option image
+    const optImgKey='option_'+val+'_image';
+    const optImgHtml=q[optImgKey]?`<div style="margin-top:7px"><img src="${q[optImgKey]}" alt="Option ${LETTERS[idx]}" style="max-width:100%;border-radius:6px;display:block;box-shadow:0 2px 8px rgba(0,7,135,.1)"></div>`:'';
+    d.innerHTML=`<div class="opt-letter">${LETTERS[idx]}</div><div class="otxt">${q[ok2]}${optImgHtml}</div><div class="opt-check"></div>`;
+    d.addEventListener('click',()=>pick(q,i,val,d));
+    if(ans[k]===val)d.classList.add('sel');
+    ob.appendChild(d);
+  });
+  if(qmode&&ans[k])feedback(q);
+  syncPal();updateProgress();
+}
+
+function pick(q,i,val,div){
+  const k=qk(i);ans[k]=val;
+  Array.from($('opts').children).forEach(o=>o.classList.remove('sel','cor','wrg'));
+  div.classList.add('sel');
+  if(qmode)feedback(q);
+  syncPal();
+}
+
+function feedback(q){
+  const cv=String(q.answer),uv=ans[qk(cur)];
+  Array.from($('opts').children).forEach(o=>{
+    o.classList.remove('sel','cor','wrg');
+    if(o.dataset.v===cv)o.classList.add('cor');
+    else if(uv&&o.dataset.v===uv)o.classList.add('wrg');
+  });
+  const ex=$('expl');
+  if(q.solution_text||q.solution_image_url){
+    let solHtml='<strong>Explanation:</strong> '+(q.solution_text||'');
+    if(q.solution_image_url)solHtml+=`<br><img src="${q.solution_image_url}" alt="Solution image" style="display:block;max-width:100%;border-radius:8px;margin-top:8px;box-shadow:0 2px 8px rgba(0,7,135,.1)">`;
+    ex.innerHTML=solHtml;ex.style.display='block';
+  }
+}
+
+function toggleMode(){qmode=!qmode;$('modeTog').classList.toggle('qm',qmode);render(cur);}
+function nav(d){const n=cur+d;if(n>=0&&n<QS.length)render(n);}
+function clrAns(){delete ans[qk(cur)];render(cur);}
+
+function openSubmit(){
+  const done=Object.keys(ans).length,left=QS.length-done;
+  $('submitMsg').innerHTML=`You answered <strong>${done}</strong> questions. <strong style="color:#c82d3f">${left}</strong> question(s) unanswered. Submit?`;
+  $('submitMod').style.display='flex';
+}
+function closeSubmit(){$('submitMod').style.display='none';}
+
+/* ===== SUBMIT & RESULTS ===== */
+function doSubmit(){
+  closeSubmit();if(tick)clearInterval(tick);
+  let cor=0,wrg=0,tot=0;
+  QS.forEach((q,i)=>{
+    const a=ans[qk(i)];const ok=a&&String(a)===String(q.answer);
+    const pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0.25);
+    if(ok){cor++;tot+=pm;}else if(a){wrg++;tot-=nm;}
+  });
+  const att=Object.keys(ans).length,unatt=QS.length-att;
+  const acc=att?((cor/att)*100).toFixed(1):'0.0';
+  const pct=((cor/QS.length)*100).toFixed(1);
+  const grade=cor>=QS.length*.9?'A+':cor>=QS.length*.75?'A':cor>=QS.length*.6?'B':cor>=QS.length*.4?'C':'D';
+
+  let html=`
+  <div class="result-hero">
+    <h2>🎯 ${TITLE}</h2>
+    <p>Quiz completed! Your results are below.</p>
+    <div class="result-score-big">${tot} / ${QS.length}</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">Grade: <span style="color:#fbbf24">${grade}</span></span>
+      <span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">⏱️ ${fmtT(secs)}</span>
+      <span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">${pct}% Score</span>
+    </div>
+  </div>
+  <div class="rstats">
+    <div class="rstat rs-correct"><h4>✅ Correct</h4><p>${cor}</p></div>
+    <div class="rstat rs-wrong"><h4>❌ Wrong</h4><p>${wrg}</p></div>
+    <div class="rstat rs-skip"><h4>⏭️ Skipped</h4><p>${unatt}</p></div>
+    <div class="rstat rs-acc"><h4>🎯 Accuracy</h4><p>${acc}%</p></div>
+    <div class="rstat rs-score"><h4>📊 Score</h4><p>${tot}</p></div>
+    <div class="rstat rs-time"><h4>⏱️ Time</h4><p>${fmtT(secs)}</p></div>
+  </div>
+  <div class="charts-section">
+    <h3>📈 Performance Analysis</h3>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h4>🥧 Answer Distribution</h4>
+        <canvas id="pieChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📊 Score Breakdown</h4>
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart-card chart-wide">
+        <h4>📋 Question-wise Performance</h4>
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="charts-section">
+    <h3>📝 Detailed Answers</h3>
+  </div>`;
+
+  QS.forEach((q,i)=>{
+    const a=ans[qk(i)];const ok=a&&String(a)===String(q.answer);
+    const pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0.25);
+    const scH=ok?`<span style="color:#15803d;font-weight:800">+${pm} ✓</span>`:a?`<span style="color:#991b1b;font-weight:800">-${nm} ✗</span>`:`<span style="color:#64748b;font-weight:700">0 (Skipped)</span>`;
+    const cardClass=ok?'q-cor':a?'q-wrg':'q-skp';
+    html+=`<div class="q-result-card ${cardClass}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        <span style="font-weight:800;color:var(--acc);font-size:14px">Question ${i+1}</span>
+        <span>${scH}</span>
+      </div>
+      <div class="qtxt" style="margin-bottom:12px;font-size:14px">${q.question}${q.image_url?`<br><img src="${q.image_url}" alt="Question image" style="max-width:100%;border-radius:8px;margin-top:8px;display:block;box-shadow:0 2px 8px rgba(0,7,135,.08)">`:''}</div>`;
+    ['option_1','option_2','option_3','option_4','option_5'].forEach((ok2,j)=>{
+      if(!q[ok2])return;const idx=String(j+1);
+      const isC=idx===String(q.answer),isU=a&&idx===String(a)&&!isC;
+      const rOptImgKey='option_'+idx+'_image';
+      const rOptImg=q[rOptImgKey]?`<img src="${q[rOptImgKey]}" alt="" style="display:block;max-width:100%;border-radius:6px;margin-top:5px;box-shadow:0 1px 5px rgba(0,0,0,.09)">`:'';
+      html+=`<div class="ropt ${isC?'rc':isU?'rw':'rp'}">
+        <span class="ropt-letter">${LETTERS[j]}</span>
+        ${isC?'✓ ':isU?'✗ ':''}${q[ok2]}${rOptImg}
+      </div>`;
+    });
+    html+=`<div style="margin-top:10px;font-size:13px;font-weight:700">Your Score: ${scH}</div>`;
+    if(q.solution_text||q.solution_image_url){
+      const solImg=q.solution_image_url?`<img src="${q.solution_image_url}" alt="Solution image" style="display:block;max-width:100%;border-radius:8px;margin-top:8px;box-shadow:0 2px 8px rgba(0,7,135,.1)">`:'';
+      html+=`<div class="expl" style="display:block;margin-top:10px"><strong>Explanation:</strong> ${q.solution_text||''}${solImg}</div>`;
+    }
+    html+='</div>';
+  });
+
+  $('resultArea').innerHTML=html;
+  $('resultArea').style.display='block';
+  $('qCard').style.display='none';
+  $('fbar').style.display='none';
+  const p=$('pal');if(p)p.style.display='none';
+
+  setTimeout(()=>buildCharts(cor,wrg,unatt,QS,ans),100);
+
+  const hdr=$('hdrCtrls');hdr.innerHTML='';
+  const L=document.createElement('div');
+  L.style.cssText='display:flex;align-items:center;gap:10px;flex:none;min-width:0';
+  const LOGO_URL = 'https://i.ibb.co/W8PWFVB/20260406-005258.jpg'; // Replace with your URL
+
+L.innerHTML = `
+  <img src="${LOGO_URL}" style="height:42px; border-radius:30%; width:auto; flex-shrink:0;" alt="Logo">
+  <span style="color:#fff; font-weight:800; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
+    ${TITLE}
+  </span>
+`;
+const R=document.createElement('div');R.style.cssText='display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0';
+  [['↩️ Re-Attempt',()=>location.reload()],['📄 Download PDF',()=>window.print()]].forEach(([l,fn])=>{
+    const b=document.createElement('button');b.className='btn';b.textContent=l;
+    b.addEventListener('click',fn);R.appendChild(b);
+  });
+  hdr.appendChild(L);hdr.appendChild(R);
+}
+
+function buildCharts(cor,wrg,unatt,qs,ans){
+  charts.forEach(c=>{try{c.destroy();}catch(e){}});charts=[];
+
+const pieCtx = document.getElementById('pieChart');
+
+if (pieCtx) {
+  const ctx = pieCtx.getContext('2d');
+
+  // Helper to create the "inflated 3D" radial gradient
+  const create3DGradient = (colorLight, colorDark) => {
+    const gradient = ctx.createRadialGradient(150, 150, 20, 150, 150, 120);
+    gradient.addColorStop(0, colorLight); // The "pop" or highlight in the center
+    gradient.addColorStop(1, colorDark);  // The shadow at the edges
+    return gradient;
+  };
+
+  pieCtx.style.filter = 'drop-shadow(0px 10px 15px rgba(0,0,0,0.2))';
+  pieCtx.style.borderRadius = '1%';
+
+  const c = new Chart(pieCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Correct ✅', 'Wrong ❌', 'Skipped ⏭️'],
+      datasets: [{
+        data: [cor, wrg, unatt],
+        backgroundColor: [
+          create3DGradient('#0a7336', '#0bb65a','#85cf95'), // Radiant Green
+          create3DGradient('#ecb1c7', '#fe708e','#fe708e'), // Radiant Red
+          create3DGradient('#dee6ea', '#cbd2df','#b8bfce','#a5aebc','#929eab','#8090a1')  // Radiant Slate
+        ],
+        // Soften the edges to make it look like one piece
+        borderColor: 'rgba(255, 255, 255, 0.4)', 
+        borderWidth: 4,
+        hoverOffset: 15,
+        borderRadius: 10, // Gives the ends of the segments a soft, rounded feel
+        spacing: 2 // Adds a gap to enhance the 3D "floating" effect
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12, weight: '600' }, padding: 15 }
+        }
+      }
+    }
+  });
+
+  // Maintaining your custom wrapper for the "clay" background feel
+  const wrapper = pieCtx.parentElement;
+  wrapper.style.cssText += `
+    border-radius: 15%;
+    padding: 20px;
+    background: radial-gradient(145deg, #f0f4ff, #d9e2f3);
+    box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+    width: fit-content;
+    margin: auto;
+  `;
+
+  charts.push(c);
+}
+
+
+const barCtx = document.getElementById('barChart');
+
+if (barCtx) {
+    const ctx = barCtx.getContext('2d');
+
+    // Function to create a 3D-effect gradient
+    const getGradient = (color1, color2) => {
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, color1); // Highlight
+        gradient.addColorStop(0.5, color2); // Base
+        gradient.addColorStop(1, color1); // Bottom Shadow
+        return gradient;
+    };
+
+    const c = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Score', 'Max', 'Correct', 'Wrong'],
+            datasets: [{
+                label: 'Marks',
+                data: [cor, qs.length, cor, wrg],
+                // Embossed Color Palette
+                backgroundColor: [
+                    getGradient('#2563eb', '#1e3a8a'), // Deep Blue
+                    getGradient('#60a5fa', '#2563eb'), // Light Blue
+                    getGradient('#4ade80', '#166534'), // Emerald Green
+                    getGradient('#f87171', '#991b1b')  // Rich Red
+                ],
+                borderColor: ['#000787', '#127DE5', '#16a34a', '#dc2626'],
+                borderWidth: 1,
+                borderRadius: 10,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            // Adding shadows to simulate depth
+            animation: {
+                onComplete: function() {
+                    const chartInstance = this;
+                    const ctx = chartInstance.ctx;
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowOffsetX = 4;
+                    ctx.shadowOffsetY = 4;
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: qs.length + 2,
+                    grid: { color: 'rgba(0,0,0,.05)' },
+                    ticks: { font: { size: 11 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 11 } }
+                }
+            }
+        }
+    });
+    charts.push(c);
+}
+
+
+  const lineCtx=document.getElementById('lineChart');
+  if(lineCtx){
+    const labels=qs.map((_,i)=>'Q'+(i+1));
+    const data=qs.map((q,i)=>{const a=ans[qk(i)];if(!a)return 0;return String(a)===String(q.answer)?1:-1;});
+    const colors=data.map(v=>v===1?'rgba(34,197,94,.85)':v===-1?'rgba(239,68,68,.85)':'rgba(148,163,184,.65)');
+    const c=new Chart(lineCtx,{type:'bar',data:{labels,
+      datasets:[{label:'Performance',data,backgroundColor:colors,borderColor:colors,borderWidth:1,borderRadius:5}]
+    },options:{responsive:true,plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>c.raw===1?'✅ Correct':c.raw===-1?'❌ Wrong':'⏭️ Skipped'}}},
+    scales:{y:{min:-1.5,max:1.5,ticks:{callback:v=>v===1?'✅':v===-1?'❌':'—',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},
+    x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+    charts.push(c);
+  }
+}
+
+/* ===== PALETTE ===== */
+function buildPal(){
+  const p=$('pal');
+  while(p.children.length>1)p.removeChild(p.lastChild);
+  QS.forEach((_,i)=>{
+    const b=document.createElement('button');b.className='pq';b.textContent=i+1;
+    b.addEventListener('click',e=>{e.stopPropagation();render(i);closePal();});
+    p.appendChild(b);
+  });
+  const s=document.createElement('div');s.id='pal-sum';p.appendChild(s);
+  const leg=document.createElement('div');leg.id='pal-legend';
+  leg.innerHTML='<span><span style="width:10px;height:10px;background:#127DE5;border-radius:2px;display:inline-block"></span> Answered</span><span><span style="width:10px;height:10px;background:#fde68a;border-radius:2px;display:inline-block"></span> Current</span>';
+  p.appendChild(leg);
+  syncPal();
+}
+function syncPal(){
+  const p=$('pal');if(!p)return;
+  const tot=QS.length,done=Object.keys(ans).length;
+  let idx=0;
+  Array.from(p.children).forEach(c=>{
+    if(['pal-sum','pal-title','pal-legend'].includes(c.id))return;
+    c.className='pq';
+    if(idx===cur)c.classList.add('act');
+    else if(ans[qk(idx)])c.classList.add('ans');
+    idx++;
+  });
+  const s=$('pal-sum');if(s)s.textContent='Total: '+tot+' • Done: '+done+' • Left: '+(tot-done);
+}
+function togglePal(){const p=$('pal');if(p.style.display==='flex')closePal();else{p.style.display='flex';syncPal();}}
+function closePal(){$('pal').style.display='none';}
+
+document.addEventListener('click',e=>{
+  const p=$('pal'),pb=$('palBtn');
+  if(p&&p.style.display==='flex'&&!p.contains(e.target)&&e.target!==pb&&!pb.contains(e.target))closePal();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'&&cur<QS.length-1)render(cur+1);
+  if(e.key==='ArrowLeft'&&cur>0)render(cur-1);
+  if(e.key==='Escape')closePal();
+});
+</script>
+</body>
+</html>
+
