@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Practice Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0f0f14;
+            --paper: #f7f5f0;
+            --cream: #ede9df;
+            --gold: #c9922a;
+            --gold-light: #f0c060;
+            --gold-pale: #fdf3dc;
+            --blue: #1d4ed8;
+            --blue-pale: #eff6ff;
+            --green: #0e7a50;
+            --green-pale: #ecfdf5;
+            --red: #c0392b;
+            --red-pale: #fff1f0;
+            --purple: #6d28d9;
+            --purple-pale: #f5f3ff;
+            --teal: #0891b2;
+            --teal-pale: #ecfeff;
+            --orange: #d97706;
+            --orange-pale: #fffbeb;
+            --pink: #be185d;
+            --pink-pale: #fdf2f8;
+            --border: rgba(15,15,20,0.1);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+            --display: 'Playfair Display', serif;
+            --body: 'DM Sans', sans-serif;
+            --mono: 'DM Mono', monospace;
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--body);
+            background: var(--paper);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 16px 40px;
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(201,146,42,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(29,78,216,0.06) 0%, transparent 60%);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ── ANIMATED PAGE TRANSITIONS ── */
+        .screen {
+            animation: fadeSlideUp 0.3s ease forwards;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── TOP HEADER BAR ── */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 20px;
+            margin-bottom: 4px;
+        }
+        .app-logo {
+            font-family: var(--display);
+            font-size: 1.55rem;
+            color: var(--ink);
+            line-height: 1;
+        }
+        .app-logo span { color: var(--gold); }
+        .app-tagline {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.4);
+            margin-top: 2px;
+        }
+        .header-badge {
+            background: var(--ink);
+            color: var(--gold-light);
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            padding: 5px 10px;
+            border-radius: 50px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── BACK LINK ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(15,15,20,0.45);
+            cursor: pointer;
+            padding: 6px 0;
+            margin-bottom: 16px;
+            transition: color 0.2s;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .back-link:hover { color: var(--ink); }
+        .back-link svg { width: 14px; height: 14px; }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-family: var(--display);
+            font-size: 2rem;
+            color: var(--ink);
+            margin-bottom: 6px;
+            line-height: 1.1;
+        }
+        .section-sub {
+            font-size: 0.8rem;
+            color: rgba(15,15,20,0.4);
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        /* ── MENU GRID ── */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .menu-grid .full-width {
+            grid-column: span 2;
+        }
+
+        .menu-card {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--card-accent, var(--gold));
+            border-radius: 0 0 var(--radius) var(--radius);
+        }
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: transparent;
+        }
+        .menu-card:active { transform: translateY(0px); }
+        .menu-card .card-icon { font-size: 1.5rem; line-height: 1; }
+        .menu-card .card-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+        .menu-card .card-hint {
+            font-size: 0.7rem;
+            color: rgba(15,15,20,0.4);
+            font-weight: 400;
+        }
+
+        /* Special Reference card */
+        .menu-card.featured {
+            grid-column: span 2;
+            flex-direction: row;
+            align-items: center;
+            padding: 20px 22px;
+            background: var(--ink);
+            border-color: var(--ink);
+        }
+        .menu-card.featured::after {
+            background: var(--gold-light);
+        }
+        .menu-card.featured .card-label { color: white; font-size: 0.85rem; }
+        .menu-card.featured .card-hint { color: rgba(255,255,255,0.45); }
+        .menu-card.featured .card-icon { font-size: 1.8rem; margin-right: 4px; }
+        .menu-card.featured .card-arrow {
+            margin-left: auto;
+            color: var(--gold-light);
+            font-size: 1.1rem;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .divider-line { flex: 1; height: 1px; background: var(--border); }
+        .divider span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.3);
+        }
+
+        /* ── CONFIG SCREEN ── */
+        .config-block {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        .config-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.4);
+            margin-bottom: 14px;
+        }
+        .slider-value {
+            font-family: var(--mono);
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .slider {
+            width: 100%;
+            appearance: none;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--cream);
+            outline: none;
+            cursor: pointer;
+        }
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 2px 8px rgba(201,146,42,0.4);
+            cursor: pointer;
+        }
+        .range-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .range-input-wrap {
+            flex: 1;
+        }
+        .range-input-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.35);
+            margin-bottom: 5px;
+        }
+        .range-input {
+            width: 100%;
+            padding: 10px 12px;
+            font-family: var(--mono);
+            font-size: 1.05rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            outline: none;
+            background: var(--paper);
+            color: var(--ink);
+            transition: border-color 0.2s;
+        }
+        .range-input:focus { border-color: var(--gold); }
+        .range-sep { color: rgba(15,15,20,0.25); font-size: 1.2rem; padding-top: 20px; }
+
+        /* Mode toggle buttons */
+        .toggle-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .toggle-btn {
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: white;
+            font-family: var(--body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: rgba(15,15,20,0.5);
+        }
+        .toggle-btn.active, .toggle-btn:hover {
+            background: var(--ink);
+            color: white;
+            border-color: var(--ink);
+        }
+
+        /* ── PRIMARY CTA BUTTON ── */
+        .cta-btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--ink);
+            color: white;
+            font-family: var(--body);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .cta-btn:hover { background: #1a1a24; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .cta-btn:active { transform: translateY(0); }
+
+        /* ── QUIZ SCREEN ── */
+        .quiz-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .timer-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1.5px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 50px;
+        }
+        .timer-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .timer-text {
+            font-family: var(--mono);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+        .pause-btn {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-family: var(--body);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pause-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+        /* Progress bar */
+        .progress-wrap {
+            background: var(--cream);
+            border-radius: 50px;
+            height: 5px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            border-radius: 50px;
+            transition: width 0.4s ease;
+        }
+
+        .q-card {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 20px;
+            margin-bottom: 14px;
+        }
+        .q-meta {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.35);
+            margin-bottom: 10px;
+        }
+        .q-text {
+            font-family: var(--display);
+            font-size: 1.45rem;
+            color: var(--ink);
+            line-height: 1.35;
+        }
+
+        /* Option buttons */
+        .opt-btn {
+            width: 100%;
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-family: var(--body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            color: var(--ink);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .opt-btn .opt-letter {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--cream);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: rgba(15,15,20,0.45);
+            flex-shrink: 0;
+            transition: all 0.18s;
+        }
+        .opt-btn:hover { border-color: var(--gold); background: var(--gold-pale); }
+        .opt-btn:hover .opt-letter { background: var(--gold); color: white; }
+        .opt-btn.selected {
+            border-color: var(--blue);
+            background: var(--blue-pale);
+        }
+        .opt-btn.selected .opt-letter {
+            background: var(--blue);
+            color: white;
+        }
+
+        /* Nav buttons */
+        .nav-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .nav-btn {
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-family: var(--body);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-prev { background: var(--cream); color: var(--ink); border: 1.5px solid var(--border); }
+        .btn-prev:hover { background: var(--ink); color: white; }
+        .btn-next { background: var(--ink); color: white; }
+        .btn-next:hover { background: #1a1a24; transform: translateY(-1px); }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--blue);
+            background: var(--blue-pale);
+            color: var(--blue);
+            font-family: var(--body);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .submit-btn:hover { background: var(--blue); color: white; }
+
+        /* ── PAUSE OVERLAY ── */
+        #pause-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(247, 245, 240, 0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+        .pause-title {
+            font-family: var(--display);
+            font-size: 3rem;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .pause-sub {
+            font-size: 0.8rem;
+            color: rgba(15,15,20,0.4);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+        .pause-actions { display: flex; flex-direction: column; gap: 10px; width: 240px; }
+
+        /* ── RESULT SCREEN ── */
+        .result-hero {
+            text-align: center;
+            padding: 30px 0 24px;
+        }
+        .result-emoji { font-size: 3.5rem; line-height: 1; margin-bottom: 8px; }
+        .result-title {
+            font-family: var(--display);
+            font-size: 2.2rem;
+            color: var(--ink);
+        }
+        .result-subject {
+            font-size: 0.75rem;
+            color: rgba(15,15,20,0.35);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .stat-card {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 10px;
+            text-align: center;
+        }
+        .stat-val {
+            font-family: var(--mono);
+            font-size: 1.6rem;
+            font-weight: 500;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.35);
+        }
+
+        .detail-card {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        .detail-row:not(:last-child) { border-bottom: 1px solid var(--cream); }
+        .detail-key {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(15,15,20,0.4);
+        }
+        .detail-val {
+            font-family: var(--mono);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        /* Solution items */
+        .sol-item {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--cream);
+        }
+        .sol-item.correct { border-left-color: var(--green); }
+        .sol-item.wrong { border-left-color: var(--red); }
+        .sol-q { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+        .sol-meta { font-size: 0.78rem; color: rgba(15,15,20,0.5); }
+        .sol-meta span { font-weight: 600; }
+        .sol-meta .corr { color: var(--green); }
+        .sol-meta .wrong-ans { color: var(--red); }
+
+        /* ── REFERENCE TABLES SCREEN ── */
+        .ref-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .ref-tab {
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: white;
+            font-family: var(--body);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: rgba(15,15,20,0.55);
+        }
+        .ref-tab:hover { border-color: var(--gold); color: var(--gold); }
+        .ref-tab.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+        .ref-display {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            min-height: 320px;
+            overflow: hidden;
+        }
+        .ref-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 280px;
+            gap: 10px;
+        }
+        .ref-placeholder .icon { font-size: 2.5rem; opacity: 0.3; }
+        .ref-placeholder p {
+            font-size: 0.82rem;
+            color: rgba(15,15,20,0.3);
+            font-weight: 500;
+        }
+
+        .scroll-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .scroll-wrapper::-webkit-scrollbar { height: 4px; }
+        .scroll-wrapper::-webkit-scrollbar-track { background: var(--cream); border-radius: 4px; }
+        .scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(15,15,20,0.2); border-radius: 4px; }
+
+        .data-cols {
+            display: flex;
+            gap: 12px;
+            min-width: max-content;
+        }
+        .data-col {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            min-width: 120px;
+        }
+        .data-col-header {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 7px;
+            margin-bottom: 8px;
+        }
+        .data-row {
+            font-size: 0.82rem;
+            color: var(--ink);
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(15,15,20,0.05);
+            white-space: nowrap;
+            font-family: var(--mono);
+        }
+        .data-row:last-child { border-bottom: none; }
+        .data-row b { color: #111; font-weight: 600; }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .section-title { font-size: 1.7rem; }
+            .q-text { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+
+    <!-- ── HOME SCREEN ── -->
+    <div id="scr-home" class="screen">
+        <div class="app-header">
+            <div>
+                <div class="app-logo">Banking<span>.</span>Pro</div>
+                <div class="app-tagline">Daily Speed Drills by SBR</div>
+            </div>
+            <div class="header-badge">v2.0</div>
+        </div>
+
+        <div class="divider"><div class="divider-line"></div><span>Quick Launch</span><div class="divider-line"></div></div>
+
+        <div class="menu-grid" style="margin-bottom: 10px;">
+            <div class="menu-card" style="--card-accent: #8b5cf6" onclick="showCalcMenu()">
+                <div class="card-icon">🧮</div>
+                <div class="card-label">Calculation</div>
+                <div class="card-hint">±×÷</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--blue)" onclick="openConfig('Square')">
+                <div class="card-icon">2️⃣</div>
+                <div class="card-label">Squares</div>
+                <div class="card-hint">n²</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--pink)" onclick="openConfig('Cube')">
+                <div class="card-icon">3️⃣</div>
+                <div class="card-label">Cubes</div>
+                <div class="card-hint">n³</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--green)" onclick="openConfig('Table')">
+                <div class="card-icon">📊</div>
+                <div class="card-label">Tables</div>
+                <div class="card-hint">1–50</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--orange)" onclick="openConfig('Power')">
+                <div class="card-icon">🔢</div>
+                <div class="card-label">Powers</div>
+                <div class="card-hint">xⁿ</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--red)" onclick="openConfig('Alphabet')">
+                <div class="card-icon">🔤</div>
+                <div class="card-label">Alphabet</div>
+                <div class="card-hint">A–Z pos</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--pink)" onclick="openConfig('Percentage')">
+                <div class="card-icon">💯</div>
+                <div class="card-label">Percentage</div>
+                <div class="card-hint">% ↔ frac</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--teal)" onclick="openConfig('Mensuration')">
+                <div class="card-icon">📐</div>
+                <div class="card-label">Mensuration</div>
+                <div class="card-hint">2D & 3D</div>
+            </div>
+        </div>
+
+        <div class="menu-card featured" onclick="showMathTables()">
+            <div class="card-icon">📚</div>
+            <div style="margin-left: 8px;">
+                <div class="card-label">Reference Tables</div>
+                <div class="card-hint">Squares · Cubes · Tables · Powers</div>
+            </div>
+            <div class="card-arrow">→</div>
+        </div>
+    </div>
+
+    <!-- ── CALCULATION MENU ── -->
+    <div id="scr-calc-menu" class="screen hidden">
+        <div class="back-link" onclick="goHome()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
+            Back to Home
+        </div>
+        <div class="section-title">Calculation</div>
+        <div class="section-sub">Choose your operation</div>
+        <div class="menu-grid">
+            <div class="menu-card" style="--card-accent: var(--blue)" onclick="openConfig('Addition')">
+                <div class="card-icon">➕</div>
+                <div class="card-label">Addition</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--red)" onclick="openConfig('Subtraction')">
+                <div class="card-icon">➖</div>
+                <div class="card-label">Subtraction</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--orange)" onclick="openConfig('Multiplication')">
+                <div class="card-icon">✖️</div>
+                <div class="card-label">Multiply</div>
+            </div>
+            <div class="menu-card" style="--card-accent: var(--green)" onclick="openConfig('Division')">
+                <div class="card-icon">➗</div>
+                <div class="card-label">Division</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CONFIG SCREEN ── -->
+    <div id="scr-config" class="screen hidden">
+        <div class="back-link" onclick="goHome()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
+            Back to Home
+        </div>
+        <div class="section-title" id="cfg-title">Title</div>
+        <div class="section-sub">Configure your quiz</div>
+
+        <div class="config-block">
+            <div class="config-label">Number of Questions</div>
+            <span class="slider-value" id="q-val">20</span>
+            <input type="range" min="10" max="100" step="10" value="20" class="slider" id="q-slider"
+                oninput="document.getElementById('q-val').innerText = this.value">
+        </div>
+
+        <div id="range-settings" class="config-block">
+            <div class="config-label">Number Range</div>
+            <div class="range-row">
+                <div class="range-input-wrap">
+                    <div class="range-input-label">From</div>
+                    <input type="number" id="cfg-from" class="range-input" value="1">
+                </div>
+                <div class="range-sep">—</div>
+                <div class="range-input-wrap">
+                    <div class="range-input-label">To</div>
+                    <input type="number" id="cfg-to" class="range-input" value="1000">
+                </div>
+            </div>
+        </div>
+
+        <div id="alpha-settings" class="config-block hidden">
+            <div class="config-label">Alphabet Mode</div>
+            <div class="toggle-row">
+                <button class="toggle-btn" id="btn-alpha-pos" onclick="setAlphaMode('pos')">Position (A=1)</button>
+                <button class="toggle-btn" id="btn-alpha-opp" onclick="setAlphaMode('opp')">Opposite (A=Z)</button>
+            </div>
+        </div>
+
+        <div id="mens-settings" class="config-block hidden">
+            <div class="config-label">Category</div>
+            <div class="toggle-row">
+                <button class="toggle-btn" id="btn-m2d" onclick="setMens('2d')">2D Formulas</button>
+                <button class="toggle-btn" id="btn-m3d" onclick="setMens('3d')">3D Formulas</button>
+            </div>
+        </div>
+
+        <button class="cta-btn" onclick="startQuiz()">
+            Start Quiz <span>→</span>
+        </button>
+    </div>
+
+    <!-- ── QUIZ SCREEN ── -->
+    <div id="scr-quiz" class="screen hidden">
+
+        <!-- Pause Overlay -->
+        <div id="pause-overlay" class="hidden">
+            <div class="pause-title">Paused</div>
+            <div class="pause-sub">Take a breather</div>
+            <div class="pause-actions">
+                <button class="cta-btn" onclick="resumeQuiz()">Resume</button>
+                <button class="cta-btn" style="background: var(--cream); color: var(--ink);" onclick="goHome()">Exit to Home</button>
+            </div>
+        </div>
+
+        <div class="quiz-topbar">
+            <div class="timer-chip">
+                <div class="timer-dot"></div>
+                <span class="timer-text" id="timer">00:00</span>
+            </div>
+            <button class="pause-btn" onclick="pauseQuiz()">Pause</button>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-fill" id="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <div class="q-card">
+            <div class="q-meta" id="q-progress">Q 1 / 20</div>
+            <div class="q-text" id="q-display">…</div>
+        </div>
+
+        <div id="opt-container"></div>
+
+        <div class="nav-row">
+            <button class="nav-btn btn-prev" onclick="navQ('prev')">← Prev</button>
+            <button class="nav-btn btn-next" onclick="navQ('next')">Next →</button>
+        </div>
+        <button class="submit-btn" onclick="finishQuiz()">Submit Test</button>
+    </div>
+
+    <!-- ── RESULT SCREEN ── -->
+    <div id="scr-result" class="screen hidden">
+        <div class="result-hero">
+            <div class="result-emoji" id="res-emoji">🎉</div>
+            <div class="result-title" id="res-rating">Excellent!</div>
+            <div class="result-subject" id="res-mode-label">Quiz Complete</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-val" id="res-cor" style="color: var(--green)">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="res-inc" style="color: var(--red)">0</div>
+                <div class="stat-label">Wrong</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="res-skp" style="color: rgba(15,15,20,0.35)">0</div>
+                <div class="stat-label">Skipped</div>
+            </div>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-row">
+                <span class="detail-key">Accuracy</span>
+                <span class="detail-val" id="res-acc" style="color: var(--blue)">0%</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-key">Total Time</span>
+                <span class="detail-val" id="res-time">00:00</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-key">Avg / Question</span>
+                <span class="detail-val" id="res-avg" style="color: var(--pink)">0s</span>
+            </div>
+        </div>
+
+        <div class="nav-row" style="margin-bottom: 10px;">
+            <button class="nav-btn btn-prev" onclick="goHome()">Home</button>
+            <button class="nav-btn btn-next" onclick="toggleSols()">Solutions</button>
+        </div>
+        <button class="cta-btn" onclick="restartQuiz()">Restart</button>
+
+        <div id="sol-area" class="hidden" style="margin-top: 24px;">
+            <div class="divider"><div class="divider-line"></div><span>Solutions</span><div class="divider-line"></div></div>
+            <div id="sol-list"></div>
+        </div>
+    </div>
+
+    <!-- ── REFERENCE TABLES SCREEN ── -->
+    <div id="scr-math-tables" class="screen hidden">
+        <div class="back-link" onclick="goHome()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
+            Back to Home
+        </div>
+        <div class="section-title">Reference Tables</div>
+        <div class="section-sub">Browse key maths values</div>
+
+        <div class="ref-tabs">
+            <button class="ref-tab" id="btn-squares" onclick="showSquares()">Squares 1–150</button>
+            <button class="ref-tab" id="btn-cubes" onclick="showCubes()">Cubes 1–30</button>
+            <button class="ref-tab" id="btn-tables" onclick="showTables()">Tables 1–50</button>
+            <button class="ref-tab" id="btn-powers" onclick="showPowers()">Powers 2–10</button>
+        </div>
+
+        <div class="ref-display">
+            <div class="scroll-wrapper" id="math-output">
+                <div class="ref-placeholder">
+                    <div class="icon">📋</div>
+                    <p>Select a table above to view</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let mode = ''; let questions = []; let currentIdx = 0;
+    let timerInterval; let seconds = 0; let isPaused = false;
+    let mensCategory = '2d'; let alphaMode = 'pos';
+
+    const percDB = [
+        {p:"100%",f:"1/1"},{p:"200%",f:"2/1"},{p:"50%",f:"1/2"},{p:"150%",f:"3/2"},{p:"250%",f:"5/2"},
+        {p:"33.33%",f:"1/3"},{p:"66.66%",f:"2/3"},{p:"133.33%",f:"4/3"},{p:"25%",f:"1/4"},{p:"75%",f:"3/4"},
+        {p:"125%",f:"5/4"},{p:"175%",f:"7/4"},{p:"225%",f:"9/4"},{p:"275%",f:"11/4"},{p:"20%",f:"1/5"},
+        {p:"40%",f:"2/5"},{p:"60%",f:"3/5"},{p:"80%",f:"4/5"},{p:"120%",f:"6/5"},{p:"140%",f:"7/5"},
+        {p:"16.66%",f:"1/6"},{p:"83.33%",f:"5/6"},{p:"116.66%",f:"7/6"},{p:"14.28%",f:"1/7"},
+        {p:"28.56%",f:"2/7"},{p:"42.84%",f:"3/7"},{p:"57.14%",f:"4/7"},{p:"71.42%",f:"5/7"},
+        {p:"85.71%",f:"6/7"},{p:"12.5%",f:"1/8"},{p:"37.5%",f:"3/8"},{p:"62.5%",f:"5/8"},
+        {p:"87.5%",f:"7/8"},{p:"11.11%",f:"1/9"},{p:"22.22%",f:"2/9"},{p:"44.44%",f:"4/9"},
+        {p:"55.55%",f:"5/9"},{p:"77.77%",f:"7/9"},{p:"88.88%",f:"8/9"},{p:"10%",f:"1/10"},
+        {p:"30%",f:"3/10"},{p:"9.09%",f:"1/11"},{p:"18.18%",f:"2/11"},{p:"27.27%",f:"3/11"},
+        {p:"36.36%",f:"4/11"},{p:"45.45%",f:"5/11"},{p:"54.54%",f:"6/11"},{p:"63.63%",f:"7/11"},
+        {p:"72.72%",f:"8/11"},{p:"81.81%",f:"9/11"},{p:"90.9%",f:"10/11"},{p:"8.33%",f:"1/12"},
+        {p:"41.66%",f:"5/12"},{p:"58.33%",f:"7/12"},{p:"91.66%",f:"11/12"},{p:"7.69%",f:"1/13"},
+        {p:"15.38%",f:"2/13"},{p:"23.07%",f:"3/13"},{p:"30.76%",f:"4/13"},{p:"38.46%",f:"5/13"},
+        {p:"46.14%",f:"6/13"},{p:"7.14%",f:"1/14"},{p:"21.42%",f:"3/14"},{p:"35.70%",f:"5/14"},
+        {p:"64.28%",f:"9/14"},{p:"78.54%",f:"11/14"},{p:"92.82%",f:"13/14"},{p:"6.66%",f:"1/15"},
+        {p:"13.33%",f:"2/15"},{p:"26.66%",f:"4/15"},{p:"39.99%",f:"6/15"},{p:"46.66%",f:"7/15"},
+        {p:"53.33%",f:"8/15"},{p:"59.99%",f:"9/15"},{p:"73.33%",f:"11/15"},{p:"86.66%",f:"13/15"},
+        {p:"93.33%",f:"14/15"},{p:"6.25%",f:"1/16"},{p:"18.75%",f:"3/16"},{p:"31.25%",f:"5/16"},
+        {p:"43.75%",f:"7/16"},{p:"56.25%",f:"9/16"},{p:"68.75%",f:"11/16"},{p:"81.25%",f:"13/16"},
+        {p:"93.75%",f:"15/16"},{p:"5.55%",f:"1/18"},{p:"27.75%",f:"5/18"},{p:"38.88%",f:"7/18"},
+        {p:"5%",f:"1/20"},{p:"15%",f:"3/20"},{p:"4%",f:"1/25"},{p:"8%",f:"2/25"},{p:"12%",f:"3/25"},
+        {p:"3.33%",f:"1/30"},{p:"17.5%",f:"7/40"},{p:"7.5%",f:"3/40"},{p:"32.5%",f:"13/40"},
+        {p:"22.5%",f:"9/40"},{p:"27.5%",f:"11/40"},{p:"2%",f:"1/50"}
+    ];
+
+    const mensDB = {
+        "2d": [
+            {f:"4a / 4(side)", q:"Perimeter of Square"},{f:"side²",q:"Area of Square"},
+            {f:"√2 · side",q:"Diagonal of Square"},{f:"2(l+b)",q:"Perimeter of Rectangle"},
+            {f:"l × b",q:"Area of Rectangle"},{f:"√(l²+b²)",q:"Diagonal of Rectangle"},
+            {f:"½ × b × h",q:"Area of Triangle"},{f:"√s(s-a)(s-b)(s-c)",q:"Heron's Formula"},
+            {f:"√3/4 · a²",q:"Area of Equilateral Triangle"},{f:"√3/2 · a",q:"Height of Equilateral Triangle"},
+            {f:"½a²",q:"Area of Isosceles Triangle"},{f:"½ × a × b",q:"Area of Right Angled Triangle"},
+            {f:"Base × Height",q:"Area of Parallelogram"},{f:"½ × d₁ × d₂",q:"Area of Rhombus"},
+            {f:"½ × (sum of || sides) × h",q:"Area of Trapezium"},{f:"2πr",q:"Circumference of Circle"},
+            {f:"πr²",q:"Area of Circle"},{f:"θ/360 × πr²",q:"Area of Sector"},
+            {f:"θ/360 × 2πr",q:"Arc length of Sector"}
+        ],
+        "3d": [
+            {f:"a³",q:"Volume of Cube"},{f:"4a²",q:"LSA of Cube"},{f:"6a²",q:"TSA of Cube"},
+            {f:"a√3",q:"Diagonal of Cube"},{f:"l × b × h",q:"Volume of Cuboid"},
+            {f:"2h(l+b)",q:"LSA of Cuboid"},{f:"2(lb+bh+hl)",q:"TSA of Cuboid"},
+            {f:"√(l²+b²+h²)",q:"Diagonal of Cuboid"},{f:"πr²h",q:"Volume of Cylinder"},
+            {f:"2πrh",q:"CSA of Cylinder"},{f:"2πr(r+h)",q:"TSA of Cylinder"},
+            {f:"⅓πr²h",q:"Volume of Cone"},{f:"πrl",q:"CSA of Cone"},
+            {f:"πr(l+r)",q:"TSA of Cone"},{f:"4/3 πr³",q:"Volume of Sphere"},
+            {f:"4πr²",q:"Surface Area of Sphere"},{f:"⅔πr³",q:"Volume of Hemisphere"},
+            {f:"2πr²",q:"CSA of Hemisphere"},{f:"3πr²",q:"TSA of Hemisphere"},
+            {f:"⅓πh(R²+r²+Rr)",q:"Volume of Frustum"},{f:"πl(R+r)",q:"CSA of Frustum"},
+            {f:"4/3π(R³+r³)",q:"Volume of Hollow Sphere"}
+        ]
+    };
+
+    // ── Screen helpers ──
+    function showScreen(id) {
+        document.querySelectorAll('.app-container > div').forEach(d => {
+            d.classList.add('hidden');
+            d.classList.remove('screen');
+        });
+        const el = document.getElementById(id);
+        el.classList.remove('hidden');
+        el.classList.add('screen');
+    }
+
+    function goHome() {
+        clearInterval(timerInterval);
+        showScreen('scr-home');
+    }
+
+    function showCalcMenu() { showScreen('scr-calc-menu'); }
+
+    function showMathTables() {
+        showScreen('scr-math-tables');
+        document.getElementById('math-output').innerHTML =
+            '<div class="ref-placeholder"><div class="icon">📋</div><p>Select a table above to view</p></div>';
+        document.querySelectorAll('.ref-tab').forEach(b => b.classList.remove('active'));
+    }
+
+    // ── Config ──
+    function openConfig(m) {
+        mode = m;
+        showScreen('scr-config');
+        document.getElementById('cfg-title').innerText = m.toUpperCase();
+
+        const hideRange = ['Percentage','Alphabet','Mensuration'].includes(m);
+        document.getElementById('range-settings').classList.toggle('hidden', hideRange);
+        document.getElementById('alpha-settings').classList.toggle('hidden', m !== 'Alphabet');
+        document.getElementById('mens-settings').classList.toggle('hidden', m !== 'Mensuration');
+
+        if (m === 'Division') {
+            document.getElementById('cfg-from').value = 1;
+            document.getElementById('cfg-to').value = 9999;
+        } else if (['Addition','Subtraction','Multiplication'].includes(m)) {
+            document.getElementById('cfg-from').value = 1;
+            document.getElementById('cfg-to').value = 1000;
+        } else {
+            document.getElementById('cfg-from').value = 1;
+            document.getElementById('cfg-to').value = 30;
+        }
+    }
+
+    // ── Quiz logic ──
+    function startQuiz() {
+        generateQuestions();
+        currentIdx = 0; seconds = 0; isPaused = false;
+        showScreen('scr-quiz');
+        document.getElementById('pause-overlay').classList.add('hidden');
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (!isPaused) {
+                seconds++;
+                document.getElementById('timer').innerText =
+                    new Date(seconds * 1000).toISOString().substr(14, 5);
+            }
+        }, 1000);
+        showQuestion();
+    }
+
+    function pauseQuiz() {
+        isPaused = true;
+        document.getElementById('pause-overlay').classList.remove('hidden');
+    }
+
+    function resumeQuiz() {
+        isPaused = false;
+        document.getElementById('pause-overlay').classList.add('hidden');
+    }
+
+    function getRandomRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateQuestions() {
+        const count = parseInt(document.getElementById('q-slider').value);
+        const min = parseInt(document.getElementById('cfg-from').value) || 1;
+        const max = parseInt(document.getElementById('cfg-to').value) || 100;
+        questions = [];
+
+        for (let i = 0; i < count; i++) {
+            let q = '', a = '', opts = [];
+            let n1 = getRandomRange(min, max);
+            let n2 = getRandomRange(min, max);
+
+            if (mode === 'Addition') { q = `${n1} + ${n2} = ?`; a = (n1+n2).toString(); }
+            else if (mode === 'Subtraction') {
+                let big = Math.max(n1,n2), small = Math.min(n1,n2);
+                q = `${big} − ${small} = ?`; a = (big-small).toString();
+            }
+            else if (mode === 'Multiplication') { q = `${n1} × ${n2} = ?`; a = (n1*n2).toString(); }
+            else if (mode === 'Division') {
+                let dD = getRandomRange(1,3), qD = getRandomRange(1, 4-(dD-1));
+                let divisor = getRandomRange(Math.pow(10,dD-1), Math.pow(10,dD)-1);
+                let quotient = getRandomRange(Math.pow(10,qD-1), Math.pow(10,qD)-1);
+                let dividend = divisor * quotient;
+                q = `${dividend} ÷ ${divisor} = ?`; a = quotient.toString();
+            }
+            else if (mode === 'Square') { q = `Square of ${n1}?`; a = (n1*n1).toString(); }
+            else if (mode === 'Cube') { q = `Cube of ${n1}?`; a = (n1*n1*n1).toString(); }
+            else if (mode === 'Table') {
+                let m = getRandomRange(1,10);
+                q = `${n1} × ${m} = ?`; a = (n1*m).toString();
+            }
+            else if (mode === 'Power') {
+                let bases = [2,3,4,5,6,7,8,9,10];
+                let base = bases[getRandomRange(0, bases.length-1)];
+                let exp = getRandomRange(1, 8);
+                q = `${base}^${exp} = ?`; a = Math.pow(base, exp).toString();
+            }
+            else if (mode === 'Percentage') {
+                let item = percDB[getRandomRange(0, percDB.length-1)];
+                q = `Fraction equivalent of ${item.p}?`; a = item.f;
+            }
+            else if (mode === 'Alphabet') {
+                let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                let idx = getRandomRange(0, 25);
+                if (alphaMode === 'pos') { q = `Position of '${chars[idx]}'?`; a = (idx+1).toString(); }
+                else { q = `Opposite of '${chars[idx]}'?`; a = chars[25-idx]; }
+            }
+            else if (mode === 'Mensuration') {
+                let pool = mensDB[mensCategory];
+                let item = pool[getRandomRange(0, pool.length-1)];
+                q = `${item.f}  is the formula for:`; a = item.q;
+            }
+
+            opts = [a];
+            let attempts = 0;
+            while (opts.length < 4 && attempts < 80) {
+                attempts++;
+                let fake;
+                if (mode === 'Percentage') {
+                    fake = percDB[getRandomRange(0, percDB.length-1)].f;
+                } else if (mode === 'Mensuration') {
+                    let all = [...mensDB["2d"], ...mensDB["3d"]];
+                    fake = all[getRandomRange(0, all.length-1)].q;
+                } else if (mode === 'Alphabet' && alphaMode === 'opp') {
+                    fake = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[getRandomRange(0, 25)];
+                } else {
+                    let offset = getRandomRange(1, 15) * (Math.random() < 0.5 ? 1 : -1);
+                    fake = Math.max(0, parseInt(a) + offset).toString();
+                }
+                if (!opts.includes(fake) && fake !== "") opts.push(fake);
+            }
+
+            questions.push({ q, a, opts: opts.sort(() => Math.random()-0.5), user: null });
+        }
+    }
+
+    const optLetters = ['A','B','C','D'];
+
+    function showQuestion() {
+        const q = questions[currentIdx];
+        const total = questions.length;
+        document.getElementById('q-progress').innerText = `Q ${currentIdx+1} / ${total}`;
+        document.getElementById('q-display').innerText = q.q;
+
+        const pct = ((currentIdx+1) / total * 100).toFixed(1);
+        document.getElementById('progress-bar').style.width = pct + '%';
+
+        const cont = document.getElementById('opt-container');
+        cont.innerHTML = '';
+        q.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = `opt-btn${q.user === o ? ' selected' : ''}`;
+            b.innerHTML = `<span class="opt-letter">${optLetters[i]}</span>${o}`;
+            b.onclick = () => { q.user = o; showQuestion(); };
+            cont.appendChild(b);
+        });
+    }
+
+    function navQ(dir) {
+        if (dir === 'next' && currentIdx < questions.length-1) { currentIdx++; showQuestion(); }
+        else if (dir === 'prev' && currentIdx > 0) { currentIdx--; showQuestion(); }
+    }
+
+    function finishQuiz() {
+        clearInterval(timerInterval);
+        const cor = questions.filter(q => q.user === q.a).length;
+        const skp = questions.filter(q => q.user === null).length;
+        const inc = questions.length - cor - skp;
+        const acc = Math.round((cor/questions.length)*100);
+
+        document.getElementById('res-cor').innerText = cor;
+        document.getElementById('res-inc').innerText = inc;
+        document.getElementById('res-skp').innerText = skp;
+        document.getElementById('res-acc').innerText = acc + '%';
+        document.getElementById('res-time').innerText = document.getElementById('timer').innerText;
+        document.getElementById('res-avg').innerText = (seconds/questions.length).toFixed(1) + 's';
+        document.getElementById('res-mode-label').innerText = mode + ' Quiz';
+
+        let rating, emoji;
+        if (acc < 35) { rating = 'Keep Practising'; emoji = '🔥'; }
+        else if (acc < 60) { rating = 'Good Effort'; emoji = '👍'; }
+        else if (acc < 85) { rating = 'Well Done!'; emoji = '✌️'; }
+        else { rating = 'Excellent!'; emoji = '🎉'; }
+
+        document.getElementById('res-rating').innerText = rating;
+        document.getElementById('res-emoji').innerText = emoji;
+        document.getElementById('sol-area').classList.add('hidden');
+
+        showScreen('scr-result');
+    }
+
+    function toggleSols() {
+        const area = document.getElementById('sol-area');
+        area.classList.toggle('hidden');
+        document.getElementById('sol-list').innerHTML = questions.map((q, i) => {
+            const ok = q.user === q.a;
+            return `<div class="sol-item ${ok ? 'correct' : 'wrong'}">
+                <div class="sol-q">${i+1}. ${q.q}</div>
+                <div class="sol-meta">
+                    <span class="corr">✓ ${q.a}</span>
+                    ${!ok ? ` &nbsp;|&nbsp; <span class="wrong-ans">✗ ${q.user || 'Skipped'}</span>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function restartQuiz() {
+        document.getElementById('scr-result').classList.add('hidden');
+        openConfig(mode);
+    }
+
+    function setAlphaMode(val) { alphaMode = val; startQuiz(); }
+    function setMens(val) { mensCategory = val; startQuiz(); }
+
+    // ── Reference Tables ──
+    const fmt = n => n.toLocaleString();
+
+    function setActiveTab(id) {
+        document.querySelectorAll('.ref-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function showSquares() {
+        setActiveTab('btn-squares');
+        let html = '<div class="data-cols">';
+        for (let i = 1; i <= 150; i += 10) {
+            html += `<div class="data-col"><div class="data-col-header">${i}–${Math.min(i+9,150)}</div>`;
+            for (let j = i; j < i+10 && j <= 150; j++)
+                html += `<div class="data-row">${j}² = <b>${fmt(j*j)}</b></div>`;
+            html += '</div>';
+        }
+        html += '</div>';
+        document.getElementById('math-output').innerHTML = html;
+    }
+
+    function showCubes() {
+        setActiveTab('btn-cubes');
+        let html = '<div class="data-cols">';
+        for (let i = 1; i <= 30; i += 10) {
+            html += `<div class="data-col" style="min-width:145px"><div class="data-col-header">${i}–${Math.min(i+9,30)}</div>`;
+            for (let j = i; j < i+10 && j <= 30; j++)
+                html += `<div class="data-row">${j}³ = <b>${fmt(j*j*j)}</b></div>`;
+            html += '</div>';
+        }
+        html += '</div>';
+        document.getElementById('math-output').innerHTML = html;
+    }
+
+    function showTables() {
+        setActiveTab('btn-tables');
+        let html = '<div class="data-cols">';
+        for (let base = 1; base <= 50; base++) {
+            html += `<div class="data-col"><div class="data-col-header">× ${base}</div>`;
+            for (let mult = 1; mult <= 10; mult++)
+                html += `<div class="data-row">${base}×${mult} = <b>${fmt(base*mult)}</b></div>`;
+            html += '</div>';
+        }
+        html += '</div>';
+        document.getElementById('math-output').innerHTML = html;
+    }
+
+    function showPowers() {
+        setActiveTab('btn-powers');
+        let html = '<div class="data-cols">';
+        for (let base = 2; base <= 10; base++) {
+            html += `<div class="data-col" style="min-width:145px"><div class="data-col-header">Base ${base}</div>`;
+            for (let exp = 0; exp <= 10; exp++)
+                html += `<div class="data-row">${base}<sup>${exp}</sup> = <b>${fmt(Math.pow(base,exp))}</b></div>`;
+            html += '</div>';
+        }
+        html += '</div>';
+        document.getElementById('math-output').innerHTML = html;
+    }
+</script>
+</body>
+</html>
