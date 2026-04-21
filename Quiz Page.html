@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple-shiny: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
+    --purple-hover: linear-gradient(135deg, #6d28d9 0%, #9333ea 50%, #a855f7 100%);
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e1b4b;
+    --muted: #6b7280;
+    --border: #e0e7ff;
+    --radius: 18px;
+    --shadow: 0 4px 24px rgba(99,102,241,0.10);
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 16px 14px 40px;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .back-btn {
+    background: #fff;
+    border: 2px solid #c7d2fe;
+    color: #4f46e5;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 7px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background .15s, border-color .15s, transform .1s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: #eef2ff; border-color: #818cf8; transform: translateY(-1px); }
+
+.heading {
+  flex: 1;
+  white-space: nowrap; /* Prevents "Quiz" from dropping to the next line */
+  text-align: left;    /* Changed to left to sit next to the button */
+  
+  /* Super Bold and Larger */
+  font-size: clamp(24px, 6vw, 40px);
+  font-weight: 900; 
+  color: #1e1b4b;
+  letter-spacing: -0.02em;
+  margin-left: 5px;   /* Adds space between the icon and the text */
+}
+
+.header-container {
+  display: flex;
+  align-items: center;  /* Aligns button, icon, and text vertically */
+  justify-content: flex-start;
+  width: 100%;
+  flex-wrap: nowrap;    /* Forces everything to stay in one row */
+  padding: 10px;
+}
+
+
+  
+  /* SEARCH BAR */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 26px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 14px 20px 14px 50px;
+    border-radius: 50px;
+    border: 2.5px solid #c7d2fe;
+    background: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e1b4b;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    box-shadow: 0 2px 12px rgba(99,102,241,0.08);
+  }
+  .search-wrap input::placeholder { color: #a5b4fc; font-weight: 600; }
+  .search-wrap input:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 4px rgba(129,140,248,0.18), 0 2px 12px rgba(99,102,241,0.10);
+  }
+  .search-icon {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .search-clear {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e0e7ff;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    color: #4f46e5;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    transition: background .15s;
+  }
+  .search-clear:hover { background: #c7d2fe; }
+  .search-clear.visible { display: flex; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #818cf8;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* CATEGORY BUTTONS GRID */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .cat-btn {
+    width: 100%;
+    padding: 22px 14px 20px;
+    border-radius: 22px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(20px, 3.5vw, 17px);
+    font-weight: 900;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform .15s, box-shadow .18s;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 1px 8px rgba(0,0,0,.18);
+  }
+  .cat-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background .15s;
+    border-radius: 25px;
+  }
+  .cat-btn:hover::after { background: rgba(255,255,255,0.12); }
+  .cat-btn:hover { transform: translateY(-4px) scale(1.02); }
+  .cat-btn:active { transform: scale(.97); }
+  .cat-btn .cat-emoji { font-size: clamp(28px, 8vw, 38px); display: block; line-height: 1; }
+  .cat-btn .cat-name { line-height: 1.25; text-align: center; }
+
+  .cat-btn.reasoning {
+    background: linear-gradient(145deg, #059669 0%, #10b981 40%, #34d399 100%);
+    box-shadow: 0 6px 24px rgba(16,185,129,0.38);
+  }
+  .cat-btn.reasoning:hover { box-shadow: 0 10px 32px rgba(16,185,129,0.48); }
+
+  .cat-btn.quant {
+    background: linear-gradient(145deg, #d97706 0%, #f59e0b 40%, #fbbf24 100%);
+    box-shadow: 0 6px 24px rgba(245,158,11,0.38);
+  }
+  .cat-btn.quant:hover { box-shadow: 0 10px 32px rgba(245,158,11,0.48); }
+
+  .cat-btn.english {
+    background: linear-gradient(145deg, #2563eb 0%, #3b82f6 40%, #60a5fa 100%);
+    box-shadow: 0 6px 24px rgba(59,130,246,0.38);
+  }
+  .cat-btn.english:hover { box-shadow: 0 10px 32px rgba(59,130,246,0.48); }
+
+  .cat-btn.computer {
+    background: linear-gradient(145deg, #db2777 0%, #ec4899 40%, #f472b6 100%);
+    box-shadow: 0 6px 24px rgba(236,72,153,0.38);
+  }
+  .cat-btn.computer:hover { box-shadow: 0 10px 32px rgba(236,72,153,0.48); }
+
+  /* BACK TO SUBJECT */
+  .back-subject-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #fff;
+    border: 2px solid #818cf8;
+    color: #4f46e5;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-bottom: 18px;
+    transition: background .15s, transform .1s;
+  }
+  .back-subject-btn:hover { background: #eef2ff; transform: translateX(-2px); }
+
+  /* QUIZ CARDS */
+  .quiz-list { display: flex; flex-direction: column; gap: 13px; }
+
+  .quiz-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 2px solid #e0e7ff;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 14px rgba(99,102,241,0.08);
+    transition: box-shadow .18s, transform .15s, border-color .15s;
+  }
+  .quiz-card:hover {
+    box-shadow: 0 8px 28px rgba(99,102,241,0.16);
+    transform: translateY(-2px);
+    border-color: #c7d2fe;
+  }
+
+  .quiz-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .quiz-info { flex: 1; min-width: 0; }
+  .quiz-title { font-size: 15px; font-weight: 800; color: #1e1b4b; margin-bottom: 7px; line-height: 1.3; }
+
+  .quiz-meta { display: flex; gap: 7px; flex-wrap: wrap; }
+  .meta-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mb-time  { background: #ede9fe; color: #6d28d9; }
+  .mb-q     { background: #fef3c7; color: #92400e; }
+  .mb-marks { background: #dcfce7; color: #166534; }
+
+  /* ATTEMPT BUTTON — Purple Shiny */
+  .attempt-btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c084fc 100%);
+    box-shadow: 0 4px 16px rgba(168,85,247,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform .13s, box-shadow .15s;
+    letter-spacing: .01em;
+    text-shadow: 0 1px 3px rgba(109,40,217,0.4);
+  }
+  .attempt-btn:hover {
+    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 55%, #a855f7 100%);
+    box-shadow: 0 7px 22px rgba(168,85,247,0.55), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-2px) scale(1.03);
+  }
+  .attempt-btn:active { transform: scale(.96); }
+
+  /* NO RESULT */
+  .no-result {
+    text-align: center;
+    padding: 48px 0;
+    color: #a5b4fc;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.9;
+  }
+
+  /* SEARCH RESULT SUBJECT LABEL */
+  .search-sub-label {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #818cf8;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* RESPONSIVE: single col on very small */
+  @media (max-width: 380px) {
+    .cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cat-btn { padding: 18px 10px 16px; font-size: 13px; }
+    .cat-btn .cat-emoji { font-size: 26px; }
+    .quiz-card { flex-wrap: wrap; }
+    .attempt-btn { width: 100%; text-align: center; margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <button class="back-btn" onclick="alert('Navigating to Home…')">🏠 Home</button>
+    <div class="heading">📚 Practice Quiz</div>
+    <div style="width:72px;flex-shrink:0"></div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search by subject or quiz title…" autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+  </div>
+
+  <!-- SUBJECT VIEW -->
+  <div id="subjectView">
+    <div class="section-label">Choose a Subject</div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+
+  <!-- QUIZ LIST VIEW -->
+  <div id="quizView" style="display:none">
+    <button class="back-subject-btn" id="backSubjectBtn">← Back to Subjects</button>
+    <div class="section-label" id="quizViewLabel"></div>
+    <div class="quiz-list" id="quizList"></div>
+  </div>
+
+  <!-- SEARCH RESULTS VIEW -->
+  <div id="searchView" style="display:none">
+    <div class="section-label" id="searchLabel"></div>
+    <div class="quiz-list" id="searchList"></div>
+  </div>
+
+</div>
+
+<script>
+const subjects = [
+  {
+    id:"reasoning", label:"Reasoning", emoji:"🧩", btnClass:"reasoning",
+    iconBg:"#d1fae5", iconColor:"#059669",
+    quizzes:[
+      {title:"Reasoning 1 — Basic Aptitude",    time:"20 min", questions:25, marks:25},
+      {title:"Reasoning 2 — Logical Patterns",  time:"25 min", questions:30, marks:30},
+      {title:"Reasoning 3 — Analytical Series", time:"30 min", questions:35, marks:35},
+    ]
+  },
+  {
+    id:"quant", label:"Quantitative Aptitude", emoji:"📐", btnClass:"quant",
+    iconBg:"#fef9c3", iconColor:"#b45309",
+    quizzes:[
+      {title:"Quantitative Aptitude 1 — Basics",       time:"20 min", questions:20, marks:20},
+      {title:"Quantitative Aptitude 2 — Percentages",  time:"25 min", questions:25, marks:25},
+      {title:"Quantitative Aptitude 3 — Speed & Time", time:"30 min", questions:30, marks:30},
+    ]
+  },
+  {
+    id:"english", label:"English", emoji:"📖", btnClass:"english",
+    iconBg:"#dbeafe", iconColor:"#1d4ed8",
+    quizzes:[
+      {title:"English 1 — Grammar Basics",         time:"15 min", questions:20, marks:20},
+      {title:"English 2 — Vocabulary Builder",     time:"20 min", questions:25, marks:25},
+      {title:"English 3 — Reading Comprehension",  time:"30 min", questions:20, marks:40},
+    ]
+  },
+  {
+    id:"computer", label:"Computer Aptitude", emoji:"💻", btnClass:"computer",
+    iconBg:"#fce7f3", iconColor:"#be185d",
+    quizzes:[
+      {title:"Computer Aptitude 1 — Basics",       time:"20 min", questions:25, marks:25},
+      {title:"Computer Aptitude 2 — Networking",   time:"25 min", questions:30, marks:30},
+      {title:"Computer Aptitude 3 — OS & Software",time:"30 min", questions:35, marks:35},
+    ]
+  }
+];
+
+let activeSubject = null;
+
+function buildCategories(){
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = '';
+  subjects.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn ' + s.btnClass;
+    btn.innerHTML = `<span class="cat-emoji">${s.emoji}</span><span class="cat-name">${s.label}</span>`;
+    btn.onclick = () => openSubject(s);
+    grid.appendChild(btn);
+  });
+}
+
+function quizCardHTML(q, s){
+  return `<div class="quiz-card">
+    <div class="quiz-icon" style="background:${s.iconBg};font-size:22px">${s.emoji}</div>
+    <div class="quiz-info">
+      <div class="quiz-title">${q.title}</div>
+      <div class="quiz-meta">
+        <span class="meta-badge mb-time">⏱ ${q.time}</span>
+        <span class="meta-badge mb-q">❓ ${q.questions} Qs</span>
+        <span class="meta-badge mb-marks">⭐ ${q.marks} Marks</span>
+      </div>
+    </div>
+    <button class="attempt-btn" onclick="alert('Starting: ${q.title.replace(/'/g,"\\'")}')">Attempt →</button>
+  </div>`;
+}
+
+function openSubject(s){
+  activeSubject = s;
+  document.getElementById('subjectView').style.display = 'none';
+  document.getElementById('searchView').style.display  = 'none';
+  document.getElementById('quizView').style.display    = 'block';
+  document.getElementById('quizViewLabel').textContent  = s.emoji + ' ' + s.label + ' Quizzes';
+  document.getElementById('quizList').innerHTML = s.quizzes.map(q => quizCardHTML(q, s)).join('');
+}
+
+document.getElementById('backSubjectBtn').onclick = () => {
+  activeSubject = null;
+  document.getElementById('quizView').style.display    = 'none';
+  document.getElementById('searchView').style.display  = 'none';
+  document.getElementById('subjectView').style.display = 'block';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('visible');
+};
+
+function clearSearch(){
+  const inp = document.getElementById('searchInput');
+  inp.value = '';
+  inp.dispatchEvent(new Event('input'));
+  inp.focus();
+}
+
+document.getElementById('searchInput').addEventListener('input', function(){
+  const q = this.value.trim().toLowerCase();
+  const clearBtn = document.getElementById('searchClear');
+  clearBtn.classList.toggle('visible', q.length > 0);
+
+  if(!q){
+    document.getElementById('searchView').style.display  = 'none';
+    document.getElementById('quizView').style.display    = activeSubject ? 'block' : 'none';
+    document.getElementById('subjectView').style.display = activeSubject ? 'none'  : 'block';
+    return;
+  }
+
+  document.getElementById('subjectView').style.display = 'none';
+  document.getElementById('quizView').style.display    = 'none';
+  document.getElementById('searchView').style.display  = 'block';
+
+  let html = '', count = 0;
+  subjects.forEach(s => {
+    const subjectHit = s.label.toLowerCase().includes(q) || s.id.includes(q);
+    const matched = s.quizzes.filter(quiz => subjectHit || quiz.title.toLowerCase().includes(q));
+    if(matched.length){
+      html += `<div class="search-sub-label">${s.emoji} ${s.label}</div>`;
+      html += matched.map(quiz => quizCardHTML(quiz, s)).join('');
+      count += matched.length;
+    }
+  });
+
+  const lbl = document.getElementById('searchLabel');
+  lbl.textContent = count
+    ? count + ' result' + (count > 1 ? 's' : '') + ' for "' + this.value.trim() + '"'
+    : 'No results for "' + this.value.trim() + '"';
+
+  document.getElementById('searchList').innerHTML = html ||
+    '<div class="no-result">🔎 No quizzes match your search.<br>Try a subject name or quiz title.</div>';
+});
+
+buildCategories();
+</script>
+</body>
+</html>
