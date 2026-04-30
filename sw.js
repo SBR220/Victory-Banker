@@ -59,7 +59,7 @@ self.addEventListener('fetch', event => {
         return caches.match(event.request).then(cached => {
           if (cached) return cached;
           /* Fallback: return the main HTML page */
-          return caches.match('./Homepage_vB.html');
+          return caches.match('index.html');
         });
       })
   );
