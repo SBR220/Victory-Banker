@@ -7,7 +7,8 @@ const CACHE_NAME = 'vb-cache-v1';
 
 /* Files to pre-cache on install */
 const PRE_CACHE = [
-  './Homepage_vB.html',
+  './',
+  './index.html',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Mulish:wght@400;500;600;700&display=swap'
 ];
