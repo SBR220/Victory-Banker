@@ -748,7 +748,7 @@ footer{background:#0c2440;padding:48px 5% 80px;color:rgba(255,255,255,0.82);}
 <section class="tools-sec" id="tools">
   <div class="sec-tag reveal">🚀 Launch Tools</div>
   <div class="sec-title reveal">Your Study Dashboard</div>
-  <p class="sec-sub reveal">Tap a tool to jump straight in. Connect your GitHub folders via the onclick links below.</p>
+  <p class="sec-sub reveal">Tap a tool to jump straight in.</p>
   <div class="tools-grid" id="toolsGrid">
     <!-- skeleton shown first, replaced by JS -->
     <div class="tool-sk skeleton"></div>
@@ -793,9 +793,9 @@ footer{background:#0c2440;padding:48px 5% 80px;color:rgba(255,255,255,0.82);}
       </div>
       <div class="ft-col">
         <h4>Tools</h4>
-        <a class="ft-link" href="#tools">Calculation Master</a>
-        <a class="ft-link" href="#tools">My To-Do List</a>
-        <a class="ft-link" href="#tools">Practice Quiz</a>
+        <a class="ft-link" href="calculation/index.html">Calculation Master</a>
+        <a class="ft-link" href="todo/index.html">My To-Do List</a>
+        <a class="ft-link" href="quiz/quiz page.html">Practice Quiz</a>
       </div>
       <div class="ft-col">
         <h4>Exams</h4>
@@ -899,12 +899,12 @@ setInterval(tickAll, 1000);
    tag: 'new' | 'update' | 'resource'
 ═══════════════════════════════════════════════════ */
 const NOTIFS = [
-  { tag:'new',      label:'🔴 New',      title:'Data Interpretation Full Workbook Uploaded',         desc:'88-page DI PDF covering tables, bar, pie, line, caselet. Must-attempt for Mains.', time:'2 minutes ago',    link:'notes.html',              hot:true  },
+  { tag:'new',      label:'🔴 New',      title:'Data Interpretation Full Workbook Uploaded',         desc:'88-page DI PDF covering tables, bar, pie, line, caselet. Must-attempt for Mains.', time:'2 minutes ago',    link:'index.html',              hot:true  },
   { tag:'new',      label:'🔴 New',      title:'Mock Test 7 — Reasoning Full Paper is Live',         desc:'Attempt under timed conditions. Detailed solutions included.',                   time:'18 minutes ago',   link:'#tools',                  hot:true  },
-  { tag:'resource', label:'📄 Resource', title:'GA Capsule June 2026 Added to Notes',                desc:'Economy, banking awareness, govt schemes and static GK compiled.',               time:'1 hour ago',       link:'notes.html',              hot:false },
-  { tag:'update',   label:'🔵 Update',   title:'Calculation Master — 25 New Speed Tricks Added',    desc:'Squaring, percentage-to-fraction, and approximation shortcuts updated.',          time:'Yesterday, 9:14 PM',link:'#tools',                 hot:false },
+  { tag:'resource', label:'📄 Resource', title:'GA Capsule June 2026 Added to Notes',                desc:'Economy, banking awareness, govt schemes and static GK compiled.',               time:'1 hour ago',       link:'index.html',              hot:false },
+  { tag:'update',   label:'🔵 Update',   title:'Calculation Master — 25 New Speed Tricks Added',    desc:'Squaring, percentage-to-fraction, and approximation shortcuts updated.',          time:'Yesterday, 9:14 PM',link:'https://victory-banker.vercel.app/calculation/index.html',                 hot:false },
   { tag:'update',   label:'🔵 Update',   title:'SBI PO Prelims 2026 Date Announced',                desc:'Exam scheduled for June 2026. Detailed prep strategy posted on Telegram.',       time:'2 days ago',       link:'https://t.me/I_SR_bot',   hot:false },
-  { tag:'resource', label:'📄 Resource', title:'English Grammar Rule Sheet (PDF) Uploaded',         desc:'28-page grammar reference — useful for SSC and banking English section.',         time:'3 days ago',       link:'notes.html',              hot:false },
+  { tag:'resource', label:'📄 Resource', title:'English Grammar Rule Sheet (PDF) Uploaded',         desc:'28-page grammar reference — useful for SSC and banking English section.',         time:'3 days ago',       link:'index.html',              hot:false },
 ];
 
 /* ── BUILD TICKER ── */
@@ -945,13 +945,13 @@ setTimeout(()=>{
       <span class="tool-desc">Speed maths drills, percentage shortcuts &amp; timed practice sessions</span>
       <div class="tool-arrow">↗</div>
     </button>
-    <button class="tool-btn t-todo" onclick="navigateTo('To-Do List — paste your GitHub Pages link here!')">
+    <button class="tool-btn t-todo" onclick="window.location.href='todo/index.html'">
       <span class="tool-icon">🗓️</span>
       <span class="tool-lbl">My To-Do List</span>
       <span class="tool-desc">Daily targets, weekly goals &amp; exam schedule planner</span>
       <div class="tool-arrow">↗</div>
     </button>
-    <button class="tool-btn t-quiz" onclick="navigateTo('Practice Quiz — paste your GitHub Pages link here!')">
+    <button class="tool-btn t-quiz" onclick="window.location.href='quiz/quiz page.html'">
       <span class="tool-icon">⏳</span>
       <span class="tool-lbl">Practice Quiz</span>
       <span class="tool-desc">Topic-wise timed quizzes with answer explanations</span>
