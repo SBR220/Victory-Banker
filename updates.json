@@ -1,0 +1,20 @@
+[
+  {
+    "tag": "new",
+    "label": "🔴 New",
+    "title": "Data Interpretation Full Workbook Uploaded",
+    "desc": "88-page DI PDF covering tables, bar, pie, line, caselet.",
+    "time": "2 minutes ago",
+    "link": "notes.html",
+    "hot": true
+  },
+  {
+    "tag": "update",
+    "label": "🔵 Update",
+    "title": "Calculation Master — 25 New Speed Tricks Added",
+    "desc": "Squaring, percentage-to-fraction, and approximation shortcuts updated.",
+    "time": "Yesterday, 9:14 PM",
+    "link": "calculation/index.html",
+    "hot": false
+  }
+]
