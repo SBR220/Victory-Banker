@@ -16,5 +16,14 @@
     "time": "Yesterday, 9:14 PM",
     "link": "calculation/index.html",
     "hot": false
+  },
+  {
+    "tag": "update",
+    "label": "🔴 New",
+    "title": "Notification Testing",
+    "desc": "what you want to updated.",
+    "time": "Just now",
+    "link": "index.html",
+    "hot": false
+  },
   }
-]
