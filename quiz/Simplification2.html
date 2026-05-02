@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Simplification Approximation Set 02</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--acc:#000787;--adk:#127DE5;--mut:#69707a;--ok:#1f9e5a;--bad:#f23f54;--bg:#f0f4ff;--card:#fff;--mx:860px;--gold:#f59e0b;--shadow:0 8px 32px rgba(0,7,135,.13);--shadow-sm:0 2px 10px rgba(0,7,135,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:#111;padding-bottom:100px;min-height:100vh}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#f0f4ff;box-shadow:inset 0 0 5px rgba(0,0,0,.1)}::-webkit-scrollbar-thumb{border-radius:5px;border:1px solid #b4b4b4;background:linear-gradient(to right,#f5f5f5 0%,#f3f3f3 50%,#ebebeb 50%,#c9c9c9 100%);box-shadow:inset 2px 2px 2px white}::-webkit-scrollbar-thumb:hover{background:linear-gradient(to right,#e5e5e5 0%,#d1d1d1 50%,#c4c4c4 50%,#b8b8b8 100%)}
+.wrap{max-width:var(--mx);margin:auto;padding:12px 16px}
+header{background:linear-gradient(135deg,#000787 0%,#127DE5 100%);box-shadow:0 4px 20px rgba(0,7,135,.35);position:sticky;top:0;z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px;flex-wrap:wrap}
+.tog{position:relative;width:96px;height:30px;background:rgba(255,255,255,.18);border-radius:999px;cursor:pointer;display:flex;align-items:center;padding:0 6px;user-select:none;flex-shrink:0;border:1px solid rgba(255,255,255,.25)}
+.tog span{z-index:2;flex:1;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);transition:color .2s}
+.tog::before{content:"";position:absolute;top:3px;left:3px;width:44px;height:24px;background:#fff;border-radius:999px;transition:transform .28s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tog.qm::before{transform:translateX(44px)}
+.tog span:first-child{color:#000787}.tog.qm span:first-child{color:rgba(255,255,255,.7)}.tog.qm span:last-child{color:#000787}
+.timer{font-weight:800;font-size:18px;color:#fff;font-variant-numeric:tabular-nums;min-width:68px;text-align:right;text-shadow:0 1px 3px rgba(0,0,0,.3);background:rgba(0,0,0,.2);padding:4px 10px;border-radius:8px}
+.timer.warn{color:#fbbf24;animation:tp 1s infinite}@keyframes tp{0%,100%{opacity:1}50%{opacity:.6}}
+.btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;backdrop-filter:blur(6px)}
+.btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
+.btn-submit{background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;box-shadow:0 4px 12px rgba(239,68,68,.4)}
+.btn-o{background:#fff;color:var(--acc);border:2px solid var(--acc);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-o:hover{background:var(--acc);color:#fff}
+.card{background:var(--card);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--shadow);border:1px solid rgba(0,7,135,.06);transition:box-shadow .2s}
+.card:hover{box-shadow:0 12px 40px rgba(0,7,135,.16)}
+.qbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;flex-wrap:wrap;gap:6px}
+.qmeta{font-size:13px;color:var(--mut);font-weight:600}
+.q-num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-radius:50%;font-size:13px;font-weight:800;margin-right:4px;box-shadow:0 3px 8px rgba(0,7,135,.3)}
+.sec-tag{font-size:11px;padding:3px 9px;border-radius:5px;background:linear-gradient(135deg,#eef2ff,#e0e7ff);color:#4f46e5;font-weight:700;margin-left:6px;border:1px solid #c7d2fe}
+.score-badge{display:flex;gap:6px;align-items:center}
+.score-badge span{padding:3px 9px;border-radius:6px;font-weight:700;font-size:13px}
+.score-pos{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.score-neg{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
+.qtxt{font-size:15.5px;line-height:1.8;margin:10px 0 15px;padding:14px 16px;background:linear-gradient(135deg,#f8faff,#eef2ff);border-radius:10px;border-left:4px solid var(--acc)}
+.qtxt b,.qtxt strong{font-weight:900;color:#000787}
+.qtxt img{max-width:100%;border-radius:8px;margin:8px 0;display:block;box-shadow:var(--shadow-sm)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;transition:all .18s;position:relative;overflow:hidden}
+.opt::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,7,135,.04),rgba(18,125,229,.04));opacity:0;transition:opacity .18s}
+.opt:hover:not(.cor):not(.wrg){border-color:#93c5fd;background:#f0f9ff;transform:translateX(3px)}
+.opt:hover::before{opacity:1}
+.opt.sel{border-color:var(--acc);background:linear-gradient(135deg,rgba(0,7,135,.06),rgba(18,125,229,.06));transform:translateX(3px)}
+.opt.cor{border-color:var(--ok);background:linear-gradient(135deg,rgba(31,158,90,.12),rgba(31,158,90,.06));transform:translateX(3px)}
+.opt.wrg{border-color:var(--bad);background:linear-gradient(135deg,rgba(200,45,63,.1),rgba(200,45,63,.05));transform:translateX(3px)}
+.opt-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#64748b;margin-top:1px;transition:all .18s}
+.opt.sel .opt-letter{background:var(--acc);border-color:var(--acc);color:#fff}
+.opt.cor .opt-letter{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrg .opt-letter{background:var(--bad);border-color:var(--bad);color:#fff}
+.otxt{font-size:15px;line-height:1.6;flex:1}
+.opt-check{margin-left:auto;flex-shrink:0;font-size:16px}
+.opt.cor .opt-check::before{content:"✓";color:var(--ok)}.opt.wrg .opt-check::before{content:"✗";color:var(--bad)}
+.expl{margin-top:13px;padding:14px 16px 14px 44px;border-radius:10px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:14px;line-height:1.7;display:none;position:relative}
+.expl::before{content:"💡";position:absolute;left:14px;top:14px;font-size:18px}.expl strong{color:#065f46}
+.progress-wrap{background:rgba(255,255,255,.2);border-radius:999px;height:5px;margin-top:6px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,#fbbf24,#34d399);border-radius:999px;transition:width .4s ease}
+.fbar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 -4px 24px rgba(0,7,135,.12);display:flex;justify-content:center;z-index:50;border-top:1px solid rgba(0,7,135,.08)}
+.fbar-in{display:flex;align-items:center;gap:8px;max-width:var(--mx);width:100%;padding:10px 14px}
+.fbar-btn{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(0,7,135,.25);flex:1;max-width:130px}
+.fbar-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,7,135,.35)}
+.fbar-clr{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;box-shadow:none}
+.fbar-clr:hover{background:#e2e8f0;transform:translateY(-1px)}
+.q-counter{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--mut)}
+#pal{position:fixed;top:62px;right:14px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,7,135,.18);padding:15px;display:none;flex-wrap:wrap;gap:7px;z-index:200;max-width:310px;border:1px solid rgba(0,7,135,.08)}
+#pal-title{width:100%;font-size:12px;font-weight:800;color:var(--acc);padding-bottom:8px;border-bottom:2px solid #eef2ff;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.pq{width:40px;height:40px;border-radius:8px;border:2px solid #e2e8f0;background:#f8faff;cursor:pointer;font-weight:800;font-size:12px;transition:all .15s;color:#374151}
+.pq:hover{border-color:var(--adk);transform:scale(1.08)}
+.pq.ans{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-color:var(--acc);box-shadow:0 3px 8px rgba(0,7,135,.3)}
+.pq.act{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid var(--gold);color:#92400e;box-shadow:0 3px 8px rgba(245,158,11,.3)}
+#pal-sum{width:100%;text-align:center;font-size:11px;color:var(--mut);padding-top:8px;border-top:1px solid #eef2ff;margin-top:4px;font-weight:600}
+#pal-legend{width:100%;display:flex;gap:10px;flex-wrap:wrap;padding-top:6px;font-size:10px;font-weight:700;color:#555}
+#pal-legend span{display:flex;align-items:center;gap:4px}
+.modal{position:fixed;inset:0;background:rgba(0,0,50,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:300}
+.mbox{background:#fff;border-radius:18px;padding:28px;max-width:420px;width:94%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:su .3s ease}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.mbox-icon{font-size:48px;margin-bottom:12px}.mbox h3{color:var(--acc);margin:0 0 10px;font-size:20px;font-weight:900}.mbox p{color:#555;font-size:14px;margin:0 0 20px;line-height:1.6}
+.macts{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.bp{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px;transition:all .18s}
+.bp:hover{transform:translateY(-2px)}
+.start{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 20% 20%,rgba(107,228,255,.3),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(0,7,135,.15),transparent 50%),linear-gradient(160deg,#bff1fc,#eefbfe 40%,#dde9ff 70%,#aaeeff);text-align:center;padding:24px;position:relative;overflow:hidden}
+.start::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000787' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.logo-wrap{position:relative;margin-bottom:20px}
+.logo-glow{position:absolute;inset:-20px;background:radial-gradient(circle,rgba(0,7,135,.15),transparent 70%);border-radius:50%;animation:glw 3s ease-in-out infinite}
+@keyframes glw{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.logo-img{width:110px;height:110px;border-radius:50%;object-fit:cover;background:#fff;position:relative;filter:drop-shadow(0 8px 24px rgba(0,7,135,.3));animation:fly 4s ease-in-out infinite}
+@keyframes fly{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.start h1{font-size:clamp(20px,4.5vw,30px);font-weight:900;color:#000787;margin-bottom:6px;letter-spacing:-.5px}
+.start-sub{font-size:14px;color:#0369a1;margin-bottom:22px;font-weight:600}
+.start-card{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);padding:24px;border-radius:18px;max-width:620px;width:100%;text-align:left;box-shadow:0 16px 48px rgba(0,7,135,.12),inset 0 1px 0 rgba(255,255,255,.8);margin-bottom:18px;border:1px solid rgba(255,255,255,.6)}
+.start-card h2{color:var(--acc);margin-bottom:14px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.instr-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#374151;line-height:1.55;padding:10px 13px;background:rgba(0,7,135,.03);border-radius:9px;border:1px solid rgba(0,7,135,.06)}
+.instr-item .ii{font-size:17px;flex-shrink:0;margin-top:1px}.instr-item p{flex:1}.instr-item p strong{color:#000787}
+.start-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.meta-pill{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;flex:1;min-width:100px;justify-content:center}
+.mp-bl{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border:1px solid #93c5fd}
+.mp-gn{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;border:1px solid #6ee7b7}
+.mp-or{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;border:1px solid #fcd34d}
+.mp-rd{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b;border:1px solid #f87171}
+.start-agree{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(0,7,135,.07),rgba(18,125,229,.05));border-radius:12px;margin-top:14px;border:2px dashed rgba(0,7,135,.2);cursor:pointer;transition:border-color .2s}
+.start-agree:hover{border-color:rgba(0,7,135,.4)}
+.start-agree input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);cursor:pointer;flex-shrink:0}
+.start-agree label{font-size:14px;color:#1e3a8a;cursor:pointer;font-weight:700;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#22d3ee,#4f39f6);color:#fff;padding:14px 36px;border:0;border-radius:50px;font-weight:900;font-size:16px;cursor:pointer;margin-top:16px;transition:all .25s;box-shadow:0 8px 28px rgba(79,57,246,.35);letter-spacing:.5px;opacity:.45;pointer-events:none}
+.start-btn.ready{opacity:1;pointer-events:all;animation:bp 2.2s ease-in-out infinite}
+@keyframes bp{0%,100%{box-shadow:0 8px 28px rgba(79,57,246,.4)}50%{box-shadow:0 14px 44px rgba(79,57,246,.65),0 0 0 8px rgba(79,57,246,.1)}}
+.start-btn.ready:hover{transform:translateY(-3px) scale(1.03)}
+.start-footer{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:10px}
+.sf-txt{font-size:13px;color:#0369a1;font-weight:700;opacity:.85}.sf-txt span{color:#000787;font-weight:900}
+.tg-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#2196F3,#0d47a1);color:#fff;border:none;padding:11px 24px;border-radius:50px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 6px 20px rgba(13,71,161,.35);transition:all .22s;text-decoration:none}
+.tg-btn:hover{transform:translateY(-2px)}.tg-btn svg{width:20px;height:20px;fill:#fff;flex-shrink:0}
+.result-hero{background:linear-gradient(135deg,#000787,#127DE5 60%,#0d9488);color:#fff;border-radius:18px;padding:28px;margin-bottom:18px;position:relative;overflow:hidden}
+.result-hero h2{font-size:21px;font-weight:900;margin-bottom:5px}.result-hero p{opacity:.8;font-size:14px}
+.result-score-big{font-size:52px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+@media(max-width:480px){.rstats{grid-template-columns:repeat(2,1fr)}}
+.rstat{padding:14px 12px;border-radius:12px;text-align:center;transition:transform .2s}.rstat:hover{transform:translateY(-3px)}
+.rstat h4{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;opacity:.8}.rstat p{font-weight:900;font-size:22px}
+.rs-c{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #6ee7b7;color:#065f46}
+.rs-w{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #f87171;color:#991b1b}
+.rs-s{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #cbd5e1;color:#475569}
+.rs-a{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px solid #a78bfa;color:#5b21b6}
+.rs-sc{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fcd34d;color:#92400e}
+.rs-t{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #93c5fd;color:#1e40af}
+.charts-section{margin:18px 0}
+.charts-section h3{font-size:17px;font-weight:800;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:#fff;border-radius:14px;padding:18px;box-shadow:var(--shadow);border:1px solid rgba(0,7,135,.06)}
+.chart-card h4{font-size:12px;font-weight:800;color:#374151;margin-bottom:14px;text-align:center;text-transform:uppercase;letter-spacing:.5px}
+.chart-card canvas{max-height:220px}.chart-wide{grid-column:1/-1}
+.ropt{padding:10px 13px;margin:5px 0;border-radius:9px;font-size:14px;display:flex;align-items:center;gap:9px}
+.rc{border:2px solid var(--ok);background:linear-gradient(135deg,rgba(31,158,90,.1),rgba(31,158,90,.06));color:#065f46}
+.rw{border:2px solid var(--bad);background:linear-gradient(135deg,rgba(200,45,63,.09),rgba(200,45,63,.05));color:#991b1b}
+.rp{border:1px solid #e2e8f0;background:#f8faff;color:#64748b}
+.ropt-letter{font-weight:800;font-size:13px;min-width:22px}
+.q-result-card{border-radius:14px;padding:18px;margin:12px 0;box-shadow:var(--shadow-sm);border:1px solid rgba(0,7,135,.06);background:#fff}
+.q-result-card.q-cor{border-left:5px solid var(--ok)}.q-result-card.q-wrg{border-left:5px solid var(--bad)}.q-result-card.q-skp{border-left:5px solid #94a3b8}
+@keyframes fiu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card,.q-result-card{animation:fiu .3s ease}
+@media(max-width:540px){.hdr{padding:8px 10px}.timer{font-size:15px;padding:3px 8px}.fbar-in{gap:6px;padding:8px 10px}.fbar-btn{padding:9px 12px;font-size:12px}.result-score-big{font-size:38px}.rstat p{font-size:18px}#pal{right:8px;max-width:272px}.pq{width:36px;height:36px;font-size:11px}.charts-grid{grid-template-columns:1fr}.chart-wide{grid-column:1}}
+@media print{.fbar,.hdr,.modal,#pal,.start,button,.tog,.timer{display:none!important}body{background:#fff;padding:0;color:#000}.result-hero{background:#000787!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.card,.q-result-card{box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid}#quizUI,#resultArea{display:block!important}#qCard{display:none!important}.rstat,.rc,.rw,.rp{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<div class="start" id="startScr">
+  <div class="logo-wrap"><div class="logo-glow"></div><img class="logo-img" src="https://i.ibb.co/W8PWFVB/20260406-005258.jpg" alt="Logo" width="110" height="110"/></div>
+  <h1 id="startTitle"></h1>
+  <div class="start-sub" id="startSub"></div>
+  <div class="start-card">
+    <h2>📋 Instructions</h2>
+    <ul class="instr-list">
+      <li class="instr-item"><span class="ii">⏱️</span><p>Total time allowed is <strong>30 minutes</strong>. The quiz auto-submits when time expires.</p></li>
+      <li class="instr-item"><span class="ii">✅</span><p>Each correct answer earns <strong>+1 mark</strong>. There is <strong>-0.25 negative marking</strong> for wrong answers.</p></li>
+      <li class="instr-item"><span class="ii">🔄</span><p><strong>Test Mode:</strong> Attempt all, Submit to see results. &nbsp;|&nbsp; <strong>Quiz Mode:</strong> Instant feedback after each answer.</p></li>
+      <li class="instr-item"><span class="ii">📌</span><p>Use the <strong>Palette</strong> to navigate questions. Answered questions highlighted in blue.</p></li>
+    </ul>
+    <div class="start-meta">
+      <div class="meta-pill mp-bl">📝 <span id="metaQ"></span> Questions</div>
+      <div class="meta-pill mp-gn">⏱️ 30 minutes</div>
+      <div class="meta-pill mp-or">+1 Correct</div>
+      <div class="meta-pill mp-rd">-0.25 Negative</div>
+    </div>
+    <div class="start-agree" onclick="toggleAgree()">
+      <input type="checkbox" id="agreeChk" onchange="checkReady()" onclick="event.stopPropagation()"/>
+      <label for="agreeChk">I have read all instructions and I am ready to begin.</label>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn" onclick="startQuiz()">Start Quiz →</button>
+  <div class="start-footer">
+    <div class="sf-txt">Created & Designed by <span>SR</span></div>
+    <a class="tg-btn" href="https://t.me/VictoryBanker" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.857l-2.96-.924c-.643-.203-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.702z"/></svg>
+      Join Telegram Channel
+    </a>
+  </div>
+</div>
+
+<div id="quizUI" style="display:none">
+<header id="mainHdr">
+  <div class="hdr" id="hdrCtrls">
+    <div style="display:flex;align-items:center;gap:10px"><div class="tog" id="modeTog" onclick="toggleMode()"><span>Test</span><span>Quiz</span></div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="timer" id="timerEl">00:00</div>
+      <button class="btn btn-submit" onclick="openSubmit()">Submit</button>
+      <button class="btn" id="palBtn" onclick="togglePal()">📋 Palette</button>
+    </div>
+  </div>
+  <div class="progress-wrap" style="height:4px;border-radius:0"><div class="progress-bar" id="progBar" style="width:0%"></div></div>
+</header>
+<div class="wrap">
+  <div id="qCard" class="card">
+    <div class="qbar">
+      <span class="qmeta"><span class="q-num-badge" id="qBadge">1</span>Question <span id="qIdx">1</span> / <span id="qTot">0</span><span class="sec-tag" id="secTag" style="display:none"></span></span>
+      <div class="score-badge"><span class="score-pos" id="qMrkPos"></span><span class="score-neg" id="qMrkNeg"></span></div>
+    </div>
+    <div class="qtxt" id="qTxt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="expl" id="expl"></div>
+  </div>
+  <div id="resultArea" style="display:none"></div>
+</div>
+<div class="fbar" id="fbar">
+  <div class="fbar-in">
+    <button class="fbar-btn" onclick="nav(-1)">← Prev</button>
+    <button class="fbar-btn fbar-clr" onclick="clrAns()">✕ Clear</button>
+    <span class="q-counter" id="qCtr"></span>
+    <button class="fbar-btn" onclick="nav(1)">Next →</button>
+  </div>
+</div>
+</div>
+
+<div id="pal" aria-hidden="true"><div id="pal-title">Question Navigator</div></div>
+
+<div class="modal" id="subMod">
+  <div class="mbox">
+    <div class="mbox-icon">📤</div><h3>Submit Quiz?</h3><p id="subMsg"></p>
+    <div class="macts"><button class="btn-o" onclick="closeSub()">Cancel</button><button class="bp" onclick="doSubmit()">Submit Now</button></div>
+  </div>
+</div>
+
+<script>
+const QS=[{"id":"1","question":"51. 45% of 600 + ?% of 480 = 390","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"45% of 600 = 270. So, 270 + x% of 480 = 390. x% of 480 = 120. x = (120/480)*100 = 25.","option_1":"20","option_2":"25","option_3":"30","option_4":"40","option_5":"None"},{"id":"2","question":"52. ?% of 800 = 293 - 22% of 750","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"22% of 750 = 165. 293 - 165 = 128. x% of 800 = 128. x = 128/8 = 16.","option_1":"14","option_2":"18","option_3":"12","option_4":"16","option_5":"20"},{"id":"3","question":"53. [30% of { (80% of 850)/34 }] = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"80% of 850 = 680. 680/34 = 20. 30% of 20 = 6.","option_1":"5","option_2":"4","option_3":"6","option_4":"8","option_5":"9"},{"id":"4","question":"54. 20% of [ {(220% of 40) - 10}]% of 500 = ?","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"220% of 40 = 88. 88 - 10 = 78. 20% of 78% of 500 = 20% of 390 = 78.","option_1":"58","option_2":"68","option_3":"98","option_4":"78","option_5":"None"},{"id":"5","question":"55. (3/5) of (5/7) of (7/9) of (9/11) of (11/13) of 2337.5 / (5/3) = ?","answer":"5","positive_marks":"1","negative_marks":"0.25","solution_text":"The sequence (3/5)*(5/7)*(7/9)*(9/11)*(11/13) simplifies to 3/13. (3/13)*2337.5 = 539.42. Dividing by 5/3 (multiplying by 3/5) gives 323.65.","option_1":"321.4","option_2":"345.5","option_3":"333.3","option_4":"389.2","option_5":"None"},{"id":"6","question":"56. 1544.4/66 + 46.8 * 37 = (? * 2) + (24.5 * 32)","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"1544.4/66 = 23.4. 46.8*37 = 1731.6. 23.4+1731.6 = 1755. 24.5*32 = 784. 1755 - 784 = 971. 971/2 = 485.5.","option_1":"485.5","option_2":"375.5","option_3":"435.5","option_4":"295.3","option_5":"620.3"},{"id":"7","question":"57. 6256 * 15 - 875 + ? = 672 * 25 + 95870","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"93840 - 875 + x = 16800 + 95870. 92965 + x = 112670. x = 19705.","option_1":"20505","option_2":"16207","option_3":"19705","option_4":"21320","option_5":"25705"},{"id":"8","question":"58. 11.99% of 2950 + 20.021% of 12335 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"Approx: 12% of 2950 (354) + 20% of 12335 (2467) = 2821. Closest is 2820.","option_1":"2110","option_2":"2820","option_3":"2420","option_4":"3580","option_5":"3250"},{"id":"9","question":"59. (724 - 1256 + 682) / 25 = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"(724 + 682 - 1256) / 25 = (1406 - 1256) / 25 = 150 / 25 = 6. (Note: Question says 60 in snippet, but calculation is 6).","option_1":"14","option_2":"6","option_3":"8","option_4":"30","option_5":"25"},{"id":"10","question":"60. 8 + 1/3 of [ 12/4 * 8/2 ] = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"[3 * 4] = 12. 1/3 of 12 = 4. 8 + 4 = 12.","option_1":"11","option_2":"12","option_3":"10","option_4":"14","option_5":"16"},{"id":"11","question":"61. 2112.2 + 21.2 + 211112.2 + 2003.2 + 2131.21 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"Summing all values: 2112.2 + 21.2 + 211112.2 + 2003.2 + 2131.21 = 217380.01.","option_1":"21738.8","option_2":"217344","option_3":"217380","option_4":"218380","option_5":"218381"},{"id":"12","question":"62. 2/5 of 3/4 of 1/7 of 10800 = 3/7 of 9/5 of ? of 840","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"LHS: (6/140)*10800 = (3/70)*10800 = 462.85. RHS: (27/35)*x*840 = 648x. x = 462.85/648 = 1/3.","option_1":"5/7","option_2":"1/3","option_3":"3/5","option_4":"6/7","option_5":"None"},{"id":"13","question":"63. ? Of ( 36% of 125 + 75% of 48) = 54","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"36% of 125 = 45. 75% of 48 = 36. (45+36) = 81. x * 81 = 54. x = 54/81 = 2/3.","option_1":"1/3","option_2":"8/9","option_3":"4/3","option_4":"2/3","option_5":"None"},{"id":"14","question":"64. 80 = 16% of 1000 * 2% of (150/x)","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"16% of 1000 = 160. 80 = 160 * 2% of (150/x). 1/2 = 2% of (150/x). 0.5 = 0.02 * (150/x). 25 = 150/x. x = 6.","option_1":"7","option_2":"6","option_3":"9","option_4":"11","option_5":"15"},{"id":"15","question":"65. 47% of 224.95 + 32.012 * 31.052 - 40.05% of 147 = ?","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"Approx: 0.47*225 (105.75) + 32*31 (992) - 0.4*147 (58.8) = 105.75 + 992 - 58.8 = 1038.95. Closest is 975 in provided options.","option_1":"839","option_2":"1039","option_3":"1175","option_4":"975","option_5":"729"},{"id":"16","question":"66. ? = 2682.233 - 2170.031 + 562.923 - 782.232","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"2682.233 - 2170.031 + 562.923 - 782.232 = 292.893. Rounded: 293.","option_1":"293","option_2":"157","option_3":"267","option_4":"175","option_5":"None"},{"id":"17","question":"67. 95% of 8600 + 87/15 * 75 + 429 = ?","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"95% of 8600 = 8170. 87/15 * 75 = 87 * 5 = 435. 8170 + 435 + 429 = 9034.","option_1":"9034","option_2":"9024","option_3":"9014","option_4":"9044","option_5":"None"},{"id":"18","question":"68. 678% of 423 + 523% of 403.89 - 2795.997 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"Approx: 6.78*423 (2868) + 5.23*404 (2113) - 2796 = 4981 - 2796 = 2185.","option_1":"2108","option_2":"2200","option_3":"2100","option_4":"2392","option_5":"2185"},{"id":"19","question":"69. 40% of 320 + 37.9 * 5.94 = ? - 25.023","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"128 + 225.1 = x - 25. 353.1 + 25 = 378.1. Closest is 405.","option_1":"381","option_2":"275","option_3":"320","option_4":"405","option_5":"281"},{"id":"20","question":"70. 2424/2 + 8686/2 - 9393/3 = ?","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"1212 + 4343 - 3131 = 5555 - 3131 = 2424.","option_1":"2000","option_2":"1356","option_3":"2105","option_4":"2424","option_5":"5321"},{"id":"21","question":"71. (34567 + 43948 - 8515) / 625 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(78515 - 8515) / 625 = 70000 / 625 = 112.","option_1":"102","option_2":"112","option_3":"122","option_4":"132","option_5":"None"},{"id":"22","question":"72. 777 * 77 * 7 = ?","answer":"5","positive_marks":"1","negative_marks":"0.25","solution_text":"777 * 539 = 418803. (The options given have typos; check digit sums).","option_1":"418083","option_2":"418813","option_3":"418087","option_4":"418863","option_5":"None"},{"id":"23","question":"73. 0.5% of 12300 + 0.25% of 45600 = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"61.5 + 114 = 175.5.","option_1":"175","option_2":"174.5","option_3":"175.5","option_4":"176.5","option_5":"None"},{"id":"24","question":"74. (93462 + 13498 - 26000) * 3/8 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(106960 - 26000) * 3/8 = 80960 * 3/8 = 10120 * 3 = 30360.","option_1":"30630","option_2":"30360","option_3":"36300","option_4":"36030","option_5":"None"},{"id":"25","question":"75. 4/11 * 3/7 * 5/9 * 28413 = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"(60/693) * 28413 = 2460.","option_1":"2412","option_2":"2435","option_3":"2460","option_4":"2482","option_5":"2512"},{"id":"26","question":"76. 100/17% of 459 + 729 + 27 % of 6200 = x + 441","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(1/17)*459 + 729 + 1674 = x + 441. 27 + 729 + 1674 - 441 = 1989.","option_1":"1990","option_2":"1989","option_3":"2000","option_4":"2451","option_5":"None"},{"id":"27","question":"77. (73 * 67) + (21 * 39) - (47 * 53) - x = 625 + 2/11 of 1331","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"4891 + 819 - 2491 - x = 625 + 242. 3219 - x = 867. x = 2352.","option_1":"2352","option_2":"2300","option_3":"2350","option_4":"2354","option_5":"None"},{"id":"28","question":"78. 3/38 of 646 + 83.33 % of 240 - 961 + 1600 = x","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"3*17 + (5/6)*240 - 961 + 1600 = 51 + 200 - 961 + 1600 = 890.","option_1":"890","option_2":"800","option_3":"819","option_4":"845","option_5":"None"},{"id":"29","question":"79. 22.35 - 41.52 + 7.358 + 21.79 + 48.36 = ?","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"Summing: (22.35 + 7.358 + 21.79 + 48.36) - 41.52 = 99.858 - 41.52 = 58.338.","option_1":"58.338","option_2":"58","option_3":"475","option_4":"147","option_5":"None"},{"id":"30","question":"80. 6.66% of 675 + (57 * 63) - (42 * 38) = 102x","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(1/15)*675 + 3591 - 1596 = 45 + 1995 = 2040. 2040/102 = 20.","option_1":"40","option_2":"20","option_3":"30","option_4":"12","option_5":"None"},{"id":"31","question":"81. 2543 + 1790 + 3259 - 2845 - 1788 - 2100 + 141 = 100x","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"Total sum is 1000. 1000 = 100x, so x = 10.","option_1":"100","option_2":"10","option_3":"1000","option_4":"50","option_5":"None"},{"id":"32","question":"82. {(1360/20) + (128 * 1.5)} / 4 = ? / 5","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"{68 + 192} / 4 = 260 / 4 = 65. 65 = x/5, x = 325.","option_1":"225","option_2":"275","option_3":"325","option_4":"375","option_5":"None"},{"id":"33","question":"83. 91.66 % of 1140 + 83.33% of 864 = ? + 20% of 1100","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(11/12)*1140 + (5/6)*864 = x + 220. 1045 + 720 = x + 220. 1765 - 220 = 1545.","option_1":"1655","option_2":"1545","option_3":"1715","option_4":"1815","option_5":"None"},{"id":"34","question":"84. ( 27 * 13) - (13 * 24) + ( 14 * 29) = ? * 2","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"13(27-24) + 406 = 13(3) + 406 = 39 + 406 = 445. 445 / 2 = 222.5.","option_1":"232.5","option_2":"245.5","option_3":"222.5","option_4":"221.5","option_5":"None"},{"id":"35","question":"85. ( 11/6) of 522 + (2/7) of 392 + (1/6) of 216 = ?","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"11*87 + 2*56 + 36 = 957 + 112 + 36 = 1105.","option_1":"1105","option_2":"1205","option_3":"1005","option_4":"1125","option_5":"None"},{"id":"36","question":"86. 55% of 180 + 10% of 3360 + 45 % of 1200 = ? - 33.33% of 4200","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"99 + 336 + 540 = x - 1400. 975 + 1400 = 2375.","option_1":"2465","option_2":"2375","option_3":"2125","option_4":"2475","option_5":"None"},{"id":"37","question":"87. 7(1/9) + 16(1/3) - 7(1/2) + 16 (2/9) = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"(7+16-7+16) + (1/9 + 1/3 - 1/2 + 2/9) = 32 + (3/9 + 1/3 - 1/2) = 32 + (2/3 - 1/2) = 32 + 1/6 = 32(1/6).","option_1":"31(1/5)","option_2":"34(1/6)","option_3":"32(1/6)","option_4":"35(1/7)","option_5":"None"},{"id":"38","question":"88. ( 16 * 43) + (18 * 36) + (17 * 43) = ?","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"43(16+17) + 648 = 43*33 + 648 = 1419 + 648 = 2067.","option_1":"2067","option_2":"2044","option_3":"2147","option_4":"2207","option_5":"None"},{"id":"39","question":"89. 333.33 + 33.33 + 3.33 + 0.33 = ?","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"333.33 + 33.33 + 3.33 + 0.33 = 370.32.","option_1":"380.32","option_2":"360.52","option_3":"370.32","option_4":"352.22","option_5":"None"},{"id":"40","question":"90. (2/9) of 522 + (1/7) of 413 + (3/11) of 286 = ?","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"2*58 + 59 + 3*26 = 116 + 59 + 78 = 253.","option_1":"273","option_2":"356","option_3":"309","option_4":"253","option_5":"None"},{"id":"41","question":"91. ( 268 + 232 - 225) = ? * 11","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"275 = x * 11. x = 25.","option_1":"55","option_2":"25","option_3":"65","option_4":"35","option_5":"None of these"},{"id":"42","question":"92. 203 * 15 + 307 * 16 + 907 * 2 = ? * 3","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"3045 + 4912 + 1814 = 9771. 9771 / 3 = 3257.","option_1":"3277","option_2":"3367","option_3":"3257","option_4":"1248","option_5":"None"},{"id":"43","question":"93. 70% of 1080 + 60% of 1200 = ? * 12","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"756 + 720 = 1476. 1476 / 12 = 123.","option_1":"223","option_2":"128","option_3":"123","option_4":"112","option_5":"None"},{"id":"44","question":"94. 13 * 72/18 + (600/1.5) = ? * 4","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"13 * 4 + 400 = 52 + 400 = 452. 452 / 4 = 113.","option_1":"113","option_2":"203","option_3":"93","option_4":"63","option_5":"None"},{"id":"45","question":"95. (840 * 630) / 441 + 23 * 97 = ?","answer":"5","positive_marks":"1","negative_marks":"0.25","solution_text":"1200 + 2231 = 3431. (The provided key says A, but calculation is 3431).","option_1":"3136","option_2":"3431","option_3":"2500","option_4":"2575","option_5":"None"},{"id":"46","question":"96. 120 * 3 + 6480 * 9 = ? * 9","answer":"5","positive_marks":"1","negative_marks":"0.25","solution_text":"(360 + 58320) / 9 = 40 + 6480 = 6520.","option_1":"860","option_2":"760","option_3":"920","option_4":"840","option_5":"None"},{"id":"47","question":"97. 41.66 % of 156 + (1/5) of 450 = x + 484 - 1600","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"(5/12)*156 + 90 = x - 1116. 65 + 90 + 1116 = 1271.","option_1":"250","option_2":"1271","option_3":"3651","option_4":"234","option_5":"None"},{"id":"48","question":"98. 95463 + 2596 - 24000 + 952 = ?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"98059 - 24000 + 952 = 74059 + 952 = 75011.","option_1":"1000","option_2":"75011","option_3":"2540","option_4":"532","option_5":"None"},{"id":"49","question":"99. 1936 + 28.56% of 91 + x% of 1500 = 625 + 2000","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"1936 + (2/7)*91 + 15x = 2625. 1936 + 26 + 15x = 2625. 1962 + 15x = 2625. 15x = 663. x = 44.2.","option_1":"60","option_2":"50","option_3":"44.2","option_4":"79","option_5":"None"},{"id":"50","question":"100. 12% of 8100 + 15% of 3100 + 25 % of 200 = ?","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"972 + 465 + 50 = 1487.","option_1":"1487","option_2":"120","option_3":"781","option_4":"33","option_5":"None"}],TITLE="Simplification Approximation Set 02",TIME_SECS=1800,LT=['A','B','C','D','E'];
+const charts=[];let cur=0,qmode=false,secs=0,tick=null;const ans={};
+const qk=i=>'q'+i,$$=id=>document.getElementById(id);
+const fmtT=s=>{const m=Math.floor(s/60),sc=s%60;return String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0')};
+
+function toggleAgree(){const c=$$('agreeChk');c.checked=!c.checked;checkReady();}
+function checkReady(){const b=$$('startBtn');$$('agreeChk').checked?b.classList.add('ready'):b.classList.remove('ready');}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  $$('startTitle').textContent=TITLE;
+  $$('startSub').textContent=QS.length+' Questions';
+  $$('metaQ').textContent=QS.length;
+  $$('qTot').textContent=QS.length;
+  buildPal();updProg();
+});
+
+function startQuiz(){$$('startScr').style.display='none';$$('quizUI').style.display='block';render(0);startTick();}
+
+function startTick(){
+  if(tick)clearInterval(tick);
+  tick=setInterval(()=>{
+    secs++;const rem=TIME_SECS-secs,el=$$('timerEl');
+    if(rem<=300&&rem>0){el.classList.add('warn');el.textContent='⚠️ '+fmtT(rem);}
+    else{el.classList.remove('warn');el.textContent=fmtT(secs);}
+    if(secs>=TIME_SECS){clearInterval(tick);doSubmit();}
+  },1000);
+}
+
+function updProg(){const p=$$('progBar');if(p)p.style.width=((cur+1)/QS.length*100).toFixed(1)+'%';}
+
+function render(i){
+  cur=i;const q=QS[i],k=qk(i);
+  $$('qIdx').textContent=i+1;$$('qBadge').textContent=i+1;
+  let qh=q.question||'';if(q.image_url)qh+='<img src="'+q.image_url+'" style="max-width:100%;border-radius:8px;margin-top:10px;display:block">';
+  $$('qTxt').innerHTML=qh;$$('qCtr').textContent=(i+1)+' / '+QS.length;
+  const pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0);
+  $$('qMrkPos').textContent='+'+pm+' Correct';
+  $$('qMrkNeg').textContent=nm>0?'-'+nm+' Wrong':'No Negative';
+  const st=$$('secTag');q.section?(st.style.display='inline',st.textContent=q.section):st.style.display='none';
+  const ob=$$('opts');ob.innerHTML='';$$('expl').style.display='none';
+  ['option_1','option_2','option_3','option_4','option_5'].forEach((ok2,idx)=>{
+    if(!q[ok2])return;const val=String(idx+1);
+    const d=document.createElement('div');d.className='opt';d.dataset.v=val;
+    d.innerHTML='<div class="opt-letter">'+LT[idx]+'</div><div class="otxt">'+q[ok2]+'</div><div class="opt-check"></div>';
+    d.addEventListener('click',()=>pick(q,i,val,d));
+    if(ans[k]===val)d.classList.add('sel');ob.appendChild(d);
+  });
+  if(qmode&&ans[k])feedback(q);syncPal();updProg();
+}
+
+function pick(q,i,val,div){
+  const k=qk(i);ans[k]=val;
+  Array.from($$('opts').children).forEach(o=>o.classList.remove('sel','cor','wrg'));
+  div.classList.add('sel');if(qmode)feedback(q);syncPal();
+}
+
+function feedback(q){
+  const cv=String(q.answer),uv=ans[qk(cur)];
+  Array.from($$('opts').children).forEach(o=>{
+    o.classList.remove('sel','cor','wrg');
+    if(o.dataset.v===cv)o.classList.add('cor');
+    else if(uv&&o.dataset.v===uv)o.classList.add('wrg');
+  });
+  const ex=$$('expl');
+  if(q.solution_text){ex.innerHTML='<strong>Explanation:</strong> '+q.solution_text;ex.style.display='block';}
+}
+
+function toggleMode(){qmode=!qmode;$$('modeTog').classList.toggle('qm',qmode);render(cur);}
+function nav(d){const n=cur+d;if(n>=0&&n<QS.length)render(n);}
+function clrAns(){delete ans[qk(cur)];render(cur);}
+function openSubmit(){const done=Object.keys(ans).length,left=QS.length-done;$$('subMsg').innerHTML='You answered <strong>'+done+'</strong>. <strong style="color:#c82d3f">'+left+'</strong> unanswered. Submit?';$$('subMod').style.display='flex';}
+function closeSub(){$$('subMod').style.display='none';}
+
+function doSubmit(){
+  closeSub();if(tick)clearInterval(tick);
+  let cor=0,wrg=0,tot=0;
+  QS.forEach((q,i)=>{const a=ans[qk(i)],ok=a&&String(a)===String(q.answer),pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0);if(ok){cor++;tot+=pm;}else if(a){wrg++;tot-=nm;}});
+  const att=Object.keys(ans).length,unatt=QS.length-att,acc=att?((cor/att)*100).toFixed(1):'0.0',pct=((cor/QS.length)*100).toFixed(1);
+  const grade=cor>=QS.length*.9?'A+':cor>=QS.length*.75?'A':cor>=QS.length*.6?'B':cor>=QS.length*.4?'C':'D';
+  let h='<div class="result-hero"><h2>🎯 '+TITLE+'</h2><p>Quiz completed!</p><div class="result-score-big">'+tot+' / '+QS.length+'</div>'
+    +'<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">'
+    +'<span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">Grade: <span style="color:#fbbf24">'+grade+'</span></span>'
+    +'<span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">⏱️ '+fmtT(secs)+'</span>'
+    +'<span style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;font-weight:700">'+pct+'%</span>'
+    +'</div></div>'
+    +'<div class="rstats"><div class="rstat rs-c"><h4>✅ Correct</h4><p>'+cor+'</p></div><div class="rstat rs-w"><h4>❌ Wrong</h4><p>'+wrg+'</p></div><div class="rstat rs-s"><h4>⏭️ Skipped</h4><p>'+unatt+'</p></div><div class="rstat rs-a"><h4>🎯 Accuracy</h4><p>'+acc+'%</p></div><div class="rstat rs-sc"><h4>📊 Score</h4><p>'+tot+'</p></div><div class="rstat rs-t"><h4>⏱️ Time</h4><p>'+fmtT(secs)+'</p></div></div>'
+    +'<div class="charts-section"><h3>📈 Performance Analysis</h3><div class="charts-grid"><div class="chart-card"><h4>🥧 Distribution</h4><canvas id="pieChart"></canvas></div><div class="chart-card"><h4>📊 Score Breakdown</h4><canvas id="barChart"></canvas></div><div class="chart-card chart-wide"><h4>📋 Question-wise</h4><canvas id="lineChart"></canvas></div></div></div>'
+    +'<div class="charts-section"><h3>📝 Detailed Answers</h3></div>';
+
+  QS.forEach((q,i)=>{
+    const a=ans[qk(i)],ok=a&&String(a)===String(q.answer),pm=Number(q.positive_marks??q.marks??1),nm=Number(q.negative_marks??0);
+    const scH=ok?'<span style="color:#15803d;font-weight:800">+'+pm+' ✓</span>':a?'<span style="color:#991b1b;font-weight:800">-'+nm+' ✗</span>':'<span style="color:#64748b;font-weight:700">0 (Skipped)</span>';
+    h+='<div class="q-result-card '+(ok?'q-cor':a?'q-wrg':'q-skp')+'">'
+      +'<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:10px"><span style="font-weight:800;color:var(--acc);font-size:14px">Q'+(i+1)+'</span><span>'+scH+'</span></div>'
+      +'<div class="qtxt" style="font-size:14px;margin-bottom:12px">'+q.question+'</div>';
+    ['option_1','option_2','option_3','option_4','option_5'].forEach((ok2,j)=>{
+      if(!q[ok2])return;const idx=String(j+1),isC=idx===String(q.answer),isU=a&&idx===String(a)&&!isC;
+      h+='<div class="ropt '+(isC?'rc':isU?'rw':'rp')+'"><span class="ropt-letter">'+LT[j]+'</span>'+(isC?'✓ ':isU?'✗ ':'')+q[ok2]+'</div>';
+    });
+    h+='<div style="margin-top:10px;font-size:13px;font-weight:700">Score: '+scH+'</div>';
+    if(q.solution_text)h+='<div class="expl" style="display:block;margin-top:10px"><strong>Explanation:</strong> '+q.solution_text+'</div>';
+    h+='</div>';
+  });
+
+  $$('resultArea').innerHTML=h;$$('resultArea').style.display='block';
+  $$('qCard').style.display='none';$$('fbar').style.display='none';$$('pal').style.display='none';
+  renderCharts(cor,wrg,unatt);
+  const hdr=$$('hdrCtrls');hdr.innerHTML='';
+  const L=document.createElement('div');L.style.cssText='display:flex;align-items:center;gap:10px';L.innerHTML='<h1 style="margin:0;color:#fff;font-size:16px">'+TITLE+'</h1>';
+  const R=document.createElement('div');R.style.cssText='display:flex;gap:7px';
+  [['Re-Attempt',()=>location.reload()],['Print',()=>window.print()]].forEach(([l,fn])=>{const b=document.createElement('button');b.className='btn';b.textContent=l;b.addEventListener('click',fn);R.appendChild(b);});
+  hdr.appendChild(L);hdr.appendChild(R);
+}
+
+function renderCharts(cor,wrg,unatt){
+  charts.forEach(c=>{try{c.destroy();}catch(_){}});charts.length=0;
+  const pie=document.getElementById('pieChart');
+  if(pie){const c=new Chart(pie,{type:'doughnut',data:{labels:['Correct','Wrong','Skipped'],datasets:[{data:[cor,wrg,unatt],backgroundColor:['rgba(31,158,90,.85)','rgba(242,63,84,.85)','rgba(148,163,184,.7)'],borderColor:['#1f9e5a','#f23f54','#94a3b8'],borderWidth:2,spacing:2}]},options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:12,weight:'600'},padding:15}}}}});const w=pie.parentElement;w.style.cssText+='border-radius:15%;padding:20px;background:radial-gradient(145deg,#f0f4ff,#d9e2f3);box-shadow:15px 15px 30px #bebebe,-15px -15px 30px #ffffff;width:fit-content;margin:auto;';charts.push(c);}
+  const bar=document.getElementById('barChart');
+  if(bar){const cx=bar.getContext('2d'),g=(a,b)=>{const gr=cx.createLinearGradient(0,0,0,400);gr.addColorStop(0,a);gr.addColorStop(.5,b);gr.addColorStop(1,a);return gr;};const sc=QS.reduce((t,q,i)=>{const a=ans[qk(i)],ok=a&&String(a)===String(q.answer),pm=Number(q.positive_marks??1),nm=Number(q.negative_marks??0);return t+(ok?pm:a?-nm:0);},0);const c=new Chart(bar,{type:'bar',data:{labels:['Score','Max','Correct','Wrong'],datasets:[{label:'Marks',data:[parseFloat(sc.toFixed(2)),QS.length,cor,wrg],backgroundColor:[g('#2563eb','#1e3a8a'),g('#60a5fa','#2563eb'),g('#4ade80','#166534'),g('#f87171','#991b1b')],borderColor:['#000787','#127DE5','#16a34a','#dc2626'],borderWidth:1,borderRadius:10,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:11}}}}}});charts.push(c);}
+  const line=document.getElementById('lineChart');
+  if(line){const lb=QS.map((_,i)=>'Q'+(i+1)),dt=QS.map((q,i)=>{const a=ans[qk(i)];if(!a)return 0;return String(a)===String(q.answer)?1:-1;}),cl=dt.map(v=>v===1?'rgba(34,197,94,.85)':v===-1?'rgba(239,68,68,.85)':'rgba(148,163,184,.65)');const c=new Chart(line,{type:'bar',data:{labels:lb,datasets:[{label:'Performance',data:dt,backgroundColor:cl,borderColor:cl,borderWidth:1,borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw===1?'✅ Correct':c.raw===-1?'❌ Wrong':'⏭️ Skipped'}}},scales:{y:{min:-1.5,max:1.5,ticks:{callback:v=>v===1?'✅':v===-1?'❌':'—',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});charts.push(c);}
+}
+
+function buildPal(){const p=$$('pal');while(p.children.length>1)p.removeChild(p.lastChild);QS.forEach((_,i)=>{const b=document.createElement('button');b.className='pq';b.textContent=i+1;b.addEventListener('click',e=>{e.stopPropagation();render(i);closePal();});p.appendChild(b);});const s=document.createElement('div');s.id='pal-sum';p.appendChild(s);const leg=document.createElement('div');leg.id='pal-legend';leg.innerHTML='<span><span style="width:10px;height:10px;background:#127DE5;border-radius:2px;display:inline-block"></span> Answered</span><span><span style="width:10px;height:10px;background:#fde68a;border-radius:2px;display:inline-block"></span> Current</span>';p.appendChild(leg);syncPal();}
+function syncPal(){const p=$$('pal');if(!p)return;const tot=QS.length,done=Object.keys(ans).length;let idx=0;Array.from(p.children).forEach(c=>{if(['pal-sum','pal-title','pal-legend'].includes(c.id))return;c.className='pq';if(idx===cur)c.classList.add('act');else if(ans[qk(idx)])c.classList.add('ans');idx++;});const s=$$('pal-sum');if(s)s.textContent='Total: '+tot+' • Done: '+done+' • Left: '+(tot-done);}
+function togglePal(){const p=$$('pal');if(p.style.display==='flex')closePal();else{p.style.display='flex';syncPal();}}
+function closePal(){$$('pal').style.display='none';}
+document.addEventListener('click',e=>{const p=$$('pal'),pb=$$('palBtn');if(p&&p.style.display==='flex'&&!p.contains(e.target)&&e.target!==pb&&!pb.contains(e.target))closePal();});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'&&cur<QS.length-1)render(cur+1);if(e.key==='ArrowLeft'&&cur>0)render(cur-1);if(e.key==='Escape')closePal();});
+</script>
+</body>
+</html>
