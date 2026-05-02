@@ -898,34 +898,47 @@ setInterval(tickAll, 1000);
    ② NOTIFICATION DATA
    tag: 'new' | 'update' | 'resource'
 ═══════════════════════════════════════════════════ */
-const NOTIFS = [
-  { tag:'new',      label:'🔴 New',      title:'Data Interpretation Full Workbook Uploaded',         desc:'88-page DI PDF covering tables, bar, pie, line, caselet. Must-attempt for Mains.', time:'2 minutes ago',    link:'index.html',              hot:true  },
-  { tag:'new',      label:'🔴 New',      title:'Mock Test 7 — Reasoning Full Paper is Live',         desc:'Attempt under timed conditions. Detailed solutions included.',                   time:'18 minutes ago',   link:'#tools',                  hot:true  },
-  { tag:'resource', label:'📄 Resource', title:'GA Capsule June 2026 Added to Notes',                desc:'Economy, banking awareness, govt schemes and static GK compiled.',               time:'1 hour ago',       link:'index.html',              hot:false },
-  { tag:'update',   label:'🔵 Update',   title:'Calculation Master — 25 New Speed Tricks Added',    desc:'Squaring, percentage-to-fraction, and approximation shortcuts updated.',          time:'Yesterday, 9:14 PM',link:'https://victory-banker.vercel.app/calculation/index.html',                 hot:false },
-  { tag:'update',   label:'🔵 Update',   title:'SBI PO Prelims 2026 Date Announced',                desc:'Exam scheduled for June 2026. Detailed prep strategy posted on Telegram.',       time:'2 days ago',       link:'https://t.me/I_SR_bot',   hot:false },
-  { tag:'resource', label:'📄 Resource', title:'English Grammar Rule Sheet (PDF) Uploaded',         desc:'28-page grammar reference — useful for SSC and banking English section.',         time:'3 days ago',       link:'index.html',              hot:false },
-];
+/* ── AUTO-FETCH NOTIFICATIONS FROM updates.json ── */
+async function loadNotifs() {
+  let NOTIFS = [];
 
-/* ── BUILD TICKER ── */
-(function(){
+  try {
+    const res = await fetch('./updates.json?v=' + Date.now()); // cache-bust
+    NOTIFS = await res.json();
+  } catch(e) {
+    console.warn('Could not load updates.json, using fallback.', e);
+    // Fallback hardcoded data if fetch fails (e.g. offline)
+    NOTIFS = [
+      { tag:'update', label:'🔵 Update', title:'Welcome to Victory Banker!',
+        desc:'Start exploring tools and study notes.', time:'Just now',
+        link:'#tools', hot:false }
+    ];
+  }
+
+  buildTicker(NOTIFS);
+  buildNotifPanel(NOTIFS);
+  buildUpdates(NOTIFS);
+}
+
+function buildTicker(NOTIFS){
   const wrap = document.getElementById('tickerItems');
-  const doubled = [...NOTIFS,...NOTIFS];
-  wrap.innerHTML = doubled.map(n=>`
-    <a class="t-item" href="${n.link}" ${n.link.startsWith('http')?'target="_blank"':''}>
-      <div class="t-sep"></div>${n.hot?'<span class="t-new">NEW</span>':''}${n.title}
+  const doubled = [...NOTIFS, ...NOTIFS];
+  wrap.innerHTML = doubled.map(n => `
+    <a class="t-item" href="${n.link}" ${n.link.startsWith('http') ? 'target="_blank"' : ''}>
+      <div class="t-sep"></div>
+      ${n.hot ? '<span class="t-new">NEW</span>' : ''}
+      ${n.title}
     </a>`).join('');
-})();
+}
 
-/* ── BUILD NOTIF PANEL ── */
-(function(){
+function buildNotifPanel(NOTIFS){
   const list = document.getElementById('npList');
-  const dc = n=>n.hot?'var(--red)':n.tag==='resource'?'var(--green)':'var(--blue-lt)';
-  const bg = n=>n.tag==='new'?'rgba(217,51,51,0.09)':n.tag==='resource'?'rgba(21,138,94,0.09)':'rgba(26,107,181,0.09)';
-  const tc = n=>n.tag==='new'?'var(--red)':n.tag==='resource'?'var(--green)':'var(--blue)';
-  list.innerHTML = NOTIFS.map(n=>`
-    <a class="np-item" href="${n.link}" ${n.link.startsWith('http')?'target="_blank"':''}>
-      <div class="np-dot" style="background:${dc(n)};${n.hot?'box-shadow:0 0 7px var(--red);':''}"></div>
+  const dc = n => n.hot ? 'var(--red)' : n.tag==='resource' ? 'var(--green)' : 'var(--blue-lt)';
+  const bg = n => n.tag==='new' ? 'rgba(217,51,51,0.09)' : n.tag==='resource' ? 'rgba(21,138,94,0.09)' : 'rgba(26,107,181,0.09)';
+  const tc = n => n.tag==='new' ? 'var(--red)' : n.tag==='resource' ? 'var(--green)' : 'var(--blue)';
+  list.innerHTML = NOTIFS.map(n => `
+    <a class="np-item" href="${n.link}" ${n.link.startsWith('http') ? 'target="_blank"' : ''}>
+      <div class="np-dot" style="background:${dc(n)};${n.hot ? 'box-shadow:0 0 7px var(--red);' : ''}"></div>
       <div style="flex:1;">
         <div class="np-title">${n.title}</div>
         <div class="np-desc">${n.desc}</div>
@@ -933,8 +946,22 @@ const NOTIFS = [
       </div>
       <span class="np-badge" style="background:${bg(n)};color:${tc(n)};">${n.label}</span>
     </a>`).join('');
-})();
+}
 
+function buildUpdates(NOTIFS){
+  const grid = document.getElementById('updGrid');
+  grid.innerHTML = NOTIFS.map(n => `
+    <a class="upd-card${n.hot ? ' hot' : n.tag==='resource' ? ' ok' : ''} reveal"
+       href="${n.link}" ${n.link.startsWith('http') ? 'target="_blank"' : ''}>
+      <span class="upd-tag ${n.tag==='new' ? 'tag-n' : n.tag==='resource' ? 'tag-r' : 'tag-u'}">${n.label}</span>
+      <div class="upd-title">${n.title}</div>
+      <div class="upd-desc">${n.desc}</div>
+      <div class="upd-time">🕐 ${n.time}</div>
+    </a>`).join('');
+  observeReveal();
+}
+
+loadNotifs(); // ← call this instead of the three separate build calls
 /* ── BUILD TOOLS (skeleton → real after 600ms) ── */
 setTimeout(()=>{
   const grid = document.getElementById('toolsGrid');
@@ -960,20 +987,6 @@ setTimeout(()=>{
   // re-run reveal on new elements
   observeReveal();
 }, 650);
-
-/* ── BUILD UPDATE CARDS (skeleton → real after 900ms) ── */
-setTimeout(()=>{
-  const grid = document.getElementById('updGrid');
-  grid.innerHTML = NOTIFS.map(n=>`
-    <a class="upd-card${n.hot?' hot':n.tag==='resource'?' ok':''} reveal"
-       href="${n.link}" ${n.link.startsWith('http')?'target="_blank"':''}>
-      <span class="upd-tag ${n.tag==='new'?'tag-n':n.tag==='resource'?'tag-r':'tag-u'}">${n.label}</span>
-      <div class="upd-title">${n.title}</div>
-      <div class="upd-desc">${n.desc}</div>
-      <div class="upd-time">🕐 ${n.time}</div>
-    </a>`).join('');
-  observeReveal();
-}, 900);
 
 /* ═══════════════════════════════════════════════════
    ③ SCROLL REVEAL
