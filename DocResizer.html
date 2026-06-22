@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBPS & SBI Document Processor | Compress, Resize & Verify</title>
+<meta name="description" content="Resize and compress Photograph, Signature, Left Thumb Impression & Hand-written Declaration to exact IBPS / SBI specifications.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://i.ibb.co">
+<link rel="preconnect" href="https://i.postimg.cc">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --ibps-1:#0A2A5E; --ibps-2:#0072CE; --ibps-3:#00B8D9;
+  --ibps-grad: linear-gradient(135deg,#0A2A5E,#0072CE,#00B8D9);
+  --sbi-1:#0C1F3F; --sbi-2:#0066A1; --sbi-3:#36A9E1;
+  --sbi-grad: linear-gradient(135deg,#0C1F3F,#0066A1,#36A9E1);
+
+  --success:#0C8A4B; --success-bg:rgba(12,138,75,0.12);
+  --warning:#B45309; --warning-bg:rgba(180,83,9,0.12);
+  --error:#C62828;   --error-bg:rgba(198,40,40,0.12);
+  --info:#0B6FB8;    --info-bg:rgba(11,111,184,0.12);
+  --orange:#E65100;  --orange-bg:rgba(230,81,0,0.12); --orange-grad:linear-gradient(135deg,#E65100,#FF8F00);
+
+  --radius-sm:10px; --radius-md:16px; --radius-lg:22px; --radius-xl:28px;
+  --font-display:'Poppins',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --transition: all .3s cubic-bezier(.2,.8,.2,1);
+
+  /* LIGHT THEME (default) */
+  --bg-page:#eef2f8;
+  --bg-page-2:#e3eaf5;
+  --surface:#ffffff;
+  --surface-alt:#f6f8fc;
+  --glass-bg:rgba(255,255,255,0.72);
+  --glass-border:rgba(15,30,60,0.10);
+  --glass-border-strong:rgba(15,30,60,0.18);
+  --text-primary:#10213f;
+  --text-secondary:#465372;
+  --text-muted:#8492ab;
+  --shadow-sm: 0 2px 10px rgba(20,35,70,0.06);
+  --shadow-md: 0 8px 28px rgba(20,35,70,0.10);
+  --shadow-lg: 0 18px 48px rgba(20,35,70,0.14);
+  --active-grad: var(--ibps-grad);
+}
+
+body.dark{
+  --bg-page:#070d1c;
+  --bg-page-2:#0a1530;
+  --surface:#0f1c3a;
+  --surface-alt:#0c1731;
+  --glass-bg:rgba(20,32,62,0.65);
+  --glass-border:rgba(255,255,255,0.10);
+  --glass-border-strong:rgba(255,255,255,0.22);
+  --text-primary:#f1f5ff;
+  --text-secondary:rgba(241,245,255,0.72);
+  --text-muted:rgba(241,245,255,0.46);
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.35);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.4);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-page);
+  color:var(--text-primary);
+  min-height:100vh;
+  transition:background .4s ease,color .4s ease;
+}
+
+/* Soft ambient backdrop (works in both themes, low opacity) */
+.bg-canvas{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+  background: radial-gradient(circle at 15% 10%, rgba(0,114,206,0.10), transparent 45%),
+              radial-gradient(circle at 85% 25%, rgba(54,169,225,0.10), transparent 45%),
+              radial-gradient(circle at 50% 90%, rgba(10,42,94,0.08), transparent 50%),
+              var(--bg-page);
+  transition:background .4s ease;
+}
+body.dark .bg-canvas{
+  background: radial-gradient(circle at 15% 10%, rgba(0,114,206,0.18), transparent 45%),
+              radial-gradient(circle at 85% 25%, rgba(54,169,225,0.16), transparent 45%),
+              radial-gradient(circle at 50% 90%, rgba(107,33,168,0.12), transparent 50%),
+              var(--bg-page);
+}
+.grid-overlay{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(120,140,180,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,140,180,0.05) 1px,transparent 1px);
+  background-size:56px 56px;}
+
+.app-wrapper{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 18px 60px;}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.app-header{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:16px 24px;margin:18px 0 22px;
+  background:var(--glass-bg);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid var(--glass-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);
+}
+.header-brand{display:flex;align-items:center;gap:14px;flex:1;min-width:240px;}
+.brand-logos{display:flex;gap:10px;flex-shrink:0;}
+.logo-3d{
+  width:60px;height:60px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  position:relative;
+  background:linear-gradient(145deg,#ffffff,#dbe4f3);
+  box-shadow:
+    0 10px 22px rgba(10,42,94,0.28),
+    0 3px 8px rgba(10,42,94,0.18),
+    inset 0 2px 4px rgba(255,255,255,0.9),
+    inset 0 -3px 6px rgba(10,42,94,0.15);
+  border:2px solid rgba(255,255,255,0.8);
+  transform:perspective(300px) rotateX(2deg);
+  transition:var(--transition);
+}
+.logo-3d:hover{transform:perspective(300px) rotateX(0deg) translateY(-2px) scale(1.04);}
+.logo-3d::after{
+  content:'';position:absolute;top:6%;left:14%;width:38%;height:24%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.85),transparent 70%);
+  pointer-events:none;
+}
+.logo-3d img{
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
+}
+.logo-3d .logo-fallback{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:11px;color:#fff;
+  background:var(--ibps-grad);border-radius:50%;
+}
+body.dark .logo-3d{background:linear-gradient(145deg,#1c2a4a,#0c1731);border-color:rgba(255,255,255,0.15);}
+.brand-text h1{font-family:var(--font-display);font-weight:700;font-size:clamp(15px,2.4vw,20px);
+  background:linear-gradient(135deg,var(--ibps-1),var(--ibps-2),var(--ibps-3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.25;}
+.brand-text p{font-size:11.5px;color:var(--text-secondary);margin-top:3px;}
+.header-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:20px;font-size:11.5px;
+  background:var(--surface-alt);border:1px solid var(--glass-border);color:var(--text-secondary);white-space:nowrap;}
+.meta-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+#live-clock{font-variant-numeric:tabular-nums;font-weight:700;color:var(--text-primary);}
+.theme-toggle{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  background:var(--surface-alt);border:1px solid var(--glass-border);color:var(--text-primary);
+  transition:var(--transition);
+}
+.theme-toggle:hover{transform:scale(1.08) rotate(15deg);border-color:var(--glass-border-strong);}
+
+/* ============================================================
+   EXAM TABS (only 2)
+   ============================================================ */
+.exam-tab-bar{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  background:var(--glass-bg);backdrop-filter:blur(18px);border:1px solid var(--glass-border);
+  border-radius:var(--radius-xl);padding:10px;box-shadow:var(--shadow-sm);margin-bottom:22px;
+}
+.exam-tab{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 16px;border-radius:var(--radius-md);cursor:pointer;border:1px solid transparent;
+  background:var(--surface-alt);color:var(--text-secondary);transition:var(--transition);
+  font-family:var(--font-display);font-weight:700;font-size:13.5px;
+}
+.exam-tab .et-logo{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:#fff;overflow:hidden;
+}
+.exam-tab .et-logo img{width:100%;height:100%;object-fit:contain;padding:2px;background:#fff;}
+.exam-tab .et-logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.exam-tab .et-logo.ibps{background:var(--ibps-grad);}
+.exam-tab .et-logo.sbi{background:var(--sbi-grad);}
+.exam-tab .et-sub{display:block;font-size:10.5px;font-weight:500;color:var(--text-muted);margin-top:1px;}
+.exam-tab:hover{border-color:var(--glass-border-strong);transform:translateY(-1px);}
+.exam-tab.active{color:#fff;box-shadow:var(--shadow-md);border-color:transparent;}
+.exam-tab.active[data-exam="IBPS"]{background:var(--ibps-grad);}
+.exam-tab.active[data-exam="SBI"]{background:var(--sbi-grad);}
+.exam-tab.active .et-sub{color:rgba(255,255,255,0.78);}
+.exam-tab.active .et-logo{background:rgba(255,255,255,0.2);}
+
+/* ============================================================
+   EXAM PANEL
+   ============================================================ */
+.exam-panel{display:none;animation:panelIn .4s ease forwards;}
+.exam-panel.active{display:block;}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.exam-info-banner{
+  display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;
+  padding:16px 20px;margin-bottom:20px;border-radius:var(--radius-lg);
+  background:var(--surface);border:1px solid var(--glass-border);box-shadow:var(--shadow-sm);
+}
+.exam-info-banner .ib-icon{width:46px;height:46px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;overflow:hidden;}
+.exam-info-banner .ib-icon img{width:100%;height:100%;object-fit:cover;border-radius:12px;}
+.exam-info-banner .ib-text{flex:1;min-width:200px;}
+.exam-info-banner h2{font-family:var(--font-display);font-size:15.5px;font-weight:700;}
+.exam-info-banner p{font-size:12px;color:var(--text-secondary);margin-top:3px;line-height:1.6;}
+.exam-info-banner .ib-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* SECTION PICKER */
+.section-picker{
+  display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-bottom:22px;
+}
+.section-pick-btn{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:16px 10px;border-radius:var(--radius-md);cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--glass-border);color:var(--text-secondary);
+  transition:var(--transition);text-align:center;position:relative;
+}
+.section-pick-btn:hover{border-color:var(--glass-border-strong);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.section-pick-btn .sp-icon{font-size:24px;}
+.section-pick-btn .sp-label{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--text-primary);}
+.section-pick-btn .sp-spec{font-size:9.5px;color:var(--text-muted);}
+.section-pick-btn .sp-status{
+  position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--glass-border-strong);
+}
+.section-pick-btn .sp-status.done{background:var(--success);box-shadow:0 0 6px var(--success);}
+.section-pick-btn.active{border-color:transparent;color:#fff;}
+.section-pick-btn.active[data-exam="IBPS"]{background:var(--ibps-grad);box-shadow:var(--shadow-md);}
+.section-pick-btn.active[data-exam="SBI"]{background:var(--sbi-grad);box-shadow:var(--shadow-md);}
+.section-pick-btn.active .sp-label,.section-pick-btn.active .sp-spec{color:#fff;}
+.section-pick-btn.active .sp-spec{color:rgba(255,255,255,0.85);}
+
+/* ============================================================
+   WORKSPACE (single active section detail)
+   ============================================================ */
+.workspace{
+  background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-md);padding:26px;display:none;
+}
+.workspace.show{display:block;animation:wsIn .35s ease;}
+@keyframes wsIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.ws-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+.ws-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0;}
+.ws-title-area{flex:1;min-width:160px;}
+.ws-title{font-family:var(--font-display);font-size:18px;font-weight:700;}
+.ws-subtitle{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.ws-spec-strip{display:flex;gap:8px;flex-wrap:wrap;}
+.ws-spec-tag{padding:5px 11px;border-radius:9px;font-size:11px;font-weight:600;
+  background:var(--surface-alt);border:1px solid var(--glass-border);color:var(--text-secondary);}
+
+.ws-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:22px;margin-top:20px;}
+
+/* Instructions panel */
+.instructions-panel{
+  background:var(--info-bg);border:1px solid rgba(11,111,184,0.25);border-radius:var(--radius-md);
+  padding:16px 18px;
+}
+.instructions-panel h3{font-size:12.5px;font-weight:700;color:var(--info);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.instructions-list{list-style:none;font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.instructions-list li{display:flex;gap:8px;padding:2px 0;}
+.instructions-list li::before{content:'•';color:var(--info);font-weight:900;flex-shrink:0;}
+.instructions-list b{color:var(--text-primary);}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed var(--glass-border-strong);border-radius:var(--radius-md);
+  padding:36px 20px;text-align:center;cursor:pointer;transition:var(--transition);
+  background:var(--surface-alt);margin-top:16px;
+}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--info);background:var(--info-bg);transform:scale(1.005);}
+.upload-zone input[type=file]{display:none;}
+.uz-icon{font-size:36px;margin-bottom:10px;}
+.uz-label{font-size:14px;font-weight:700;color:var(--text-primary);}
+.uz-sub{font-size:12px;color:var(--text-muted);margin-top:5px;}
+.uz-formats{font-size:11px;color:var(--text-muted);margin-top:10px;}
+
+/* Progress */
+.progress-wrap{display:none;margin-top:16px;}
+.progress-wrap.show{display:block;}
+.progress-bar-bg{height:9px;border-radius:9px;background:var(--surface-alt);border:1px solid var(--glass-border);overflow:hidden;}
+.progress-bar-fill{height:100%;border-radius:9px;width:0%;transition:width .25s ease;position:relative;overflow:hidden;}
+.progress-bar-fill::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:sweep 1s infinite;}
+@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.progress-meta{display:flex;justify-content:space-between;margin-top:7px;font-size:11.5px;}
+.progress-step-text{color:var(--text-secondary);font-style:italic;}
+.progress-step-text .wait-dots{display:inline-block;width:18px;text-align:left;}
+.progress-step-text .wait-dots span{animation:waitDotPulse 1.4s infinite;opacity:0;}
+.progress-step-text .wait-dots span:nth-child(1){animation-delay:0s;}
+.progress-step-text .wait-dots span:nth-child(2){animation-delay:0.2s;}
+.progress-step-text .wait-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes waitDotPulse{
+  0%{opacity:0;}
+  30%{opacity:1;}
+  60%{opacity:0;}
+  100%{opacity:0;}
+}
+.wait-spinner{
+  width:34px;height:34px;margin:0 auto 10px;
+  border:3px solid var(--glass-border);
+  border-top-color:var(--info);
+  border-radius:50%;
+  animation:waitSpin 0.8s linear infinite;
+}
+@keyframes waitSpin{to{transform:rotate(360deg);}}
+.wait-center{text-align:center;padding:6px 0 2px;}
+.progress-pct{font-weight:800;color:var(--info);}
+
+/* Result card */
+.result-card{
+  display:none;margin-top:18px;border-radius:var(--radius-md);border:1px solid var(--glass-border);
+  background:var(--surface-alt);overflow:hidden;
+}
+.result-card.show{display:block;animation:wsIn .4s ease;}
+.result-banner{padding:12px 16px;background:var(--success-bg);border-bottom:1px solid rgba(12,138,75,0.2);
+  display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;color:var(--success);}
+.result-body{padding:16px;}
+.result-preview{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.rp-box{border-radius:10px;overflow:hidden;border:1px solid var(--glass-border);background:var(--surface);position:relative;}
+.rp-box img{width:100%;height:110px;object-fit:contain;display:block;padding:4px;background:#fff;}
+.rp-label{position:absolute;bottom:0;left:0;right:0;padding:4px 8px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;text-align:center;}
+
+.file-details-table{width:100%;font-size:12px;border-collapse:collapse;margin-bottom:14px;}
+.file-details-table tr{border-bottom:1px solid var(--glass-border);}
+.file-details-table tr:last-child{border-bottom:none;}
+.file-details-table td{padding:7px 4px;}
+.file-details-table td:first-child{color:var(--text-muted);width:42%;}
+.file-details-table td:last-child{color:var(--text-primary);font-weight:600;text-align:right;}
+.file-details-table .ok-val{color:var(--success);}
+.file-details-table .warn-val{color:var(--warning);}
+
+.result-actions{display:flex;gap:10px;}
+
+/* Buttons */
+.btn{padding:11px 18px;border-radius:var(--radius-sm);border:none;font-family:var(--font-body);
+  font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--transition);
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+.btn:active{transform:scale(.96);}
+.btn-block{width:100%;}
+.btn-grad-ibps{background:var(--ibps-grad);color:#fff;box-shadow:0 4px 16px rgba(0,114,206,.32);}
+.btn-grad-sbi{background:var(--sbi-grad);color:#fff;box-shadow:0 4px 16px rgba(54,169,225,.32);}
+.btn-grad-ibps:hover,.btn-grad-sbi:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.btn-download{background:linear-gradient(135deg,#0C8A4B,#1FAE63);color:#fff;box-shadow:0 4px 16px rgba(12,138,75,.32);flex:2;}
+.btn-download:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.btn-reset-sm{background:var(--error-bg);color:var(--error);border:1px solid rgba(198,40,40,.25);flex:1;}
+.btn-reset-sm:hover{background:rgba(198,40,40,.18);}
+.btn-ghost{background:var(--surface-alt);border:1px solid var(--glass-border);color:var(--text-secondary);}
+.btn-ghost:hover{border-color:var(--glass-border-strong);color:var(--text-primary);}
+.btn-orange{background:var(--orange-grad);color:#fff;box-shadow:0 4px 16px rgba(230,81,0,.32);}
+.btn-orange:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.btn-orange-outline{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(230,81,0,.35);}
+.btn-orange-outline:hover{background:rgba(230,81,0,.2);}
+
+/* Batch download / processed documents bar */
+.batch-download-bar{
+  display:none;margin-bottom:20px;border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid rgba(230,81,0,0.3);background:var(--orange-bg);box-shadow:var(--shadow-sm);
+}
+.batch-download-bar.show{display:block;animation:wsIn .4s ease;}
+.bdb-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;}
+.bdb-title{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--orange);}
+.bdb-title .bdb-count{background:var(--orange);color:#fff;border-radius:10px;padding:1px 9px;font-size:11px;}
+.bdb-list{padding:0 18px 16px;display:flex;flex-direction:column;gap:8px;}
+.bdb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--glass-border);font-size:12px;}
+.bdb-item .bdb-icon{font-size:16px;flex-shrink:0;}
+.bdb-item .bdb-name{flex:1;color:var(--text-primary);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bdb-item .bdb-size{color:var(--text-muted);font-size:11px;flex-shrink:0;}
+.bdb-item .bdb-mini-btn{
+  width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  background:var(--surface-alt);color:var(--text-secondary);transition:var(--transition);
+}
+.bdb-item .bdb-mini-btn:hover{background:var(--info-bg);color:var(--info);}
+
+/* Rename */
+.rename-btn{
+  width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  background:var(--info-bg);color:var(--info);transition:var(--transition);
+}
+.rename-btn:hover{background:var(--info);color:#fff;transform:scale(1.1);}
+.rename-row{display:flex;align-items:center;gap:8px;}
+.rename-input-wrap{display:none;margin-top:10px;}
+.rename-input-wrap.show{display:block;animation:wsIn .2s ease;}
+.rename-input{
+  width:100%;padding:9px 12px;border-radius:9px;border:1.5px solid var(--glass-border-strong);
+  background:var(--surface);color:var(--text-primary);font-size:12.5px;font-family:var(--font-body);
+  outline:none;transition:var(--transition);
+}
+.rename-input:focus{border-color:var(--info);}
+.rename-input.invalid{border-color:var(--error);background:var(--error-bg);}
+.rename-error{font-size:11px;color:var(--error);margin-top:6px;display:none;align-items:center;gap:5px;}
+.rename-error.show{display:flex;}
+.rename-actions{display:flex;gap:8px;margin-top:10px;}
+.rename-actions .btn{padding:8px 14px;font-size:11.5px;flex:1;}
+
+/* ============================================================
+   PRE-CONVERT CONFIGURATION PANEL
+   (appears after file selection, before processing)
+   ============================================================ */
+.config-panel{
+  display:none;margin-top:16px;padding:18px;border-radius:var(--radius-md);
+  background:var(--surface-alt);border:1.5px solid var(--glass-border);
+  animation:wsIn .3s ease;
+}
+.config-panel.show{display:block;}
+.config-panel-title{
+  font-family:var(--font-display);font-weight:700;font-size:13px;
+  color:var(--text-primary);margin-bottom:4px;display:flex;align-items:center;gap:7px;
+}
+.config-panel-sub{font-size:11px;color:var(--text-muted);margin-bottom:14px;}
+.config-selected-file{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;margin-bottom:14px;
+  background:var(--surface);border:1px solid var(--glass-border);border-radius:10px;font-size:11.5px;
+}
+.config-selected-file .csf-icon{font-size:16px;flex-shrink:0;}
+.config-selected-file .csf-name{flex:1;color:var(--text-primary);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.config-selected-file .csf-size{color:var(--text-muted);flex-shrink:0;}
+.config-selected-file .csf-clear{
+  width:22px;height:22px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;
+  background:var(--error-bg);color:var(--error);font-size:11px;
+  display:flex;align-items:center;justify-content:center;transition:var(--transition);
+}
+.config-selected-file .csf-clear:hover{background:var(--error);color:#fff;}
+
+.config-field{margin-bottom:14px;}
+.config-field:last-of-type{margin-bottom:0;}
+.config-field-label{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11.5px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;
+}
+.config-field-label .cfl-hint{font-weight:500;color:var(--text-muted);font-size:10.5px;}
+.config-kb-row{display:flex;align-items:center;gap:8px;}
+.config-input{
+  width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--glass-border-strong);
+  background:var(--surface);color:var(--text-primary);font-size:13px;font-family:var(--font-body);
+  font-weight:600;outline:none;transition:var(--transition);
+}
+.config-input:focus{border-color:var(--info);}
+.config-input.invalid{border-color:var(--error);background:var(--error-bg);}
+.config-kb-unit{
+  font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0;padding:0 4px;
+}
+.config-error{
+  font-size:11px;color:var(--error);margin-top:7px;display:none;align-items:flex-start;gap:5px;
+  background:var(--error-bg);padding:8px 10px;border-radius:8px;line-height:1.5;
+}
+.config-error.show{display:flex;}
+.config-error .ce-icon{flex-shrink:0;}
+.config-range-presets{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.config-preset-btn{
+  padding:4px 10px;border-radius:8px;font-size:10.5px;font-weight:700;cursor:pointer;
+  background:var(--surface);border:1px solid var(--glass-border);color:var(--text-secondary);
+  transition:var(--transition);
+}
+.config-preset-btn:hover{border-color:var(--info);color:var(--info);}
+.config-preset-btn.active{background:var(--info);color:#fff;border-color:var(--info);}
+.btn-convert{
+  width:100%;margin-top:16px;padding:13px 18px;font-size:13.5px;
+  background:var(--orange-grad);color:#fff;box-shadow:0 4px 16px rgba(230,81,0,.32);
+}
+.btn-convert:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.btn-convert:disabled{opacity:0.5;cursor:not-allowed;transform:none;filter:none;}
+
+.compliance-list{margin-top:14px;}
+.compliance-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11.5px;color:var(--text-secondary);}
+.ci-dot{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.ci-dot.pass{background:var(--success-bg);color:var(--success);}
+.ci-dot.fail{background:var(--error-bg);color:var(--error);}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(5,12,28,0.55);backdrop-filter:blur(5px);
+  display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius-xl);
+  padding:26px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);
+  animation:modalSlide .3s ease;}
+@keyframes modalSlide{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px;}
+.modal-title{font-family:var(--font-display);font-size:17px;font-weight:700;}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface-alt);border:1px solid var(--glass-border);
+  color:var(--text-secondary);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modal-close:hover{background:var(--error-bg);color:var(--error);}
+.declaration-box{background:var(--surface-alt);border:1px solid var(--glass-border);border-radius:var(--radius-md);
+  padding:16px;font-size:12.5px;line-height:1.9;color:var(--text-secondary);font-style:italic;}
+.declaration-box b{font-style:normal;color:var(--text-primary);}
+.fill-blank{display:inline-block;min-width:110px;border-bottom:1.5px dashed var(--text-muted);text-align:center;
+  font-style:normal;font-weight:700;color:var(--warning);}
+.modal-section{margin-bottom:18px;}
+.modal-section-title{font-family:var(--font-display);font-size:12.5px;font-weight:700;color:var(--info);
+  margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--glass-border);}
+
+/* Toast */
+.toast-container{position:fixed;bottom:20px;right:20px;left:20px;z-index:2000;display:flex;flex-direction:column;
+  align-items:flex-end;gap:9px;pointer-events:none;}
+.toast{pointer-events:auto;padding:12px 16px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;gap:9px;max-width:340px;box-shadow:var(--shadow-md);border:1px solid;
+  animation:toastIn .35s ease;}
+@keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.success{background:#0C8A4B;border-color:#0a7240;color:#ffffff;}
+.toast.error{background:#C62828;border-color:#a82121;color:#ffffff;}
+.toast.info{background:#0B6FB8;border-color:#095d99;color:#ffffff;}
+.toast.warning{background:#B45309;border-color:#933f07;color:#ffffff;}
+
+/* Spec guide */
+.spec-guide-section{margin-top:30px;padding:24px;background:var(--surface);border:1px solid var(--glass-border);
+  border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);}
+.spec-guide-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:16px;}
+.spec-guide-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.sg-tab{padding:7px 14px;border-radius:18px;background:var(--surface-alt);border:1px solid var(--glass-border);
+  color:var(--text-secondary);cursor:pointer;font-size:12px;font-weight:700;transition:var(--transition);}
+.sg-tab:hover{border-color:var(--glass-border-strong);}
+.sg-tab.active{background:var(--ibps-grad);color:#fff;border-color:transparent;}
+.spec-table{width:100%;min-width:760px;border-collapse:collapse;font-size:12px;table-layout:fixed;}
+#spec-table-container{-webkit-overflow-scrolling:touch;}
+#spec-table-container::-webkit-scrollbar{height:8px;}
+#spec-table-container::-webkit-scrollbar-thumb{background:var(--glass-border-strong);border-radius:8px;}let lo = 0.35, hi = 0.97, bestBlob = null, attempts = 0;
+
+      const tryQuality = (q) => new Promise(res=>{
+        canvas.toBlob(blob=>res(blob), 'image/jpeg', q);
+      });
+
+      (async ()=>{
+        let blob = await tryQuality(hi);
+        if(blob.size/1024 <= maxKB){
+          bestBlob = blob;
+        } else {
+          while(attempts < 9){
+            const mid = (lo+hi)/2;
+            blob = await tryQuality(mid);
+            const kb = blob.size/1024;
+            if(kb > maxKB){ hi = mid; }
+            else { bestBlob = blob; lo = mid; }
+            attempts++;
+          }
+          if(!bestBlob){
+            bestBlob = await tryQuality(0.3);
+          }
+        }
+        resolve({ blob: bestBlob });
+      })();
+.spec-table col.col-exam{width:8%;}
+.spec-table col.col-doc{width:14%;}
+.spec-table col.col-fmt{width:13%;}
+.spec-table col.col-size{width:11%;}
+.spec-table col.col-dim{width:12%;}
+.spec-table col.col-notes{width:42%;}
+.spec-table th{text-align:left;padding:9px 10px;background:var(--surface-alt);border-bottom:1px solid var(--glass-border);
+  color:var(--text-muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;}
+.spec-table td{padding:9px 10px;border-bottom:1px solid var(--glass-border);color:var(--text-secondary);word-wrap:break-word;}
+.spec-table tr:last-child td{border-bottom:none;}
+.badge-ok{padding:2px 8px;border-radius:6px;background:var(--success-bg);color:var(--success);font-size:10px;font-weight:700;}
+.badge-warn{padding:2px 8px;border-radius:6px;background:var(--warning-bg);color:var(--warning);font-size:10px;font-weight:700;}
+
+/* Footer */
+.app-footer{margin-top:32px;}
+.footer-disclaimer{
+  padding:16px 20px;background:var(--warning-bg);border:1px solid rgba(180,83,9,0.25);
+  border-radius:var(--radius-md);font-size:11.5px;line-height:1.8;color:var(--text-secondary);
+}
+.footer-disclaimer b{color:var(--warning);}
+.footer-safety{
+  padding:16px 20px;margin-top:12px;background:var(--success-bg);border:1px solid rgba(12,138,75,0.22);
+  border-radius:var(--radius-md);font-size:11.5px;line-height:1.8;color:var(--text-secondary);
+}
+.footer-safety b{color:var(--success);}
+.footer-bottom{text-align:center;font-size:11px;color:var(--text-muted);margin-top:18px;line-height:1.9;}
+.telegram-cta {
+  /* Layout (Kept from Telegram code) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  text-decoration: none;
+  font-family: var(--font-display);
+
+  /* Sizing & Core Styles (Upgraded to Button-38) */
+  padding: 15px 25px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+
+  /* Interaction Safety (From Button-38) */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  /* Theme Visuals (Upgraded to Button-38 Purple 3D Gradient) */
+  background-color: #7F00FF;
+  background-image: radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, .23) 0, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, .55) 0, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: rgba(255, 255, 255, 0.1) -3px -3px 9px inset, rgba(255, 255, 255, 0.15) 0 3px 9px inset, rgba(255, 255, 255, 0.6) 0 1px 1px inset, rgba(0, 0, 0, 0.3) 0 -8px 36px inset, rgba(255, 255, 255, 0.6) 0 1px 5px inset, rgba(0, 0, 0, 0.2) 2px 19px 31px;
+  
+  /* Transition (From Button-38) */
+  transition: all 150ms ease-in-out;
+}
+
+/* Hover State (Upgraded to Button-38) */
+.telegram-cta:hover {
+  filter: brightness(1.05);
+}
+
+/* Active Click State (Upgraded to Button-38) */
+.telegram-cta:active {
+  transform: scale(.95);
+}
+
+/* Icon Size Handling (Kept from Telegram code) */
+.telegram-cta svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Note: Dark mode selector removed as the new purple solid background works across both themes. */
+
+/* Responsive */
+@media (max-width:860px){
+  .ws-grid{grid-template-columns:1fr;}
+  .section-picker{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .app-wrapper{padding:0 12px 40px;}
+  .app-header{padding:14px 16px;}
+  .header-meta{width:100%;justify-content:space-between;}
+  .exam-tab-bar{grid-template-columns:1fr 1fr;}
+  .exam-tab{font-size:12px;padding:11px 8px;flex-direction:column;gap:4px;}
+  .exam-tab .et-sub{display:none;}
+  .section-picker{grid-template-columns:repeat(2,1fr);}
+  .result-preview{grid-template-columns:1fr;}
+  .result-actions{flex-direction:column;}
+  .workspace{padding:18px;}
+  .modal{padding:18px;}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+<div class="bg-canvas"><div class="grid-overlay"></div></div>
+
+<div class="app-wrapper">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-logos">
+        <div class="logo-3d" id="logoSlotMain">
+          <img src="https://i.postimg.cc/Sxcx6X3J/file-00000000342871f8b2502d340b0f8355.png"
+               alt="Site Logo"
+               id="logoImgMain"
+               onload="this.style.display='block';document.getElementById('logoFallbackMain').style.display='none';"
+               onerror="this.style.display='none';document.getElementById('logoFallbackMain').style.display='flex';">
+          <span class="logo-fallback" id="logoFallbackMain" style="display:none;">VB</span>
+        </div>
+      </div>
+      <div class="brand-text">
+        <h1>Exam Document Processor</h1>
+        <p>Resize &amp; compress Photo, Signature, Thumb Impression &amp; Declaration to exact specs</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-chip"><div class="dot"></div><span>🕒</span><span id="live-clock">00:00:00</span></div>
+      <button class="theme-toggle" id="themeToggle" title="Switch theme" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <!-- EXAM TABS -->
+  <div class="exam-tab-bar" role="tablist">
+    <button class="exam-tab active" data-exam="IBPS" onclick="switchExam('IBPS',this)" role="tab" aria-selected="true">
+      <span class="et-logo ibps"><img src="https://i.ibb.co/W8PWFVB/20260406-005258.jpg" alt="IBPS"
+       onerror="this.style.display='none'; this.parentElement.textContent='🏦';"></span>
+      <span><span>IBPS Examination</span><span class="et-sub">Institute of Banking Personnel Selection</span></span>
+    </button>
+    <button class="exam-tab" data-exam="SBI" onclick="switchExam('SBI',this)" role="tab">
+      <span class="et-logo ibps">
+  <img src="https://i.postimg.cc/ZYVXdVGB/sbi.jpg" alt="IBPS"
+       onerror="this.style.display='none'; this.parentElement.textContent='🏦';">
+</span>
+      <span><span>SBI Examination</span><span class="et-sub">State Bank of India — Recruitment</span></span>
+    </button>
+  </div>
+
+  <!-- PANELS -->
+  <div id="panels-container"></div>
+
+  <!-- SPEC GUIDE -->
+  <div class="spec-guide-section">
+    <div class="spec-guide-title">📋 Complete Specification Reference</div>
+    <div class="spec-guide-tabs">
+      <button class="sg-tab active" onclick="showSpecTable('all',this)">Both Exams</button>
+      <button class="sg-tab" onclick="showSpecTable('ibps',this)">IBPS Only</button>
+      <button class="sg-tab" onclick="showSpecTable('sbi',this)">SBI Only</button>
+    </div>
+    <div id="spec-table-container" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-safety">
+      🔒 <b>Data Safety:</b> Every file you upload is processed entirely inside your own browser using the Canvas API.
+      Nothing is uploaded to a server, stored, logged, or transmitted anywhere — closing this tab erases all data immediately.
+    </div>
+    <div class="footer-disclaimer">
+      ⚠️ <b>Disclaimer:</b> This is an independent, unofficial tool built to assist candidates and is not affiliated with IBPS,
+      SBI, or any recruiting authority. Specifications can change with each new notification — always cross-check final
+      output dimensions, file size, and format against the official notification PDF before submitting your application.
+      The creators of this tool are not responsible for application rejection due to non-compliance.
+    </div>
+    <a class="telegram-cta" href="https://t.me/VictoryBanker" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 2.927a1.5 1.5 0 0 0-1.523-.255L2.853 9.32a1.45 1.45 0 0 0 .096 2.726l4.392 1.45 1.704 5.46a1.05 1.05 0 0 0 1.744.39l2.402-2.31 4.412 3.26a1.45 1.45 0 0 0 2.29-.88l2.604-14.04a1.5 1.5 0 0 0-.447-1.45ZM8.97 13.39l-3.6-1.19 11.7-5.51-9.5 7.96Zm1.21 1.02 8.84-7.41-7.49 9.6-.42-2.93a.7.7 0 0 1 .07-.26Z"/></svg>
+      Join Our Telegram Channel — @VictoryBanker
+    </a>
+    <p class="footer-bottom">Built for Banking Aspirants · 100% Client-Side · No Sign-up · No Data Collected</p>
+  </footer>
+
+</div>
+
+<!-- DECLARATION MODAL -->
+<div class="modal-overlay" id="declarationModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">📜 Declaration Format</div>
+      <button class="modal-close" onclick="closeModal('declarationModal')">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ============================================================
+   CONFIG: EXAMS, DOC TYPES, INSTRUCTIONS, DECLARATIONS
+   ============================================================ */
+const EXAMS = {
+  IBPS: {
+    name:'IBPS', fullName:'Institute of Banking Personnel Selection',
+    notificationUrl: 'PASTE_IBPS_NOTIFICATION_PDF_LINK_HERE',
+    grad:'var(--ibps-grad)', icon:'🏦', logoUrl:'https://i.ibb.co/W8PWFVB/20260406-005258.jpg',
+    btnClass:'btn-grad-ibps',
+    docTypes: [
+      { id:'photo', label:'Photograph', icon:'📸',
+        minKB:20, maxKB:50, w:200, h:230, fmt:['jpg','jpeg'],
+        instructions:[
+          'Recent passport-style <b>colour</b> photograph taken against a light-coloured, preferably white, background.',
+          'Look straight at the camera with a relaxed face; both eyes clearly visible.',
+          'Caps, hats and dark glasses are not acceptable. Religious headwear is allowed if it does not cover the face.',
+          'Avoid harsh shadows — if outdoors, keep the sun behind you or stand in shade.',
+          'Target dimensions: <b>200 × 230 px</b>. File size must stay within <b>20KB–50KB</b>.'
+        ]
+      },
+      { id:'signature', label:'Signature', icon:'✍️',
+        minKB:10, maxKB:20, w:140, h:60, fmt:['jpg','jpeg'],
+        instructions:[
+          'Sign on plain white paper using a <b>black ink pen</b> only.',
+          'Use your normal running/cursive signature — <b>capital block letters are not accepted</b>.',
+          'Signature must exactly match what you will sign on the exam attendance sheet and call letter.',
+          'No other person may sign on your behalf — mismatches lead to disqualification.',
+          'Target dimensions: <b>140 × 60 px</b>. File size must stay within <b>10KB–20KB</b>.'
+        ]
+      },
+      { id:'thumb', label:'Left Thumb Impression', icon:'👍',
+        minKB:20, maxKB:50, w:240, h:240, fmt:['jpg','jpeg'],
+        instructions:[
+          'Put your <b>left-hand thumb</b> impression on white paper using black or blue ink.',
+          'If you do not have a left thumb, you may use your right-hand thumb instead.',
+          'Ensure ridge patterns are clearly visible — avoid smudging or double impressions.',
+          'Press firmly but evenly; too light or too dark an impression may be rejected.',
+          'Target dimensions: <b>240 × 240 px</b> (3cm × 3cm at 200 DPI). File size must stay within <b>20KB–50KB</b>.'
+        ]
+      },
+      { id:'declaration', label:'Hand-written Declaration', icon:'📜',
+        minKB:50, maxKB:100, w:800, h:400, fmt:['jpg','jpeg'],
+        instructions:[
+          'Write the declaration text (see "View Declaration Format" above) in your <b>own handwriting</b>.',
+          'Use a <b>black ink pen</b> on plain white A4 paper, written clearly in English.',
+          'Do <b>not</b> write in capital letters — normal sentence case only.',
+          'Scan at a minimum of 200 DPI for required clarity.',
+          'Target dimensions: <b>800 × 400 px</b> (10cm × 5cm). File size must stay within <b>50KB–100KB</b>.'
+        ]
+      },
+      { id:'ssc', label:'SSC / SSLC / 10th Certificate', icon:'🎓', isPdf:true,
+        minKB:0, maxKB:500, fmt:['pdf','jpg','jpeg'],
+        instructions:[
+          'Upload your <b>SSC / SSLC / 10th Standard</b> certificate (or equivalent certificate as mentioned in the notification).',
+          'Document must be in <b>PDF format</b> — if you only have a photo/scan (JPG/JPEG), this tool will auto-convert it into a single-page A4 PDF.',
+          'Page size must be <b>A4</b>; ensure the certificate is clear, complete, and readable.',
+          'Final file size must <b>not exceed 500 KB</b> — this tool compresses automatically to fit the limit.',
+          'Upload only your own certificate — documents belonging to another person will lead to disqualification.'
+        ]
+      }
+    ]
+  },
+  SBI: {
+    name:'SBI', fullName:'State Bank of India — Recruitment Division',
+    notificationUrl: 'https://sbi.bank.in/documents/77530/57941/18062026_1_Detailed_Adv.2026.pdf/1f1a9532-8a2f-6e59-08a0-616d62a497b1?t=1781759726353',
+    grad:'var(--sbi-grad)', icon:'🔑', logoUrl:'https://i.postimg.cc/ZYVXdVGB/sbi.jpg',
+    btnClass:'btn-grad-sbi',
+    docTypes: [
+      { id:'photo', label:'Photograph', icon:'📸',
+        minKB:20, maxKB:50, w:200, h:230, fmt:['jpg','jpeg'],
+        instructions:[
+          'Recent <b>colour</b> photograph against a <b>white background only</b> (not just light-coloured).',
+          'Both ears must be clearly visible; avoid spectacles where possible to prevent glare/reflection.',
+          'Neutral expression with both eyes open, looking directly at the camera.',
+          'No caps, hats, or dark glasses; religious headwear allowed if the face stays uncovered.',
+          'Target dimensions: <b>200 × 230 px</b>. File size must stay within <b>20KB–50KB</b>.'
+        ]
+      },
+      { id:'signature', label:'Signature', icon:'✍️',
+        minKB:10, maxKB:20, w:140, h:60, fmt:['jpg','jpeg'],
+        instructions:[
+          'Sign on plain white paper using <b>blue or black ink</b>.',
+          'Signature (not in capital letters) must be consistent across all SBI documents.',
+          'Digital/typed signatures are <b>not accepted</b> — it must be a scanned handwritten signature.',
+          'Ensure a clean, non-smudged, clearly legible impression.',
+          'Target dimensions: <b>140 × 60 px</b>. File size must stay within <b>10KB–20KB</b>.'
+        ]
+      },
+      { id:'thumb', label:'Left Thumb Impression', icon:'👍',
+        minKB:20, maxKB:50, w:240, h:240, fmt:['jpg','jpeg'],
+        instructions:[
+          'Place your <b>left thumb</b> impression on white paper, preferably with <b>blue ink</b>.',
+          'If both thumbs are missing, use a finger of the left hand starting from the forefinger, or note the alternative used.',
+          'Take only a <b>single, clean attempt</b> — multiple overlapping impressions may be rejected.',
+          'Ridge patterns should be distinct and fully visible.',
+          'Target dimensions: <b>240 × 240 px</b> (3cm × 3cm at 200 DPI). File size must stay within <b>20KB–50KB</b>.'
+        ]
+      },
+      { id:'declaration', label:'Hand-written Declaration', icon:'📜',
+        minKB:50, maxKB:100, w:800, h:400, fmt:['jpg','jpeg'],
+        instructions:[
+          'Write the SBI declaration text (see "View Declaration Format" above) in your <b>own handwriting, in English only</b>.',
+          'Use <b>black ink</b> on white paper; if written by anyone else, the application becomes invalid.',
+          'Do <b>not</b> use capital letters anywhere in the declaration.',
+          'Candidates who cannot write may get the text typed and add a left thumb impression below it instead.',
+          'Target dimensions: <b>800 × 400 px</b>. File size must stay within <b>50KB–100KB</b>.'
+        ]
+      }
+    ]
+  }
+};
+
+const DECLARATIONS = {
+  IBPS: `I, <span class="fill-blank">___Name of the candidate___</span>, hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required.`,
+  SBI: `I, <span class="fill-blank">___Name of the candidate___</span>, <span class="fill-blank">___Date of Birth___</span> hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required. The signature, photograph and left-hand thumb impression is of mine.`
+};
+
+const STATE = { IBPS:{photo:null,signature:null,thumb:null,declaration:null,ssc:null}, SBI:{photo:null,signature:null,thumb:null,declaration:null} };
+let activeSection = { IBPS:'photo', SBI:'photo' };
+// Holds the raw File object + chosen filename for a section while the user
+// is configuring target size/name, before Convert is clicked.
+const PENDING_FILES = { IBPS:{photo:null,signature:null,thumb:null,declaration:null,ssc:null}, SBI:{photo:null,signature:null,thumb:null,declaration:null} };
+
+/* ============================================================
+   BUILD PANELS
+   ============================================================ */
+function buildPanels(){
+  const container = document.getElementById('panels-container');
+  Object.entries(EXAMS).forEach(([key, exam], idx)=>{
+    const panel = document.createElement('div');
+    panel.className = 'exam-panel' + (idx===0?' active':'');
+    panel.id = `panel-${key}`;
+
+    panel.innerHTML = `
+      <div class="exam-info-banner">
+        <div class="ib-icon" style="background:${exam.grad};">
+  <img src="${exam.logoUrl}" alt="${exam.name} Logo" onerror="this.style.display='none'; this.parentElement.textContent='${exam.icon}';">
+</div>
+        <div class="ib-text">
+          <h2>${exam.name} — Document Requirements</h2>
+          <p>${exam.fullName}. Pick a document below, follow the instructions, then upload your scan to compress &amp; resize it to the exact specification.</p>
+        </div>
+        <div class="ib-actions">
+  <button class="btn btn-orange-outline" onclick="showDeclarationModal('${key}')">📜 View Declaration Format</button>
+  <a class="btn btn-ghost" href="${exam.notificationUrl}" target="_blank" rel="noopener noreferrer">📥 Download Official Notification</a>
+</div>
+      </div>
+
+      <div class="batch-download-bar" id="batch-bar-${key}">
+        <div class="bdb-top">
+          <div class="bdb-title">📦 Processed Documents <span class="bdb-count" id="batch-count-${key}">0</span></div>
+          <button class="btn btn-orange" onclick="downloadAllZip('${key}')">⬇ Download All as ZIP</button>
+        </div>
+        <div class="bdb-list" id="batch-list-${key}"></div>
+      </div>
+
+      <div class="section-picker" id="picker-${key}">
+        ${exam.docTypes.map(dt=>`
+          <button class="section-pick-btn ${dt.id===activeSection[key]?'active':''}" data-exam="${key}" data-doc="${dt.id}"
+                  onclick="selectSection('${key}','${dt.id}')">
+            <span class="sp-status" id="spstatus-${key}-${dt.id}"></span>
+            <span class="sp-icon">${dt.icon}</span>
+            <span class="sp-label">${dt.label}</span>
+            <span class="sp-spec">${dt.w}×${dt.h}px · ${dt.minKB}-${dt.maxKB}KB</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div id="workspace-container-${key}"></div>
+    `;
+    container.appendChild(panel);
+    exam.docTypes.forEach(dt => buildWorkspace(key, dt, exam));
+  });
+
+  wireUploadZones();
+}
+
+function buildWorkspace(exam, dt, examConfig){
+  const container = document.getElementById(`workspace-container-${exam}`);
+  const ws = document.createElement('div');
+  ws.className = 'workspace' + (dt.id===activeSection[exam] ? ' show' : '');
+  ws.id = `ws-${exam}-${dt.id}`;
+
+  const fmtStr = dt.fmt.map(f=>f.toUpperCase()).join(' / ');
+
+  ws.innerHTML = `
+    <div class="ws-header">
+      <div class="ws-icon" style="background:${examConfig.grad};">${dt.icon}</div>
+      <div class="ws-title-area">
+        <div class="ws-title">${dt.label}</div>
+        <div class="ws-subtitle">${exam} Official Specification</div>
+      </div>
+      <div class="ws-spec-strip">
+        ${dt.isPdf ? `<span class="ws-spec-tag">📄 A4 PDF</span>` : `<span class="ws-spec-tag">📐 As per exam spec: ${dt.w}×${dt.h}px</span>`}
+        <span class="ws-spec-tag">💾 ${dt.isPdf ? `Max ${dt.maxKB}KB` : `${dt.minKB}–${dt.maxKB}KB`}</span>
+        <span class="ws-spec-tag">🖼 ${fmtStr}</span>
+      </div>
+    </div>
+
+    <div class="ws-grid">
+      <div>
+        <div class="upload-zone" data-exam="${exam}" data-doc="${dt.id}" id="zone-${exam}-${dt.id}" tabindex="0" role="button" aria-label="Upload ${dt.label}">
+          <input type="file" id="input-${exam}-${dt.id}" accept="${dt.fmt.map(f=>'.'+f).join(',')}" onchange="handleInputChange('${exam}','${dt.id}',this)">
+          <div class="uz-icon">${dt.id==='declaration'||dt.isPdf?'📄':'🖼️'}</div>
+          <div class="uz-label">Drop file here or click to browse</div>
+          <div class="uz-sub">Upload your scanned ${dt.label.toLowerCase()}</div>
+          <div class="uz-formats">${fmtStr} accepted · Output target: ${dt.isPdf ? `Max ${dt.maxKB}KB` : `${dt.minKB}-${dt.maxKB}KB`}</div>
+        </div>
+
+        <div class="config-panel" id="config-panel-${exam}-${dt.id}">
+          <div class="config-panel-title">⚙️ Configure Before Converting</div>
+          <div class="config-panel-sub">Set your target file size and file name, then click Convert.</div>
+
+          <div class="config-selected-file" id="config-file-info-${exam}-${dt.id}"></div>
+
+          <div class="config-field">
+            <div class="config-field-label">
+              <span>📦 Target File Size</span>
+              <span class="cfl-hint">Allowed: ${dt.isPdf ? `up to ${dt.maxKB}KB` : `${dt.minKB}–${dt.maxKB}KB`}</span>
+            </div>
+            <div class="config-kb-row">
+              <input type="number" class="config-input" id="config-kb-${exam}-${dt.id}"
+                     placeholder="e.g. ${dt.isPdf ? dt.maxKB : dt.maxKB}"
+                     value="${dt.isPdf ? dt.maxKB : dt.maxKB}"
+                     min="${dt.isPdf ? 1 : dt.minKB}" max="${dt.maxKB}"
+                     oninput="validateKBInput('${exam}','${dt.id}')">
+              <span class="config-kb-unit">KB</span>
+            </div>
+            <div class="config-range-presets" id="config-presets-${exam}-${dt.id}"></div>
+            <div class="config-error" id="config-kb-error-${exam}-${dt.id}"><span class="ce-icon">⚠</span><span id="config-kb-error-text-${exam}-${dt.id}"></span></div>
+          </div>
+
+          <div class="config-field">
+            <div class="config-field-label">
+              <span>📝 File Name</span>
+              <span class="cfl-hint">letters, numbers, _ and - only</span>
+            </div>
+            <input type="text" class="config-input" id="config-name-${exam}-${dt.id}"
+                   placeholder="Enter file name (no spaces or symbols)"
+                   oninput="validateNameInputConfig('${exam}','${dt.id}')">
+            <div class="config-error" id="config-name-error-${exam}-${dt.id}"><span class="ce-icon">⚠</span><span id="config-name-error-text-${exam}-${dt.id}"></span></div>
+          </div>
+
+          <button class="btn btn-convert" id="convert-btn-${exam}-${dt.id}" onclick="confirmAndProcess('${exam}','${dt.id}')">⚡ Convert File</button>
+        </div>
+
+        <div class="progress-wrap" id="prog-wrap-${exam}-${dt.id}">
+          <div class="wait-center"><div class="wait-spinner"></div></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-${exam}-${dt.id}" style="background:${examConfig.grad};"></div></div>
+          <div class="progress-meta">
+            <span class="progress-step-text" id="prog-text-${exam}-${dt.id}">Initialising...</span>
+            <span class="progress-pct" id="prog-pct-${exam}-${dt.id}">0%</span>
+          </div>
+        </div>
+
+        <div class="instructions-panel" style="margin-top:16px;">
+          <h3>📌 Instructions for this section</h3>
+          <ul class="instructions-list">
+            ${dt.instructions.map(i=>`<li>${i}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="result-card" id="result-${exam}-${dt.id}">
+          <div class="result-banner">✅ Converted successfully — ready to download</div>
+          <div class="result-body">
+            <div class="result-preview" id="result-preview-${exam}-${dt.id}"></div>
+
+            <div class="rename-row">
+              <table class="file-details-table" id="details-${exam}-${dt.id}" style="flex:1;"></table>
+              <button class="rename-btn" title="Rename file" onclick="toggleRename('${exam}','${dt.id}')">✏️</button>
+            </div>
+            <div class="rename-input-wrap" id="rename-wrap-${exam}-${dt.id}">
+              <input type="text" class="rename-input" id="rename-input-${exam}-${dt.id}"
+                     placeholder="Enter new file name (letters, numbers, _ and - only)"
+                     oninput="validateRenameInput('${exam}','${dt.id}')">
+              <div class="rename-error" id="rename-error-${exam}-${dt.id}">⚠ <span id="rename-error-text-${exam}-${dt.id}"></span></div>
+              <div class="rename-actions">
+                <button class="btn btn-grad-ibps" style="flex:1;" onclick="applyRename('${exam}','${dt.id}')">✓ Save Name</button>
+                <button class="btn btn-ghost" style="flex:1;" onclick="toggleRename('${exam}','${dt.id}')">Cancel</button>
+              </div>
+            </div>
+
+            <div class="compliance-list" id="compliance-${exam}-${dt.id}"></div>
+            <div class="result-actions" style="margin-top:14px;">
+              <button class="btn btn-download" onclick="downloadFile('${exam}','${dt.id}')">⬇ Download File</button>
+              <button class="btn btn-reset-sm" onclick="resetSection('${exam}','${dt.id}')">✕ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(ws);
+}
+
+function wireUploadZones(){
+  document.querySelectorAll('.upload-zone').forEach(zone=>{
+    zone.addEventListener('dragover', e=>{e.preventDefault(); zone.classList.add('dragover');});
+    zone.addEventListener('dragleave', ()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e=>{
+      e.preventDefault(); zone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if(file) handleFileSelect(zone.dataset.exam, zone.dataset.doc, file);
+    });
+    zone.addEventListener('click', ()=>{
+      document.getElementById(`input-${zone.dataset.exam}-${zone.dataset.doc}`)?.click();
+    });
+    zone.addEventListener('keydown', e=>{
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); zone.click(); }
+    });
+  });
+}
+
+/* ============================================================
+   TAB / SECTION SWITCHING
+   ============================================================ */
+function switchExam(exam, btnEl){
+  document.querySelectorAll('.exam-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.exam-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`panel-${exam}`).classList.add('active');
+  btnEl.classList.add('active');
+}
+
+function selectSection(exam, docId){
+  activeSection[exam] = docId;
+  document.querySelectorAll(`#picker-${exam} .section-pick-btn`).forEach(b=>b.classList.remove('active'));
+  document.querySelector(`#picker-${exam} .section-pick-btn[data-doc="${docId}"]`).classList.add('active');
+  document.querySelectorAll(`[id^="ws-${exam}-"]`).forEach(w=>w.classList.remove('show'));
+  document.getElementById(`ws-${exam}-${docId}`).classList.add('show');
+}
+
+/* ============================================================
+   FILE HANDLING
+   ============================================================ */
+function handleInputChange(exam, docId, input){
+  if(input.files[0]) handleFileSelect(exam, docId, input.files[0]);
+}
+
+function handleFileSelect(exam, docId, file) {
+  const config = EXAMS[exam].docTypes.find(d => d.id === docId);
+  if (!config) return;
+  
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!config.fmt.includes(ext)) {
+    showToast(`❌ Invalid format. Accepted: ${config.fmt.map(f=>f.toUpperCase()).join(', ')}`, 'error');
+    return;
+  }
+  // Hard guard: PDFs are only ever valid for the SSC certificate section.
+  // This prevents any future config mistake from letting a PDF slip
+  // through on an image-only section.
+  if (ext === 'pdf' && !config.isPdf) {
+    showToast(`❌ This section only accepts image files (JPG/JPEG). PDF is not allowed here.`, 'error');
+    return;
+  }
+  if(file.size < 500){
+    showToast('❌ File appears empty or corrupted. Please choose a valid file.', 'error');
+    return;
+  }
+
+  PENDING_FILES[exam][docId] = file;
+  showToast(`📂 File received: ${file.name} (${(file.size/1024).toFixed(1)}KB) — set your options below.`, 'info');
+  openConfigPanel(exam, docId, file, config);
+}
+
+/* ============================================================
+   PRE-CONVERT CONFIGURATION PANEL
+   ============================================================ */
+function openConfigPanel(exam, docId, file, config){
+  // Hide any previous result/progress for this section while reconfiguring
+  document.getElementById(`result-${exam}-${docId}`)?.classList.remove('show');
+  document.getElementById(`prog-wrap-${exam}-${docId}`)?.classList.remove('show');
+
+  const panel = document.getElementById(`config-panel-${exam}-${docId}`);
+  panel.classList.add('show');
+
+  // Selected file summary row
+  const fileInfo = document.getElementById(`config-file-info-${exam}-${docId}`);
+  fileInfo.innerHTML = `
+    <span class="csf-icon">${config.isPdf || docId==='declaration' ? '📄' : '🖼️'}</span>
+    <span class="csf-name">${file.name}</span>
+    <span class="csf-size">${(file.size/1024).toFixed(1)} KB</span>
+    <button class="csf-clear" title="Remove file" onclick="clearPendingFile('${exam}','${docId}')">✕</button>
+  `;
+
+  // KB target input — default to the top of the allowed range (best quality within limit)
+  const kbInput = document.getElementById(`config-kb-${exam}-${docId}`);
+  const defaultTarget = config.isPdf ? config.maxKB : config.maxKB;
+  kbInput.value = defaultTarget;
+  kbInput.min = config.isPdf ? 1 : config.minKB;
+  kbInput.max = config.maxKB;
+  document.getElementById(`config-kb-error-${exam}-${docId}`).classList.remove('show');
+  kbInput.classList.remove('invalid');
+
+  // Quick preset buttons (min / mid / max of allowed range)
+  const presetsEl = document.getElementById(`config-presets-${exam}-${docId}`);
+  const lo = config.isPdf ? Math.max(1, Math.round(config.maxKB*0.4)) : config.minKB;
+  const mid = Math.round((lo + config.maxKB)/2);
+  const presets = config.isPdf
+    ? [{label:`Compact (${lo}KB)`, val:lo},{label:`Balanced (${mid}KB)`, val:mid},{label:`Max Quality (${config.maxKB}KB)`, val:config.maxKB}]
+    : [{label:`Min (${config.minKB}KB)`, val:config.minKB},{label:`Mid (${mid}KB)`, val:mid},{label:`Max (${config.maxKB}KB)`, val:config.maxKB}];
+  presetsEl.innerHTML = presets.map(p=>`<span class="config-preset-btn" onclick="setKBPreset('${exam}','${docId}',${p.val},this)">${p.label}</span>`).join('');
+
+  // File name input — pre-filled with a sensible default
+  const nameInput = document.getElementById(`config-name-${exam}-${docId}`);
+  nameInput.value = `${exam}_${docId}`;
+  document.getElementById(`config-name-error-${exam}-${docId}`).classList.remove('show');
+  nameInput.classList.remove('invalid');
+
+  validateKBInput(exam, docId);
+  validateNameInputConfig(exam, docId);
+
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function setKBPreset(exam, docId, val, btnEl){
+  document.getElementById(`config-kb-${exam}-${docId}`).value = val;
+  document.querySelectorAll(`#config-presets-${exam}-${docId} .config-preset-btn`).forEach(b=>b.classList.remove('active'));
+  btnEl.classList.add('active');
+  validateKBInput(exam, docId);
+}
+
+function clearPendingFile(exam, docId){
+  PENDING_FILES[exam][docId] = null;
+  document.getElementById(`config-panel-${exam}-${docId}`).classList.remove('show');
+  const input = document.getElementById(`input-${exam}-${docId}`);
+  if(input) input.value = '';
+  showToast('File removed. Choose another file to continue.', 'info');
+}
+
+function validateKBInput(exam, docId){
+  const config = EXAMS[exam].docTypes.find(d=>d.id===docId);
+  const input = document.getElementById(`config-kb-${exam}-${docId}`);
+  const errorEl = document.getElementById(`config-kb-error-${exam}-${docId}`);
+  const errorText = document.getElementById(`config-kb-error-text-${exam}-${docId}`);
+  const raw = input.value.trim();
+
+  // Clear preset highlight if user typed a custom value
+  document.querySelectorAll(`#config-presets-${exam}-${docId} .config-preset-btn`).forEach(b=>{
+    if(b.textContent.indexOf(`(${raw}KB)`) === -1) b.classList.remove('active');
+  });
+
+  if(raw === ''){
+    input.classList.add('invalid');
+    errorText.textContent = 'Please enter a target file size in KB.';
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, false);
+    return false;
+  }
+
+  const val = Number(raw);
+  const allowedMin = config.isPdf ? 1 : config.minKB;
+  const allowedMax = config.maxKB;
+
+  if(!Number.isFinite(val) || val <= 0){
+    input.classList.add('invalid');
+    errorText.textContent = 'Enter a valid positive number.';
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, false);
+    return false;
+  }
+  if(val < allowedMin || val > allowedMax){
+    input.classList.add('invalid');
+    errorText.textContent = `Not as per exam instructions. ${config.label} must be between ${allowedMin}KB and ${allowedMax}KB for ${exam}. You entered ${val}KB.`;
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, false);
+    return false;
+  }
+
+  input.classList.remove('invalid');
+  errorEl.classList.remove('show');
+  updateConvertButtonState(exam, docId, true);
+  return true;
+}
+
+function validateNameInputConfig(exam, docId){
+  const input = document.getElementById(`config-name-${exam}-${docId}`);
+  const errorEl = document.getElementById(`config-name-error-${exam}-${docId}`);
+  const errorText = document.getElementById(`config-name-error-text-${exam}-${docId}`);
+  const val = input.value;
+
+  if(val.trim() === ''){
+    input.classList.add('invalid');
+    errorText.textContent = 'File name cannot be empty.';
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, null, false);
+    return false;
+  }
+  if(/\s/.test(val)){
+    input.classList.add('invalid');
+    errorText.textContent = 'Spaces are not allowed. Use underscore ( _ ) or hyphen ( - ) instead.';
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, null, false);
+    return false;
+  }
+  if(INVALID_NAME_PATTERN.test(val)){
+    const badChars = [...new Set(val.match(/[^a-zA-Z0-9_\-]/g))].join(' ');
+    input.classList.add('invalid');
+    errorText.textContent = `Special symbol(s) not allowed: ${badChars} — only letters, numbers, _ and - are permitted.`;
+    errorEl.classList.add('show');
+    updateConvertButtonState(exam, docId, null, false);
+    return false;
+  }
+
+  input.classList.remove('invalid');
+  errorEl.classList.remove('show');
+  updateConvertButtonState(exam, docId, null, true);
+  return true;
+}
+
+// Tracks validity of both fields independently so the Convert button only
+// enables once KB target AND file name are both valid.
+const CONFIG_VALIDITY = {};
+function updateConvertButtonState(exam, docId, kbValid, nameValid){
+  const key = `${exam}-${docId}`;
+  if(!CONFIG_VALIDITY[key]) CONFIG_VALIDITY[key] = { kb:true, name:true };
+  if(kbValid !== undefined && kbValid !== null) CONFIG_VALIDITY[key].kb = kbValid;
+  if(nameValid !== undefined && nameValid !== null) CONFIG_VALIDITY[key].name = nameValid;
+
+  const btn = document.getElementById(`convert-btn-${exam}-${docId}`);
+  if(!btn) return;
+  const ok = CONFIG_VALIDITY[key].kb && CONFIG_VALIDITY[key].name;
+  btn.disabled = !ok;
+}
+
+function confirmAndProcess(exam, docId){
+  const config = EXAMS[exam].docTypes.find(d=>d.id===docId);
+  const file = PENDING_FILES[exam][docId];
+  if(!file){ showToast('No file selected to convert', 'warning'); return; }
+
+  const kbValid = validateKBInput(exam, docId);
+  const nameValid = validateNameInputConfig(exam, docId);
+  if(!kbValid || !nameValid){
+    showToast('❌ Fix the highlighted errors before converting', 'error');
+    return;
+  }
+
+  const targetKB = Number(document.getElementById(`config-kb-${exam}-${docId}`).value);
+  const fileName = document.getElementById(`config-name-${exam}-${docId}`).value.trim();
+
+  document.getElementById(`config-panel-${exam}-${docId}`).classList.remove('show');
+  startProcessing(exam, docId, file, config, { targetKB, fileName });
+}
+
+
+async function startProcessing(exam, docId, file, config, userOptions){
+  if(config.isPdf){
+    return startProcessingPdf(exam, docId, file, config, userOptions);
+  }
+
+  const isImage = ['jpg','jpeg'].includes(file.name.split('.').pop().toLowerCase());
+  const progWrap = document.getElementById(`prog-wrap-${exam}-${docId}`);
+  progWrap.classList.add('show');
+  document.getElementById(`result-${exam}-${docId}`).classList.remove('show');
+
+  const steps = [
+    {pct:15, text:'Validating file format...'},
+    {pct:32, text:'Reading & checking dimensions...'},
+    {pct:55, text:'Resizing to target dimensions...'},
+    {pct:78, text:`Compressing toward your ${userOptions.targetKB}KB target...`},
+    {pct:94, text:'Finalising compliant output...'},
+    {pct:100, text:'Done! File ready ✓'}
+  ];
+  for(const s of steps){ await animateProgress(exam, docId, s.pct, s.text); }
+
+  let resultBlob, origURL=null, procURL=null, origKB = file.size/1024, procKB = origKB;
+  let actualW = null, actualH = null;
+
+  // Use the user's chosen target as a tight ceiling, while still respecting
+  // the section's hard minimum so output never falls below the exam's floor.
+  const userMaxKB = Math.min(userOptions.targetKB, config.maxKB);
+  const userMinKB = config.minKB;
+
+if(isImage){
+    try{
+      const result = await processImageHighQuality(file, userMinKB, userMaxKB, config.minKB, config.maxKB, config.w, config.h);
+      resultBlob = result.blob;
+      actualW = result.width; actualH = result.height;
+      origURL = URL.createObjectURL(file);
+      procURL = URL.createObjectURL(resultBlob);
+      procKB = resultBlob.size/1024;
+      STATE_DIMENSION_FIXED_FLAG = result.dimensionFixed;
+      STATE_BELOW_FLOOR_FLAG = !!result.belowFloor;
+      STATE_RESOLUTION_REDUCED_FLAG = !!result.resolutionReduced;
+      STATE_UPSCALED_FLAG = !!result.upscaled;
+    }catch(e){
+      resultBlob = file;
+      origURL = procURL = URL.createObjectURL(file);
+      console.error('Image processing failed:', e);
+      showToast(`⚠ Could not auto-process image (${e.message || 'unknown error'}) — original file retained`, 'warning');
+    }
+  } else {
+    resultBlob = file;
+  }
+
+  const ext = isImage ? 'jpg' : file.name.split('.').pop().toLowerCase();
+  const filename = `${userOptions.fileName}.${ext}`;
+  STATE[exam][docId] = {
+    blob: resultBlob, filename, origKB, procKB,
+    w: actualW, h: actualH, format: ext.toUpperCase(),
+    origName: file.name, targetKB: userOptions.targetKB,
+    dimensionFixed: typeof STATE_DIMENSION_FIXED_FLAG !== 'undefined' ? STATE_DIMENSION_FIXED_FLAG : false,
+    belowFloor: typeof STATE_BELOW_FLOOR_FLAG !== 'undefined' ? STATE_BELOW_FLOOR_FLAG : false,
+    resolutionReduced: typeof STATE_RESOLUTION_REDUCED_FLAG !== 'undefined' ? STATE_RESOLUTION_REDUCED_FLAG : false,
+    upscaled: typeof STATE_UPSCALED_FLAG !== 'undefined' ? STATE_UPSCALED_FLAG : false
+  };
+
+  renderResult(exam, docId, config, origURL, procURL, isImage);
+
+  document.getElementById(`spstatus-${exam}-${docId}`).classList.add('done');
+  if(STATE[exam][docId].belowFloor){
+    showToast(`⚠ Resized output is ${procKB.toFixed(1)}KB — below the ${config.minKB}KB floor even after upscaling. The source image may be too simple/low-detail to fill the required file size.`, 'warning');
+  } else if(STATE[exam][docId].upscaled){
+    showToast(`✅ ${config.label} converted to ${procKB.toFixed(1)}KB. Note: dimensions were slightly enlarged to ${actualW}×${actualH}px since the prescribed ${config.w}×${config.h}px size couldn't reach the ${config.minKB}KB floor even at maximum quality.`, 'success');
+  } else if(STATE[exam][docId].resolutionReduced){
+    showToast(`✅ ${config.label} converted to ${procKB.toFixed(1)}KB. Note: resolution was reduced to ${actualW}×${actualH}px since quality reduction alone couldn't fit the ${config.maxKB}KB limit at the original size.`, 'success');
+  } else {
+    showToast(`✅ ${config.label} converted successfully!`, 'success');
+  }
+  PENDING_FILES[exam][docId] = null;
+  updateGlobalProgress();
+}
+
+/* SSC / SSLC / 10th Certificate handler — converts JPG/JPEG to a single-page
+   A4 PDF (using jsPDF) if needed, then compresses to fit under the user's
+   chosen target KB (capped by config.maxKB). If a PDF is uploaded directly,
+   it is size-checked and (if possible) re-compressed by re-rendering its
+   first page as an image, since true PDF recompression without a server
+   isn't possible client-side. */
+let STATE_DIMENSION_FIXED_FLAG = false;
+let STATE_BELOW_FLOOR_FLAG = false;
+let STATE_RESOLUTION_REDUCED_FLAG = false;
+let STATE_UPSCALED_FLAG = false;
+async function startProcessingPdf(exam, docId, file, config, userOptions) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  const isImage = ['jpg','jpeg'].includes(ext);
+  const progWrap = document.getElementById(`prog-wrap-${exam}-${docId}`);
+  progWrap.classList.add('show');
+  document.getElementById(`result-${exam}-${docId}`).classList.remove('show');
+
+  const steps = isImage ? [
+    {pct:15, text:'Validating file format...'},
+    {pct:35, text:'Reading certificate image...'},
+    {pct:60, text:'Fitting image to A4 page...'},
+    {pct:85, text:`Compressing toward your ${userOptions.targetKB}KB target...`},
+    {pct:100, text:'Done! PDF ready ✓'}
+  ] : [
+    {pct:20, text:'Validating PDF format...'},
+    {pct:50, text:'Checking PDF file size...'},
+    {pct:80, text:`Verifying ${userOptions.targetKB}KB target...`},
+    {pct:100, text:'Done! File ready ✓'}
+  ];
+  for(const s of steps){ await animateProgress(exam, docId, s.pct, s.text); }
+
+  let resultBlob, origKB = file.size/1024, procKB = origKB;
+  let origURL = null, procURL = null;
+  const userMaxKB = Math.min(userOptions.targetKB, config.maxKB);
+
+  if(isImage){
+    if(typeof window.jspdf === 'undefined'){
+      showToast('⚠ PDF library failed to load — check your internet connection and try again', 'error');
+      document.getElementById(`prog-wrap-${exam}-${docId}`).classList.remove('show');
+      return;
+    }
+    try{
+      const result = await imageToCompressedA4Pdf(file, userMaxKB);
+      resultBlob = result.blob;
+      procKB = resultBlob.size/1024;
+      origURL = URL.createObjectURL(file);
+    }catch(e){
+      showToast('❌ Could not convert image to PDF: ' + e.message, 'error');
+      document.getElementById(`prog-wrap-${exam}-${docId}`).classList.remove('show');
+      return;
+    }
+  } else {
+    // Direct PDF upload — actively recompress if it doesn't already meet the target,
+    // rather than passing it through unchanged. True in-place PDF byte-recompression
+    // isn't possible client-side, so the approach is: rasterize the first page via
+    // pdf.js, then rebuild a fresh A4 PDF from that image at a quality tuned to hit
+    // the user's target KB (reusing the same engine used for image uploads).
+    if(origKB <= userMaxKB){
+      // Already within the target — nothing to do.
+      resultBlob = file;
+    } else if(typeof window.pdfjsLib === 'undefined' || typeof window.jspdf === 'undefined'){
+      // Rasterization tools unavailable — fall back to passthrough with a clear warning.
+      resultBlob = file;
+      showToast('⚠ PDF compression library unavailable — file size could not be adjusted. Check your internet connection and try again.', 'warning');
+    } else {
+      try{
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const page = await pdfDoc.getPage(1);
+        const viewport = page.getViewport({ scale: 2.0 }); // render at 2x for clarity before compressing
+
+        const rasterCanvas = document.createElement('canvas');
+        rasterCanvas.width = viewport.width;
+        rasterCanvas.height = viewport.height;
+        const rasterCtx = rasterCanvas.getContext('2d');
+        await page.render({ canvasContext: rasterCtx, viewport }).promise;
+
+        const rasterBlob = await new Promise(res => rasterCanvas.toBlob(b=>res(b), 'image/jpeg', 0.95));
+        const rasterFile = new File([rasterBlob], 'page1.jpg', { type:'image/jpeg' });
+
+        const result = await imageToCompressedA4Pdf(rasterFile, userMaxKB);
+        resultBlob = result.blob;
+      }catch(e){
+        resultBlob = file;
+        showToast('⚠ Could not recompress this PDF (it may be password-protected or corrupted) — original file kept.', 'warning');
+      }
+    }
+    procKB = resultBlob.size/1024;
+  }
+
+  const filename = `${userOptions.fileName}.pdf`;
+  STATE[exam][docId] = {
+    blob: resultBlob, filename, origKB, procKB,
+    w: null, h: null, format: 'PDF',
+    origName: file.name, isPdf: true, targetKB: userOptions.targetKB
+  };
+
+  renderResultPdf(exam, docId, config, origURL);
+
+  document.getElementById(`spstatus-${exam}-${docId}`).classList.add('done');
+  if(procKB > userMaxKB){
+    showToast(`⚠ PDF is ${procKB.toFixed(1)}KB after compression — still slightly above your ${userMaxKB}KB target. The certificate may have very dense content; try re-scanning at lower DPI for a smaller result.`, 'warning');
+  } else if(origKB > userMaxKB && !file.name.toLowerCase().endsWith('.pdf')){
+    showToast(`✅ ${config.label} converted and compressed to ${procKB.toFixed(1)}KB!`, 'success');
+  } else if(origKB > userMaxKB){
+    showToast(`✅ PDF recompressed from ${origKB.toFixed(1)}KB down to ${procKB.toFixed(1)}KB to meet your target.`, 'success');
+  } else {
+    showToast(`✅ ${config.label} processed successfully!`, 'success');
+  }
+  PENDING_FILES[exam][docId] = null;
+  updateGlobalProgress();
+}
+
+async function imageToCompressedA4Pdf(file, maxKB){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = async ()=>{
+     try {
+      URL.revokeObjectURL(url);
+      const { jsPDF } = window.jspdf;
+
+      // A4 in points: 595 x 842
+      const pageW = 595, pageH = 842, margin = 28;
+      const maxW = pageW - margin*2, maxH = pageH - margin*2;
+      const scale = Math.min(maxW/img.width, maxH/img.height, 1);
+      const drawW = img.width*scale, drawH = img.height*scale;
+      const offsetX = (pageW - drawW)/2, offsetY = (pageH - drawH)/2;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+
+      let quality = 0.97, blob = null, attempts = 0;
+      const buildPdfBlob = (q) => new Promise((res, rej)=>{
+        canvas.toBlob(async (imgBlob)=>{
+          if(!imgBlob){ rej(new Error('Canvas could not produce an image for PDF conversion.')); return; }
+          const reader = new FileReader();
+          reader.onload = () => {
+            const doc = new jsPDF({ unit:'pt', format:'a4' });
+            doc.addImage(reader.result, 'JPEG', offsetX, offsetY, drawW, drawH, undefined, 'FAST');
+            const pdfBlob = doc.output('blob');
+            res(pdfBlob);
+          };
+          reader.onerror = () => rej(new Error('Failed to read compressed image for PDF conversion.'));
+          reader.readAsDataURL(imgBlob);
+        }, 'image/jpeg', q);
+      });
+
+      let pdfBlob = await buildPdfBlob(quality);
+      while(pdfBlob.size/1024 > maxKB && quality > 0.4 && attempts < 8){
+        quality -= 0.06;
+        pdfBlob = await buildPdfBlob(quality);
+        attempts++;
+      }
+      resolve({ blob: pdfBlob });
+     } catch(syncErr) {
+       reject(syncErr);
+     }
+    };
+    img.onerror = () => reject(new Error('Image failed to load — the file may be corrupted or not a valid image.'));
+    img.src = url;
+  });
+}
+
+function renderResultPdf(exam, docId, config, origURL){
+  const data = STATE[exam][docId];
+  const resultCard = document.getElementById(`result-${exam}-${docId}`);
+  resultCard.classList.add('show');
+  setTimeout(()=>{
+    resultCard.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 150);
+
+  const previewEl = document.getElementById(`result-preview-${exam}-${docId}`);
+  previewEl.innerHTML = `<div class="rp-box" style="grid-column:1/-1;padding:24px;text-align:center;color:var(--text-secondary);font-size:13px;">📄 ${data.filename}<br><span style="font-size:11px;color:var(--text-muted);">PDF document — open the downloaded file to preview</span></div>`;
+
+  const userMaxKB = Math.min(data.targetKB, config.maxKB);
+  const sizeOK = data.procKB <= config.maxKB;
+  const withinTarget = data.procKB <= userMaxKB + 0.5;
+  const reduction = Math.max(0, Math.round((1 - data.procKB/data.origKB)*100));
+
+  const detailsEl = document.getElementById(`details-${exam}-${docId}`);
+  detailsEl.innerHTML = `
+    <tr><td>File Name</td><td>${data.filename}</td></tr>
+    <tr><td>Format</td><td>${data.format}</td></tr>
+    <tr><td>Page Size</td><td>A4</td></tr>
+    <tr><td>Original Size</td><td>${data.origKB.toFixed(1)} KB</td></tr>
+    <tr><td>Your Target</td><td>${data.targetKB} KB</td></tr>
+    <tr><td>Final Size</td><td class="${sizeOK?'ok-val':'warn-val'}">${data.procKB.toFixed(1)} KB</td></tr>
+    ${reduction > 0 ? `<tr><td>Size Reduction</td><td class="ok-val">${reduction}%</td></tr>` : ''}
+  `;
+
+  const complianceEl = document.getElementById(`compliance-${exam}-${docId}`);
+  const checks = [
+    { label:'Format is PDF', pass:true },
+    { label:`File size within exam limit of ${config.maxKB}KB`, pass:sizeOK },
+    { label:`Met your target of ≤${data.targetKB}KB`, pass:withinTarget },
+    { label:'Page size set to A4', pass:true }
+  ];
+  complianceEl.innerHTML = checks.map(c=>`
+    <div class="compliance-item">
+      <span class="ci-dot ${c.pass?'pass':'fail'}">${c.pass?'✓':'!'}</span>
+      <span>${c.label}</span>
+    </div>`).join('');
+}
+
+
+function renderResult(exam, docId, config, origURL, procURL, isImage){
+  const data = STATE[exam][docId];
+  const resultCard = document.getElementById(`result-${exam}-${docId}`);
+  resultCard.classList.add('show');
+  setTimeout(()=>{
+    resultCard.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 150);
+
+  const previewEl = document.getElementById(`result-preview-${exam}-${docId}`);
+  if(isImage && origURL && procURL){
+    previewEl.innerHTML = `
+      <div class="rp-box"><img src="${origURL}" alt="Original"><div class="rp-label">Original</div></div>
+      <div class="rp-box"><img src="${procURL}" alt="Processed"><div class="rp-label">Processed ✓</div></div>`;
+  } else {
+    previewEl.innerHTML = `<div class="rp-box" style="grid-column:1/-1;padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">📄 ${data.origName} (PDF — preview not shown)</div>`;
+  }
+
+  const userMaxKB = Math.min(data.targetKB, config.maxKB);
+  const sizeOK = data.procKB >= config.minKB - 1 && data.procKB <= config.maxKB;
+  const withinTarget = data.procKB <= userMaxKB + 0.5;
+  const reduction = Math.max(0, Math.round((1 - data.procKB/data.origKB)*100));
+
+  const detailsEl = document.getElementById(`details-${exam}-${docId}`);
+  detailsEl.innerHTML = `
+    <tr><td>File Name</td><td>${data.filename}</td></tr>
+    <tr><td>Format</td><td>${data.format}</td></tr>
+    <tr><td>Dimensions</td><td>${data.w && data.h ? `${data.w} × ${data.h} px` : 'Unchanged (PDF)'}</td></tr>
+    <tr><td>Original Size</td><td>${data.origKB.toFixed(1)} KB</td></tr>
+    <tr><td>Your Target</td><td>${data.targetKB} KB</td></tr>
+    <tr><td>Final Size</td><td class="${sizeOK?'ok-val':'warn-val'}">${data.procKB.toFixed(1)} KB</td></tr>
+    <tr><td>Size Reduction</td><td class="ok-val">${reduction}%</td></tr>
+  `;
+
+  const complianceEl = document.getElementById(`compliance-${exam}-${docId}`);
+  const checks = [
+    { label:`Format is ${config.fmt.map(f=>f.toUpperCase()).join('/')}`, pass:true },
+    { label:`File size within exam limit of ${config.minKB}–${config.maxKB}KB`, pass:sizeOK },
+    { label:`Met your target of ≤${data.targetKB}KB`, pass:withinTarget },
+    { label: data.w
+        ? (data.dimensionFixed
+            ? (data.belowFloor
+                ? `Dimensions adjusted to ${data.w}×${data.h}px, but size fell below the ${config.minKB}KB floor`
+                : `Size already compliant — dimensions adjusted to ${data.w}×${data.h}px`)
+            : `Original dimensions preserved (${data.w}×${data.h}px) — size compressed to target`)
+        : 'Document format preserved',
+      pass: data.dimensionFixed ? !data.belowFloor : true }
+  ];
+  complianceEl.innerHTML = checks.map(c=>`
+    <div class="compliance-item">
+      <span class="ci-dot ${c.pass?'pass':'fail'}">${c.pass?'✓':'!'}</span>
+      <span>${c.label}</span>
+    </div>`).join('');
+
+  if(!sizeOK){
+    showToast(`⚠ Output is ${data.procKB.toFixed(1)}KB — slightly outside the ${config.minKB}-${config.maxKB}KB exam limit. Try a clearer source scan for better compression.`, 'warning');
+  }
+}
+
+async function processImageHighQuality(file, minKB, maxKB, examMinKB, examMaxKB, examW, examH){
+  const origKB = file.size / 1024;
+  // If the uploaded file is ALREADY within the exam's prescribed KB range,
+  // size compliance is satisfied — so switch priority to fixing dimensions
+  // instead of touching file size further.
+  const alreadyWithinExamRange = origKB >= examMinKB && origKB <= examMaxKB;
+
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = ()=>{
+     try {
+      const canvas = document.createElement('canvas');
+
+      if(alreadyWithinExamRange){
+        // PRIORITY: fix dimensions to the exam-prescribed size.
+        // KB was compliant at the ORIGINAL resolution, but shrinking pixel
+        // count alone can push the byte size below the floor even at high
+        // quality — so we still need to search quality to land back inside
+        // [examMinKB, examMaxKB], same as the size-priority path below.
+        canvas.width = examW; canvas.height = examH;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0,0,examW,examH);
+        const scale = Math.min(examW/img.width, examH/img.height);
+        const sw = img.width*scale, sh = img.height*scale;
+        const sx = (examW-sw)/2, sy = (examH-sh)/2;
+        ctx.drawImage(img, sx, sy, sw, sh);
+        URL.revokeObjectURL(url);
+
+        const tryQualityFixed = (q) => new Promise((res, rej)=>{
+          canvas.toBlob(blob=>{
+            if(!blob){ rej(new Error('Canvas could not produce an image at the requested quality.')); return; }
+            res(blob);
+          }, 'image/jpeg', q);
+        });
+
+        (async ()=>{
+          let blob = await tryQualityFixed(0.95);
+          let kb = blob.size/1024;
+
+          if(kb >= examMinKB && kb <= examMaxKB){
+            // Already lands inside the exam range at top quality — done.
+            resolve({ blob, width: examW, height: examH, dimensionFixed: true });
+            return;
+          }
+
+          if(kb > examMaxKB){
+            // Too big at 0.95 — search downward for a quality that fits under the ceiling.
+            let lo = 0.3, hi = 0.95, bestBlob = blob, attempts = 0;
+            while(attempts < 10){
+              const mid = (lo+hi)/2;
+              blob = await tryQualityFixed(mid);
+              kb = blob.size/1024;
+              if(kb > examMaxKB){ hi = mid; } else { bestBlob = blob; lo = mid; }
+              attempts++;
+              if(kb >= examMinKB && kb <= examMaxKB) break;
+            }
+            resolve({ blob: bestBlob, width: examW, height: examH, dimensionFixed: true });
+            return;
+          }
+
+          // Too small even at 0.95 — the resized canvas simply can't hold enough
+          // detail to reach the floor on quality alone. Try maximum JPEG quality
+          // first; if that still falls short (common for Signature, where the
+          // prescribed 140x60px canvas is tiny and mostly flat white space),
+          // progressively upscale the canvas in small steps and retry — more
+          // pixels means more encodable detail, while the image still looks
+          // visually identical to the exam-mandated size when viewed normally.
+          blob = await tryQualityFixed(1.0);
+          kb = blob.size/1024;
+
+          if(kb < examMinKB){
+            let upscaleAttempts = 0, upW = examW, upH = examH;
+            let bestUpscaleBlob = blob, bestUpscaleKB = kb, bestUpscaleW = examW, bestUpscaleH = examH;
+
+            while(bestUpscaleKB < examMinKB && upscaleAttempts < 6){
+              upscaleAttempts++;
+              upW = Math.round(examW * (1 + upscaleAttempts * 0.35));
+              upH = Math.round(examH * (1 + upscaleAttempts * 0.35));
+
+              const upCanvas = document.createElement('canvas');
+              upCanvas.width = upW; upCanvas.height = upH;
+              const upCtx = upCanvas.getContext('2d');
+              upCtx.imageSmoothingEnabled = true;
+              upCtx.imageSmoothingQuality = 'high';
+              upCtx.fillStyle = '#ffffff';
+              upCtx.fillRect(0,0,upW,upH);
+              const upScale = Math.min(upW/img.width, upH/img.height);
+              const upSw = img.width*upScale, upSh = img.height*upScale;
+              const upSx = (upW-upSw)/2, upSy = (upH-upSh)/2;
+              upCtx.drawImage(img, upSx, upSy, upSw, upSh);
+
+              const upBlob = await new Promise((res, rej)=>upCanvas.toBlob(b=>{
+                if(!b){ rej(new Error('Canvas could not produce an image during upscale attempt.')); return; }
+                res(b);
+              }, 'image/jpeg', 1.0));
+              const upKB = upBlob.size/1024;
+
+              if(upKB > bestUpscaleKB && upKB <= examMaxKB){
+                bestUpscaleBlob = upBlob; bestUpscaleKB = upKB; bestUpscaleW = upW; bestUpscaleH = upH;
+              } else if(upKB > examMaxKB){
+                // Overshot the ceiling while upscaling — back off and stop.
+                break;
+              }
+            }
+
+            resolve({
+              blob: bestUpscaleBlob, width: bestUpscaleW, height: bestUpscaleH,
+              dimensionFixed: true, belowFloor: bestUpscaleKB < examMinKB,
+              upscaled: bestUpscaleW !== examW || bestUpscaleH !== examH
+            });
+            return;
+          }
+
+          resolve({ blob, width: examW, height: examH, dimensionFixed: true, belowFloor: false });
+        })().catch(err => reject(err));
+        return;
+      }
+
+      // Otherwise: KB is NOT compliant — priority is size, dimensions stay as uploaded
+      // wherever quality reduction alone is enough to hit the target.
+      canvas.width = img.width; canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      URL.revokeObjectURL(url);
+
+      const targetMin = Math.max(minKB, maxKB - (maxKB * 0.10));
+      let lo = 0.5, hi = 0.98, bestBlob = null, bestKB = 0, attempts = 0;
+
+      const tryQuality = (q, c) => new Promise((res, rej)=>{
+        (c||canvas).toBlob(blob=>{
+          if(!blob){ rej(new Error('Canvas could not produce an image at the requested quality.')); return; }
+          res(blob);
+        }, 'image/jpeg', q);
+      });
+
+      (async ()=>{
+        let blob = await tryQuality(hi);
+        let kb = blob.size/1024;
+
+        if(kb <= maxKB){
+          bestBlob = blob; bestKB = kb;
+        } else {
+          while(attempts < 10){
+            const mid = (lo+hi)/2;
+            blob = await tryQuality(mid);
+            kb = blob.size/1024;
+            if(kb > maxKB){ hi = mid; }
+            else { bestBlob = blob; bestKB = kb; lo = mid; }
+            attempts++;
+            if(bestKB >= targetMin && bestKB <= maxKB) break;
+          }
+          if(!bestBlob || bestKB > maxKB){
+            // Quality reduction alone (down to ~0.3) still can't fit under maxKB
+            // at the original resolution — this happens when pixel count itself
+            // is too large for the byte budget. Last resort: progressively
+            // downscale resolution (keeping aspect ratio) while staying as close
+            // to the original dimensions as possible, retrying quality at each step.
+            let scaleAttempts = 0, scaleFactor = 0.85;
+            let workCanvas = canvas, workW = img.width, workH = img.height;
+            while((!bestBlob || bestKB > maxKB) && scaleAttempts < 6){
+              workW = Math.round(img.width * Math.pow(scaleFactor, scaleAttempts+1));
+              workH = Math.round(img.height * Math.pow(scaleFactor, scaleAttempts+1));
+              const scaledCanvas = document.createElement('canvas');
+              scaledCanvas.width = workW; scaledCanvas.height = workH;
+              const sctx = scaledCanvas.getContext('2d');
+              sctx.imageSmoothingEnabled = true;
+              sctx.imageSmoothingQuality = 'high';
+              sctx.drawImage(img, 0, 0, workW, workH);
+
+              blob = await tryQuality(0.85, scaledCanvas);
+              kb = blob.size/1024;
+              if(kb > maxKB){
+                blob = await tryQuality(0.5, scaledCanvas);
+                kb = blob.size/1024;
+              }
+              if(kb <= maxKB){ bestBlob = blob; bestKB = kb; workCanvas = scaledCanvas; }
+              scaleAttempts++;
+            }
+            if(!bestBlob || bestKB > maxKB){
+              // Absolute last resort — smallest scale + lowest acceptable quality
+              blob = await tryQuality(0.3, workCanvas);
+              bestBlob = blob; bestKB = blob.size/1024;
+            }
+            resolve({ blob: bestBlob, width: workCanvas.width, height: workCanvas.height, dimensionFixed:false, resolutionReduced: workCanvas !== canvas });
+            return;
+          }
+        }
+        resolve({ blob: bestBlob, width: img.width, height: img.height, dimensionFixed: false, resolutionReduced:false });
+      })().catch(err => reject(err));
+     } catch(syncErr) {
+       reject(syncErr);
+     }
+    };
+    img.onerror = () => reject(new Error('Image failed to load — the file may be corrupted or not a valid image.'));
+    img.src = url;
+  });
+}
+
+async function animateProgress(exam, docId, targetPct, text){
+  return new Promise(resolve=>{
+    const bar = document.getElementById(`prog-${exam}-${docId}`);
+    const pctEl = document.getElementById(`prog-pct-${exam}-${docId}`);
+    const textEl = document.getElementById(`prog-text-${exam}-${docId}`);
+    if(textEl){
+      textEl.innerHTML = `${text} <span class="wait-dots"><span>.</span><span>.</span><span>.</span></span>`;
+    }
+    let cur = parseInt(bar.style.width)||0;
+    const interval = setInterval(()=>{
+      if(cur>=targetPct){ clearInterval(interval); setTimeout(resolve,150); return; }
+      cur = Math.min(cur+4, targetPct);
+      bar.style.width = cur+'%';
+      if(pctEl) pctEl.textContent = cur+'%';
+    },18);
+  });
+}
+
+function stamp(){
+  const d = new Date();
+  const p = n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+
+function downloadFile(exam, docId){
+  const data = STATE[exam][docId];
+  if(!data){ showToast('No processed file to download', 'warning'); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(data.blob);
+  a.download = data.filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  showToast(`⬇ Downloaded: ${data.filename}`, 'success');
+}
+
+function resetSection(exam, docId){
+  STATE[exam][docId] = null;
+  PENDING_FILES[exam][docId] = null;
+  document.getElementById(`result-${exam}-${docId}`).classList.remove('show');
+  document.getElementById(`prog-wrap-${exam}-${docId}`).classList.remove('show');
+  document.getElementById(`prog-${exam}-${docId}`).style.width = '0%';
+  document.getElementById(`spstatus-${exam}-${docId}`).classList.remove('done');
+  document.getElementById(`config-panel-${exam}-${docId}`)?.classList.remove('show');
+  const input = document.getElementById(`input-${exam}-${docId}`);
+  if(input) input.value = '';
+  const renameWrap = document.getElementById(`rename-wrap-${exam}-${docId}`);
+  if(renameWrap) renameWrap.classList.remove('show');
+  updateGlobalProgress();
+  showToast('Section reset', 'info');
+}
+
+function updateGlobalProgress(){
+  Object.keys(EXAMS).forEach(e => updateBatchBar(e));
+}
+
+/* ============================================================
+   RENAME FILE (with validation for spaces / special symbols)
+   ============================================================ */
+const INVALID_NAME_PATTERN = /[^a-zA-Z0-9_\-]/;
+
+function toggleRename(exam, docId){
+  const wrap = document.getElementById(`rename-wrap-${exam}-${docId}`);
+  const data = STATE[exam][docId];
+  if(!data) return;
+  const isShowing = wrap.classList.contains('show');
+  // Close all other open rename boxes first
+  document.querySelectorAll('.rename-input-wrap.show').forEach(w=>w.classList.remove('show'));
+  if(!isShowing){
+    wrap.classList.add('show');
+    const input = document.getElementById(`rename-input-${exam}-${docId}`);
+    // Pre-fill with current name minus extension
+    const dot = data.filename.lastIndexOf('.');
+    input.value = dot > -1 ? data.filename.substring(0, dot) : data.filename;
+    input.focus();
+    input.select();
+    document.getElementById(`rename-error-${exam}-${docId}`).classList.remove('show');
+    input.classList.remove('invalid');
+  }
+}
+
+function validateRenameInput(exam, docId){
+  const input = document.getElementById(`rename-input-${exam}-${docId}`);
+  const errorEl = document.getElementById(`rename-error-${exam}-${docId}`);
+  const errorText = document.getElementById(`rename-error-text-${exam}-${docId}`);
+  const val = input.value;
+
+  if(val.trim() === ''){
+    input.classList.remove('invalid');
+    errorEl.classList.remove('show');
+    return false;
+  }
+  if(/\s/.test(val)){
+    input.classList.add('invalid');
+    errorText.textContent = 'Spaces are not allowed. Use underscore ( _ ) or hyphen ( - ) instead.';
+    errorEl.classList.add('show');
+    return false;
+  }
+  if(INVALID_NAME_PATTERN.test(val)){
+    const badChars = [...new Set(val.match(/[^a-zA-Z0-9_\-]/g))].join(' ');
+    input.classList.add('invalid');
+    errorText.textContent = `Special symbol(s) not allowed: ${badChars}  — only letters, numbers, _ and - are permitted.`;
+    errorEl.classList.add('show');
+    return false;
+  }
+  input.classList.remove('invalid');
+  errorEl.classList.remove('show');
+  return true;
+}
+
+function applyRename(exam, docId){
+  const data = STATE[exam][docId];
+  if(!data) return;
+  const input = document.getElementById(`rename-input-${exam}-${docId}`);
+  const val = input.value.trim();
+
+  if(val === ''){
+    const errorEl = document.getElementById(`rename-error-${exam}-${docId}`);
+    const errorText = document.getElementById(`rename-error-text-${exam}-${docId}`);
+    input.classList.add('invalid');
+    errorText.textContent = 'File name cannot be empty.';
+    errorEl.classList.add('show');
+    return;
+  }
+  if(!validateRenameInput(exam, docId)){
+    showToast('❌ Fix the highlighted error before saving the file name', 'error');
+    return;
+  }
+
+  const dot = data.filename.lastIndexOf('.');
+  const ext = dot > -1 ? data.filename.substring(dot) : '';
+  data.filename = val + ext;
+
+  // Refresh details table + batch list to reflect new name
+  const detailsEl = document.getElementById(`details-${exam}-${docId}`);
+  if(detailsEl){
+    const nameRow = detailsEl.querySelector('tr');
+    if(nameRow) nameRow.children[1].textContent = data.filename;
+  }
+  document.getElementById(`rename-wrap-${exam}-${docId}`).classList.remove('show');
+  updateBatchBar(exam);
+  showToast(`✏️ Renamed to: ${data.filename}`, 'success');
+}
+
+/* ============================================================
+   BATCH DOWNLOAD BAR (ZIP) + PROCESSED DOCUMENTS LIST
+   ============================================================ */
+function updateBatchBar(exam){
+  const bar = document.getElementById(`batch-bar-${exam}`);
+  const listEl = document.getElementById(`batch-list-${exam}`);
+  const countEl = document.getElementById(`batch-count-${exam}`);
+  if(!bar) return;
+
+  const processed = EXAMS[exam].docTypes
+    .map(dt => ({ dt, data: STATE[exam][dt.id] }))
+    .filter(x => x.data);
+
+  if(processed.length > 1){
+    bar.classList.add('show');
+  } else {
+    bar.classList.remove('show');
+  }
+
+  countEl.textContent = processed.length;
+  listEl.innerHTML = processed.map(({dt, data}) => `
+    <div class="bdb-item">
+      <span class="bdb-icon">${dt.icon}</span>
+      <span class="bdb-name">${data.filename}</span>
+      <span class="bdb-size">${data.procKB.toFixed(1)} KB</span>
+      <button class="bdb-mini-btn" title="Download this file" onclick="downloadFile('${exam}','${dt.id}')">⬇</button>
+    </div>`).join('');
+}
+
+async function downloadAllZip(exam){
+  const processed = EXAMS[exam].docTypes
+    .map(dt => ({ dt, data: STATE[exam][dt.id] }))
+    .filter(x => x.data);
+
+  if(processed.length < 2){
+    showToast('Process at least 2 documents to download as ZIP', 'warning');
+    return;
+  }
+  if(typeof JSZip === 'undefined'){
+    showToast('⚠ ZIP library failed to load — check your internet connection and try again', 'error');
+    return;
+  }
+
+  showToast('📦 Building ZIP file...', 'info');
+  try{
+    const zip = new JSZip();
+    processed.forEach(({data}) => { zip.file(data.filename, data.blob); });
+    const content = await zip.generateAsync({type:'blob'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(content);
+    a.download = `${exam}_Documents_${stamp()}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    showToast(`⬇ Downloaded ZIP with ${processed.length} documents`, 'success');
+  }catch(e){
+    showToast('❌ Failed to build ZIP file: ' + e.message, 'error');
+  }
+}
+
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function showDeclarationModal(exam){
+  document.getElementById('modalTitle').innerHTML = `📜 ${exam} Declaration Format`;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-section">
+      <div class="modal-section-title">Handwritten Declaration Text</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Copy this text in your <b>own handwriting</b> on plain white paper using black ink. Do not write in capital letters.</p>
+      <div class="declaration-box">${DECLARATIONS[exam]}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Key Rules</div>
+      <ul class="instructions-list">
+        <li>Write in your <b>own handwriting only</b> — having someone else write it leads to disqualification.</li>
+        <li>Use a <b>black ink pen</b> on plain white A4 paper.</li>
+        <li><b>Capital letters are not accepted</b> — use normal sentence case.</li>
+        <li>Sign below the declaration in the same ink used for the text.</li>
+        <li>Scan at 200 DPI minimum; target output size 50–100 KB.</li>
+      </ul>
+    </div>`;
+  openModal('declarationModal');
+}
+
+function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal('declarationModal'); });
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click', e=>{ if(e.target===el) closeModal(el.id); });
+});
+
+/* ============================================================
+   SPEC REFERENCE TABLE
+   ============================================================ */
+const SPEC_ROWS = [
+  ['IBPS','Photograph','JPG/JPEG','20–50 KB','200×230 px','White/light background, recent photo'],
+  ['IBPS','Signature','JPG/JPEG','10–20 KB','140×60 px','Black ink, NOT in capitals'],
+  ['IBPS','Left Thumb','JPG/JPEG','20–50 KB','240×240 px','Black/blue ink, clear ridges'],
+  ['IBPS','Declaration','JPG/JPEG','50–100 KB','800×400 px','Black ink, English, NOT capitals'],
+  ['IBPS','SSC/SSLC/10th Certificate','PDF (auto from JPG)','Max 500 KB','A4 page','Auto-converted to PDF if image uploaded'],
+  ['SBI','Photograph','JPG/JPEG','20–50 KB','200×230 px','White background mandatory, ears visible'],
+  ['SBI','Signature','JPG/JPEG','10–20 KB','140×60 px','Blue/black ink, NOT in capitals'],
+  ['SBI','Left Thumb','JPG/JPEG','20–50 KB','240×240 px','Blue ink preferred, single impression'],
+  ['SBI','Declaration','JPG/JPEG/PDF','50–100 KB','800×400 px','Black ink, English only, PDF accepted'],
+];
+function showSpecTable(filter, btn){
+  document.querySelectorAll('.sg-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = filter==='all' ? SPEC_ROWS : SPEC_ROWS.filter(r=>r[0].toLowerCase()===filter);
+  document.getElementById('spec-table-container').innerHTML = `
+    <table class="spec-table">
+      <colgroup>
+        <col class="col-exam"><col class="col-doc"><col class="col-fmt">
+        <col class="col-size"><col class="col-dim"><col class="col-notes">
+      </colgroup>
+      <thead><tr><th>Exam</th><th>Document</th><th>Format</th><th>Size</th><th>Dimensions</th><th>Key Notes</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr>
+        <td><b style="color:var(--info)">${r[0]}</b></td><td>${r[1]}</td>
+        <td><span class="badge-ok">${r[2]}</span></td><td><span class="badge-warn">${r[3]}</span></td>
+        <td>${r[4]}</td><td style="font-size:11px;color:var(--text-muted)">${r[5]}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(mode){
+  if(mode==='dark'){ document.body.classList.add('dark'); document.getElementById('themeToggle').textContent='☀️'; }
+  else { document.body.classList.remove('dark'); document.getElementById('themeToggle').textContent='🌙'; }
+  localStorage.setItem('docproc-theme', mode);
+}
+function toggleTheme(){
+  applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+}
+
+/* ============================================================
+   CLOCK
+   ============================================================ */
+function updateClock(){
+  const now = new Date(); const f = n=>String(n).padStart(2,'0');
+  document.getElementById('live-clock').textContent = `${f(now.getHours())}:${f(now.getMinutes())}:${f(now.getSeconds())}`;
+}
+
+/* ============================================================
+   TOASTS
+   ============================================================ */
+function showToast(msg, type='info'){
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(()=>{
+    toast.style.animation = 'toastIn .3s ease reverse';
+    setTimeout(()=>toast.remove(), 280);
+  }, 3800);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  buildPanels();
+  showSpecTable('all', document.querySelector('.sg-tab'));
+  updateClock(); setInterval(updateClock, 1000);
+
+  applyTheme('light');
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+  showToast('🏦 Document Processor ready! Choose IBPS or SBI, then pick a section to begin.', 'info');
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
