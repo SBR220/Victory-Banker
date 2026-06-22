@@ -549,6 +549,9 @@ background: linear-gradient(180deg, rgba(214, 222, 229, 1) 0%, rgba(237, 245, 25
 .t-todo:hover{box-shadow:0 8px 0 #965e00,0 22px 65px rgba(240,165,0,0.44),inset 0 1px 0 rgba(255,255,255,0.22),0 0 50px rgba(247,192,64,0.40);}
 .t-quiz{background:linear-gradient(148deg,#0d7252 0%,#15a87c 40%,#42edb7 100%);border-bottom:6px solid #095940;box-shadow:0 8px 0 #095940,0 14px 44px rgba(14,116,84,0.28),inset 0 1px 0 rgba(255,255,255,0.22);}
 .t-quiz:hover{box-shadow:0 8px 0 #095940,0 22px 65px rgba(14,116,84,0.44),inset 0 1px 0 rgba(255,255,255,0.22),0 0 50px rgba(52,209,157,0.38);}
+/* new pinkish button */
+.t-resize {background: linear-gradient(148deg, #be397a 0%, #e565a3 45%, #ffa6ce 100%);border-bottom: 6px solid #8c2353;box-shadow: 0 8px 0 #8c2353, 0 14px 44px rgba(190, 57, 122, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);font-weight: bold;}
+.t-resize:hover{box-shadow:0 8px 0 #8a2c5e,0 22px 65px rgba(179,59,122,0.48),inset 0 1px 0 rgba(255,255,255,0.22),0 0 50px rgba(247,143,203,0.40);}
 .tool-icon{font-size:2rem;display:block;margin-bottom:13px;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.18));}
 .tool-lbl{font-family:var(--fh);font-size:1.05rem;font-weight:900;color:#fff;display:block;margin-bottom:5px;text-shadow:0 1px 4px rgba(0,0,0,0.18);}
 .tool-desc{font-size:0.76rem;color:rgba(255,255,255,0.72);display:block;line-height:1.5;}
@@ -796,6 +799,7 @@ footer{background:#0c2440;padding:48px 5% 80px;color:rgba(255,255,255,0.82);}
         <a class="ft-link" href="calculation/index.html">Calculation Master</a>
         <a class="ft-link" href="todo/index.html">My To-Do List</a>
         <a class="ft-link" href="quiz/quiz page.html">Practice Quiz</a>
+        <a class="ft-link" href="resize/index.html">Resize Documents</a>
       </div>
       <div class="ft-col">
         <h4>Exams</h4>
@@ -824,12 +828,6 @@ footer{background:#0c2440;padding:48px 5% 80px;color:rgba(255,255,255,0.82);}
    ① EXAM COUNTDOWN DATA
    ── Edit dates here (YYYY, MM-1, DD, HH, MM)
    ── Month is 0-indexed: Jan=0 … Dec=11
-═══════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════════════
-   EXAM COUNTDOWN DATA
-   Edit name, date, icon, theme for each exam.
-   theme options: 'hot' (red) | 'live' (green) | 'blue' | 'gold'
-   date: new Date(YYYY, month-1, DD, HH, MM)
 ═══════════════════════════════════════════════════ */
 const EXAMS = [
   { name:'RBI Grade B Phase-1', icon:'🏦', label:'🔴 Registrations Open', theme:'hot',  date: new Date(2026, 5, 13, 1, 0) },
@@ -956,6 +954,12 @@ setTimeout(()=>{
       <span class="tool-icon">⏳</span>
       <span class="tool-lbl">Practice Quiz</span>
       <span class="tool-desc">Topic-wise timed quizzes with answer explanations</span>
+      <div class="tool-arrow">↗</div>
+    </button>
+    <button class="tool-btn t-resize" onclick="window.location.href='DocResizer/DocResizer.html'">
+      <span class="tool-icon">📐</span>
+      <span class="tool-lbl">Resize Documents</span>
+      <span class="tool-desc">Compress, resize and prepare your documents for faster uploads</span>
       <div class="tool-arrow">↗</div>
     </button>`;
   // re-run reveal on new elements
