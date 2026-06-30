@@ -830,11 +830,34 @@ footer{background:#0c2440;padding:48px 5% 80px;color:rgba(255,255,255,0.82);}
    ── Month is 0-indexed: Jan=0 … Dec=11
 ═══════════════════════════════════════════════════ */
 const EXAMS = [
-  { name:'RBI Grade B Phase-1', icon:'🏦', label:'🔴 Registrations Open', theme:'hot',  date: new Date(2026, 5, 13, 1, 0) },
-  { name:'SBI PO Prelims',      icon:'💼', label:'🟢 Admit Card Live',    theme:'live', date: new Date(2026, 7, 1, 1, 0) },
-  { name:'IBPS PO Prelims',     icon:'📋', label:'⚪ Upcoming',           theme:'blue', date: new Date(2026, 7, 22, 1, 0) },
-  { name:'SBI JA Prelims',      icon:'🪙', label:'⚪ Upcoming ',          theme:'hot',  date: new Date(2026, 8, 27, 1, 0) },
-  { name:'IBPS Clerk Prelims',  icon:'🏛️', label:'⚪ Upcoming',           theme:'gold', date: new Date(2026, 9, 10, 1, 0) },
+ // July 2026
+  { name:'RBI Grade B Mains', icon:'🏦', label:'📅 Fixed Date', theme:'hot', date: new Date(2026, 6, 25, 1, 0) },
+  
+  // August 2026
+  { name:'SBI PO Pre', icon:'💼', label:'📅 Expected Date', theme:'live', date: new Date(2026, 7, 1, 1, 0) },
+  { name:'IBPS PO Pre', icon:'📋', label:'📅 Fixed Date', theme:'blue', date: new Date(2026, 7, 22, 1, 0) },
+  { name:'IBPS SO Pre', icon:'📋', label:'📅 Fixed Date', theme:'blue', date: new Date(2026, 7, 29, 1, 0) },
+  
+  // September 2026
+  { name:'SBI PO Mains', icon:'💼', label:'📅 Expected Date', theme:'live', date: new Date(2026, 8, 12, 1, 0) },
+  { name:'SBI Clerk Pre', icon:'🪙', label:'📅 Expected Date', theme:'hot', date: new Date(2026, 8, 27, 1, 0) },
+  
+  // October 2026
+  { name:'IBPS PO Mains', icon:'📋', label:'📅 Fixed Date', theme:'blue', date: new Date(2026, 9, 4, 1, 0) },
+  { name:'IBPS Clerk Pre', icon:'🏛️', label:'📅 Fixed Date', theme:'gold', date: new Date(2026, 9, 10, 1, 0) },
+  
+  // November 2026
+  { name:'IBPS SO Mains', icon:'📋', label:'📅 Fixed Date', theme:'blue', date: new Date(2026, 10, 1, 1, 0) },
+  { name:'SBI Clerk Mains', icon:'🪙', label:'📅 Expected Date', theme:'hot', date: new Date(2026, 10, 7, 1, 0) },
+  { name:'🏦 RRB PO Pre', icon:'🏦', label:'📅 Fixed Date', theme:'green', date: new Date(2026, 10, 21, 1, 0) },
+  
+  // December 2026
+  { name:'🏦 RRB Clerk Pre', icon:'🏦', label:'📅 Fixed Date', theme:'green', date: new Date(2026, 11, 6, 1, 0) },
+  { name:'🏦 RRB PO Mains', icon:'🏦', label:'📅 Fixed Date', theme:'green', date: new Date(2026, 11, 20, 1, 0) },
+  { name:'IBPS Clerk Mains', icon:'🏛️', label:'📅 Fixed Date', theme:'gold', date: new Date(2026, 11, 27, 1, 0) },
+  
+  // LONGEST (January 2027)
+  { name:'🏦 RRB Clerk Mains', icon:'🏦', label:'📅 Fixed Date', theme:'green', date: new Date(2027, 0, 30, 1, 0) },
 ];
 
 /* stores setInterval ids keyed by exam index */
@@ -898,7 +921,6 @@ setInterval(tickAll, 1000);
    tag: 'new' | 'update' | 'resource'
 ═══════════════════════════════════════════════════ */
 const NOTIFS = [
-  { tag:'new',      label:'🔴 New',      title:'Data Interpretation Full Workbook Uploaded',         desc:'88-page DI PDF covering tables, bar, pie, line, caselet. Must-attempt for Mains.', time:'2 minutes ago',    link:'index.html',              hot:true  },
   { tag:'new',      label:'🔴 New',      title:'Mock Test 7 — Reasoning Full Paper is Live',         desc:'Attempt under timed conditions. Detailed solutions included.',                   time:'18 minutes ago',   link:'#tools',                  hot:true  },
   { tag:'resource', label:'📄 Resource', title:'GA Capsule June 2026 Added to Notes',                desc:'Economy, banking awareness, govt schemes and static GK compiled.',               time:'1 hour ago',       link:'index.html',              hot:false },
   { tag:'update',   label:'🔵 Update',   title:'Calculation Master — 25 New Speed Tricks Added',    desc:'Squaring, percentage-to-fraction, and approximation shortcuts updated.',          time:'Yesterday, 9:14 PM',link:'https://victory-banker.vercel.app/calculation/index.html',                 hot:false },
