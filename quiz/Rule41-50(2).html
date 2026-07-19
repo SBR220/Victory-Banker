@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Rule 41-50 (Set 02) - 120 Rules of Grammar</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>:root{--acc:#000787;--adk:#127DE5;--ok:#1f9e5a;--bad:#f23f54;--bg:#f0f4ff;--card:#fff;--mx:860px;--gold:#f59e0b;--sh:0 8px 32px rgba(0,7,135,.13)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:#111;padding-bottom:90px;min-height:100vh}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#c0c8d8;border-radius:4px}
+.wrap{max-width:var(--mx);margin:auto;padding:12px 16px}
+header{background:linear-gradient(135deg,#000787,#127DE5);box-shadow:0 4px 20px rgba(0,7,135,.3);position:sticky;top:0;z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px;flex-wrap:wrap}
+.tog{position:relative;width:96px;height:30px;background:rgba(255,255,255,.18);border-radius:999px;cursor:pointer;display:flex;align-items:center;padding:0 6px;user-select:none;border:1px solid rgba(255,255,255,.25)}
+.tog span{z-index:2;flex:1;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);transition:color .2s}
+.tog::before{content:"";position:absolute;top:3px;left:3px;width:44px;height:24px;background:#fff;border-radius:999px;transition:transform .28s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tog.qm::before{transform:translateX(44px)}.tog span:first-child{color:#000787}.tog.qm span:first-child{color:rgba(255,255,255,.7)}.tog.qm span:last-child{color:#000787}
+.timer{font-weight:800;font-size:18px;color:#fff;font-variant-numeric:tabular-nums;background:rgba(0,0,0,.2);padding:4px 10px;border-radius:8px;min-width:68px;text-align:right}
+.timer.warn{color:#fbbf24;animation:tp 1s infinite}@keyframes tp{0%,100%{opacity:1}50%{opacity:.6}}
+.btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}.btn-sub{background:linear-gradient(135deg,#f59e0b,#ef4444);border:none}
+.btn-o{background:#fff;color:var(--acc);border:2px solid var(--acc);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}.btn-o:hover{background:var(--acc);color:#fff}
+.pbr{background:rgba(255,255,255,.2);height:4px;overflow:hidden}.pb{height:100%;background:linear-gradient(90deg,#fbbf24,#34d399);transition:width .4s}
+.card{background:var(--card);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh);border:1px solid rgba(0,7,135,.06);animation:fiu .3s ease}
+@keyframes fiu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.qbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.qmeta{font-size:13px;color:#69707a;font-weight:600}
+.qnum{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-radius:50%;font-size:13px;font-weight:800;margin-right:4px}
+.sbdg{display:flex;gap:6px}.sbdg span{padding:3px 9px;border-radius:6px;font-weight:700;font-size:13px}
+.sp{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}.sn{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
+.qtxt{font-size:15.5px;line-height:1.85;margin:10px 0 14px;padding:13px 16px;background:linear-gradient(135deg,#f8faff,#eef2ff);border-radius:10px;border-left:4px solid var(--acc)}
+.qtxt strong{font-weight:800;color:#00087a}.qtxt em{font-style:italic;color:#1a56db}.qtxt u{text-decoration:underline;text-underline-offset:3px}.qtxt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.qtxt img{max-width:100%;border-radius:8px;margin:8px 0;display:block}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;transition:all .18s}
+.opt:hover:not(.cor):not(.wrg){border-color:#93c5fd;background:#f0f9ff;transform:translateX(3px)}
+.opt.sel{border-color:var(--acc);background:rgba(0,7,135,.05);transform:translateX(3px)}
+.opt.cor{border-color:var(--ok);background:rgba(31,158,90,.1);transform:translateX(3px)}
+.opt.wrg{border-color:var(--bad);background:rgba(200,45,63,.08);transform:translateX(3px)}
+.oltr{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#64748b;margin-top:2px;transition:all .18s}
+.opt.sel .oltr{background:var(--acc);border-color:var(--acc);color:#fff}
+.opt.cor .oltr{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrg .oltr{background:var(--bad);border-color:var(--bad);color:#fff}
+.otxt{font-size:15px;line-height:1.6;flex:1}
+.otxt strong{font-weight:800;color:#00087a}.otxt em{font-style:italic;color:#1a56db}.otxt u{text-decoration:underline;text-underline-offset:3px}.otxt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.och{margin-left:auto;font-size:16px;flex-shrink:0}
+.opt.cor .och::before{content:"✓";color:var(--ok)}.opt.wrg .och::before{content:"✗";color:var(--bad)}
+.expl{margin-top:12px;padding:13px 16px 13px 42px;border-radius:10px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:14px;line-height:1.75;display:none;position:relative}
+.expl::before{content:"💡";position:absolute;left:13px;top:13px;font-size:18px}
+.expl strong{font-weight:800;color:#065f46}.expl em{font-style:italic;color:#0f766e}.expl u{text-decoration:underline}.expl mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.fbar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 -4px 20px rgba(0,7,135,.1);display:flex;justify-content:center;z-index:50;border-top:1px solid rgba(0,7,135,.07)}
+.fbar-in{display:flex;align-items:center;gap:8px;max-width:var(--mx);width:100%;padding:10px 14px}
+.nb{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;flex:1;max-width:130px}
+.nb:hover{transform:translateY(-2px)}.nb-clr{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}.nb-clr:hover{background:#e2e8f0;transform:translateY(-1px)}
+.qctr{flex:1;text-align:center;font-size:13px;font-weight:700;color:#69707a}
+#pal{position:fixed;top:62px;right:14px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,7,135,.18);padding:14px;display:none;flex-wrap:wrap;gap:6px;z-index:200;max-width:305px;border:1px solid rgba(0,7,135,.08)}
+#pal-hd{width:100%;font-size:11px;font-weight:800;color:var(--acc);padding-bottom:8px;border-bottom:2px solid #eef2ff;margin-bottom:2px;text-transform:uppercase;letter-spacing:.4px}
+.pq{width:40px;height:40px;border-radius:8px;border:2px solid #e2e8f0;background:#f8faff;cursor:pointer;font-weight:800;font-size:12px;transition:all .15s;color:#374151}
+.pq:hover{border-color:var(--adk);transform:scale(1.08)}.pq.ans{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-color:var(--acc)}.pq.act{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid var(--gold);color:#92400e}
+#pal-sum{width:100%;text-align:center;font-size:10px;color:#69707a;padding-top:7px;border-top:1px solid #eef2ff;margin-top:3px;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(0,0,50,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:300}
+.mbox{background:#fff;border-radius:18px;padding:26px;max-width:410px;width:94%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:mbu .3s ease}
+@keyframes mbu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.mbox h3{color:var(--acc);margin:8px 0 10px;font-size:20px;font-weight:900}.mbox p{color:#555;font-size:14px;margin-bottom:20px;line-height:1.6}
+.macts{display:flex;gap:9px;justify-content:center}.bp{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px;transition:all .18s}.bp:hover{transform:translateY(-2px)}
+.start{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 20% 20%,rgba(107,228,255,.3),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(0,7,135,.15),transparent 50%),linear-gradient(160deg,#bff1fc,#eefbfe 40%,#dde9ff 70%,#aaeeff);text-align:center;padding:24px;position:relative;overflow:hidden}
+.logo-wrap{position:relative;margin-bottom:18px}.logo-glow{position:absolute;inset:-18px;background:radial-gradient(circle,rgba(0,7,135,.15),transparent 70%);border-radius:50%;animation:glw 3s ease-in-out infinite}
+@keyframes glw{0%,100%{opacity:.5}50%{opacity:1;transform:scale(1.08)}}.logo-img{width:100px;height:100px;border-radius:50%;object-fit:cover;filter:drop-shadow(0 8px 24px rgba(0,7,135,.3));animation:fly 4s ease-in-out infinite;position:relative}
+@keyframes fly{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.start h1{font-size:clamp(20px,4vw,28px);font-weight:900;color:#000787;margin-bottom:5px}.start-sub{font-size:14px;color:#0369a1;margin-bottom:20px;font-weight:600}
+.start-card{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);padding:22px;border-radius:18px;max-width:600px;width:100%;text-align:left;box-shadow:0 14px 48px rgba(0,7,135,.12);margin-bottom:16px;border:1px solid rgba(255,255,255,.6)}
+.start-card h2{color:var(--acc);margin-bottom:12px;font-size:14px;font-weight:800}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ii{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#374151;line-height:1.55;padding:9px 12px;background:rgba(0,7,135,.03);border-radius:9px;border:1px solid rgba(0,7,135,.06)}
+.ii-ico{font-size:16px;flex-shrink:0;margin-top:1px}.ii p{flex:1}.ii strong{color:#000787}
+.meta-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mp{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;font-size:12px;font-weight:700;flex:1;min-width:90px;justify-content:center}
+.mp-b{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border:1px solid #93c5fd}.mp-g{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;border:1px solid #6ee7b7}.mp-o{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;border:1px solid #fcd34d}.mp-r{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b;border:1px solid #f87171}
+.agree{display:flex;align-items:center;gap:11px;padding:13px 15px;background:linear-gradient(135deg,rgba(0,7,135,.07),rgba(18,125,229,.05));border-radius:11px;margin-top:12px;border:2px dashed rgba(0,7,135,.2);cursor:pointer;transition:border-color .2s}.agree:hover{border-color:rgba(0,7,135,.4)}
+.agree input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc);cursor:pointer;flex-shrink:0}.agree label{font-size:13px;color:#1e3a8a;cursor:pointer;font-weight:700;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#22d3ee,#4f39f6);color:#fff;padding:13px 34px;border:0;border-radius:50px;font-weight:900;font-size:15px;cursor:pointer;margin-top:14px;transition:all .25s;box-shadow:0 8px 28px rgba(79,57,246,.3);opacity:.45;pointer-events:none}
+.start-btn.ready{opacity:1;pointer-events:all;animation:sbp 2.2s ease-in-out infinite}.start-btn.ready:hover{transform:translateY(-3px) scale(1.03)}
+@keyframes sbp{0%,100%{box-shadow:0 8px 28px rgba(79,57,246,.4)}50%{box-shadow:0 14px 44px rgba(79,57,246,.65),0 0 0 8px rgba(79,57,246,.1)}}
+.sf{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:10px}.sf p{font-size:12px;color:#0369a1;font-weight:600}
+.tg-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#2196F3,#0d47a1);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;box-shadow:0 5px 18px rgba(13,71,161,.3);transition:all .22s}.tg-btn:hover{transform:translateY(-2px)}.tg-btn svg{width:18px;height:18px;fill:#fff}
+.rhero{background:linear-gradient(135deg,#000787,#127DE5 60%,#0d9488);color:#fff;border-radius:18px;padding:26px;margin-bottom:16px}
+.rhero h2{font-size:20px;font-weight:900;margin-bottom:4px}.rhero p{opacity:.8;font-size:13px}
+.rscore{font-size:48px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}
+.rstat{padding:13px 10px;border-radius:11px;text-align:center}.rstat h4{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;opacity:.8}.rstat p{font-weight:900;font-size:20px}
+.rs-c{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #6ee7b7;color:#065f46}.rs-w{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #f87171;color:#991b1b}.rs-s{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #cbd5e1;color:#475569}.rs-a{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px solid #a78bfa;color:#5b21b6}.rs-sc{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fcd34d;color:#92400e}.rs-t{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #93c5fd;color:#1e40af}
+.charts-sec{margin:16px 0}.charts-sec h3{font-size:16px;font-weight:800;color:var(--acc);margin-bottom:12px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ccard{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sh);border:1px solid rgba(0,7,135,.05)}.ccard h4{font-size:11px;font-weight:800;color:#374151;margin-bottom:12px;text-align:center;text-transform:uppercase;letter-spacing:.4px}.ccard canvas{max-height:200px}.cwide{grid-column:1/-1}
+.rcard{border-radius:13px;padding:16px;margin:10px 0;box-shadow:0 2px 10px rgba(0,7,135,.07);border:1px solid rgba(0,7,135,.05);background:#fff;animation:fiu .3s ease}
+.rcard.cor{border-left:5px solid var(--ok)}.rcard.wrg{border-left:5px solid var(--bad)}.rcard.skp{border-left:5px solid #94a3b8}
+.ropt{padding:9px 12px;margin:4px 0;border-radius:8px;font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.6}
+.ropt.rc{border:2px solid var(--ok);background:rgba(31,158,90,.07);color:#065f46}.ropt.rw{border:2px solid var(--bad);background:rgba(200,45,63,.07);color:#991b1b}.ropt.rp{border:1px solid #e2e8f0;background:#f8faff;color:#64748b}
+.rl{font-weight:800;font-size:12px;min-width:20px;flex-shrink:0;margin-top:2px}
+.ropt strong{font-weight:800}.ropt em{font-style:italic}.ropt u{text-decoration:underline}.ropt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.res-expl{margin-top:9px;padding:11px 14px 11px 38px;border-radius:9px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:13px;line-height:1.7;position:relative}
+.res-expl::before{content:"💡";position:absolute;left:11px;top:11px;font-size:15px}
+.res-expl strong{font-weight:800;color:#065f46}.res-expl em{font-style:italic;color:#0f766e}.res-expl u{text-decoration:underline}.res-expl mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+@media(max-width:540px){.cgrid{grid-template-columns:1fr}.cwide{grid-column:1}.rstats{grid-template-columns:repeat(2,1fr)}.rscore{font-size:36px}.hdr{padding:8px 10px}.timer{font-size:14px}.fbar-in{gap:5px;padding:8px 10px}.nb{padding:9px 11px;font-size:12px}#pal{right:8px;max-width:270px}.pq{width:36px;height:36px;font-size:11px}}
+@media print{.fbar,header,.modal,#pal,.start,button,.tog,.timer{display:none!important}body{background:#fff;padding:0}.rhero{background:#000787!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.card,.rcard{box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid}}</style>
+</head>
+<body>
+<div class="start" id="startScr">
+<div class="logo-wrap"><div class="logo-glow"></div><img class="logo-img" src="https://i.ibb.co/W8PWFVB/20260406-005258.jpg" alt="Logo" width="100" height="100"/></div>
+<h1 id="sTitle">Rule 41-50 (Set 02) - 120 Rules of Grammar</h1>
+<div class="start-sub">50 Questions</div>
+<div class="start-card">
+<h2>📋 Instructions</h2>
+<ul class="instr-list">
+<li class="ii"><span class="ii-ico">⏱️</span><p>Total time: <strong>20 minutes</strong>. Auto-submits when time runs out.</p></li>
+<li class="ii"><span class="ii-ico">✅</span><p>Correct = <strong>+1 mark</strong>. There is <strong>-0.25 negative marking</strong> for wrong answers.</p></li>
+<li class="ii"><span class="ii-ico">🔄</span><p><strong>Test Mode</strong>: Attempt all → Submit → See results. <strong>Quiz Mode</strong>: Instant feedback per answer.</p></li>
+<li class="ii"><span class="ii-ico">📌</span><p>Use <strong>Palette</strong> to jump between questions.</p></li>
+</ul>
+<div class="meta-pills">
+<div class="mp mp-b">📝 50 Questions</div>
+<div class="mp mp-g">⏱️ 20 minutes</div>
+<div class="mp mp-o">+1 Correct</div>
+<div class="mp mp-r">-0.25 Negative</div>
+</div>
+<div class="agree" onclick="toggleAgree()">
+<input type="checkbox" id="agreeChk" onchange="checkReady()" onclick="event.stopPropagation()"/>
+<label for="agreeChk">I have read all instructions and I am ready to begin.</label>
+</div>
+</div>
+<button class="start-btn" id="startBtn" onclick="startQuiz()">Start Quiz →</button>
+<div class="sf"><p>Created with Quiz Studio</p>
+<a class="tg-btn" href="https://t.me/VictoryBanker" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.857l-2.96-.924c-.643-.203-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.702z"/></svg>
+Victory Banker
+</a></div>
+</div>
+<div id="quizUI" style="display:none">
+<header id="mainHdr">
+<div class="hdr" id="hdrCtrls">
+<div style="display:flex;align-items:center;gap:10px"><div class="tog" id="modeTog" onclick="toggleMode()"><span>Test</span><span>Quiz</span></div></div>
+<div style="display:flex;align-items:center;gap:8px">
+<div class="timer" id="timerEl">00:00</div>
+<button class="btn btn-sub" onclick="openSub()">Submit</button>
+<button class="btn" id="palBtn" onclick="togglePal()">📋 Palette</button>
+</div></div>
+<div class="pbr"><div class="pb" id="pb" style="width:0%"></div></div>
+</header>
+<div class="wrap">
+<div id="qCard" class="card">
+<div class="qbar">
+<span class="qmeta"><span class="qnum" id="qBadge">1</span>Q <span id="qIdx">1</span> / <span id="qTot">0</span></span>
+<div class="sbdg"><span class="sp" id="qPos"></span><span class="sn" id="qNeg"></span></div>
+</div>
+<div class="qtxt" id="qTxt"></div>
+<div class="opts" id="opts"></div>
+<div class="expl" id="expl"></div>
+</div>
+<div id="resultArea" style="display:none"></div>
+</div>
+<div class="fbar" id="fbar"><div class="fbar-in">
+<button class="nb" onclick="nav(-1)">← Prev</button>
+<button class="nb nb-clr" onclick="clrAns()">✕ Clear</button>
+<span class="qctr" id="qCtr"></span>
+<button class="nb" onclick="nav(1)">Next →</button>
+</div></div>
+</div>
+<div id="pal" aria-hidden="true"><div id="pal-hd">Question Palette</div></div>
+<div class="modal" id="subMod">
+<div class="mbox">
+<div style="font-size:44px">📤</div>
+<h3>Submit Quiz?</h3>
+<p id="subMsg"></p>
+<div class="macts"><button class="btn-o" onclick="closeSub()">Cancel</button><button class="bp" onclick="doSubmit()">Submit Now</button></div>
+</div></div>
+<script>
+var QS=[{"id":"51","question":"**Q51. Fill in the Blank**\n\nThe climate agreement was negotiated between the minister and ___.\n\n(A) I\n(B) myself\n(C) me\n(D) mine\n(E) we","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) me\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nSub-rule: After prepositions (between, among, with, for, to, from, beside, about), objective pronouns are required.\n\nObjective pronouns:\n* me\n* him\n* her\n* us\n* them\n\n**🔍 Detailed Explanation**\nTrigger word:\n==between==\n\nSentence structure:\nnegotiated + between + minister and ___\n\n\"Between\" is a preposition. After preposition → objective pronoun required.\n\n✔ Correct:\n> between the minister and me\n\nIncorrect:\n> ❌ between the minister and I\n\n\"I\" is subjective case.\n\n**Hidden Grammar Clue**\nRemove first noun:\n> negotiated between I *(Wrong)*\n> negotiated between me *(Correct)*\n\n**❌ Why Other Options Are Wrong**\n*(A) I* ❌ Wrong pronoun case. Preposition requires objective case.\n*(B) myself* ❌ Reflexive pronoun unnecessary. \"Myself\" only when subject = object. (Example: ✔ I hurt myself.) Not applicable.\n*(D) mine* ❌ Possessive pronoun. Wrong usage.\n*(E) we* ❌ Subjective pronoun. Wrong case.\n\n**💡 Shortcut Tip**\n**Preposition → Objective Pronoun**\nRemember: *Between you and me* | NOT: *Between you and I*","option_1":"I","option_2":"myself","option_3":"me","option_4":"mine","option_5":"we"},{"id":"52","question":"**Q52. Error Detection**\n\nThe research findings were shared among the committee and I.\n\n(A) research findings\n(B) among the committee and I\n(C) were shared\n(D) No Error\n(E) findings","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) among the committee and I\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nAfter preposition → objective pronoun.\n\n**🔍 Detailed Explanation**\nTrigger:\n==among==\n\nIncorrect portion:\n❌ among the committee and I\n\nCorrect:\n✔ among the committee and me\n\nSentence structure:\nPreposition + noun + pronoun\n\nPronoun must become objective.\n\n**Hidden Grammar Clue**\nCheck:\n> among I *(Wrong)*\n> among me *(Correct)*\n\n**❌ Why Others Wrong**\n*(A) research findings* ✔\n*(C) were shared* ✔\n*(D) No Error* ❌ Error exists.\n*(E) findings* ✔\n\n**💡 Shortcut Tip**\nPrepositions never take: ❌ *I*, ❌ *he*, ❌ *she*\nUse: ✔ *me*, ✔ *him*, ✔ *her*","option_1":"research findings","option_2":"among the committee and I","option_3":"were shared","option_4":"No Error","option_5":"findings"},{"id":"53","question":"**Q53. Sentence Correction**\n\nThe cybersecurity audit was conducted by Rahul and I.\n\n(A) Rahul and myself\n(B) Rahul and me\n(C) Rahul and mine\n(D) Rahul and he\n(E) No correction required","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) Rahul and me\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nObjective pronoun after preposition.\n\n**🔍 Detailed Explanation**\nTrigger:\n==by==\n\n\"By\" is preposition. Need objective pronoun.\n\nIncorrect:\n❌ Rahul and I\n\nCorrect:\n✔ Rahul and me\n\n**Hidden Grammar Clue**\nRemove Rahul.\n> conducted by I *(Wrong)*\n> conducted by me *(Correct)*\n\n**❌ Why Other Options Wrong**\n*(A) Rahul and myself* ❌ Reflexive unnecessary.\n*(C) Rahul and mine* ❌ Possessive pronoun.\n*(D) Rahul and he* ❌ Subjective pronoun.\n*(E) No correction required* ❌ Correction needed.\n\n**💡 Shortcut Tip**\nRemove second noun. Check sentence.","option_1":"Rahul and myself","option_2":"Rahul and me","option_3":"Rahul and mine","option_4":"Rahul and he","option_5":"No correction required"},{"id":"54","question":"**Q54. Fill in the Blank**\n\n___, Aarav and I will represent India at the Global AI Summit.\n\n(A) Me\n(B) Him\n(C) You\n(D) Myself\n(E) Mine","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) You\n\n**📘 Rule Applied**\n**Rule 42 — Positive Sequence Pronoun Order**\n\nPattern:\n**2 → 3 → 1** (You → He → I)\n\n**🔍 Detailed Explanation**\nPositive activity:\nRepresenting India.\n\nPositive situations:\nSecond Person → Third Person → First Person.\n\nCorrect:\n✔ You, Aarav and I\n\n**Hidden Grammar Clue**\nPositive responsibility. Positive order rule applies.\n\n**❌ Why Others Wrong**\n*(A) Me* ❌ Objective case.\n*(B) Him* ❌ Objective case.\n*(D) Myself* ❌ Reflexive unnecessary.\n*(E) Mine* ❌ Possessive pronoun.\n\n**💡 Shortcut Tip**\nPositive work: **2 → 3 → 1** (You → He → I)","option_1":"Me","option_2":"Him","option_3":"You","option_4":"Myself","option_5":"Mine"},{"id":"55","question":"**Q55. Fill in the Blank**\n\nThe inquiry found ___ guilty of leaking classified geopolitical information.\n\n(A) You, Rohan and I\n(B) I, you and Rohan\n(C) Rohan, you and I\n(D) Me, Rohan and you\n(E) You, I and Rohan","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) I, you and Rohan\n\n**📘 Rule Applied**\n**Rule 42A — Negative Sequence**\n\nPattern:\n**1 → 2 → 3**\n\nUsed for: mistakes, guilt, crimes, negative situations\n\n**🔍 Detailed Explanation**\nTrigger:\n==guilty==\n\nNegative context. Rule changes:\n* Positive: **2 → 3 → 1**\n* Negative: **1 → 2 → 3**\n\nCorrect:\n✔ I, you and Rohan\n\n**Hidden Grammar Clue**\nWords like *guilty, mistake, responsible, blame* → Negative order.\n\n**❌ Why Others Wrong**\n*(A) You, Rohan and I* ❌ Positive order.\n*(C) Rohan, you and I* ❌ Wrong sequence.\n*(D) Me, Rohan and you* ❌ Wrong pronoun case.\n*(E) You, I and Rohan* ❌ Wrong order.\n\n**💡 Shortcut Tip**\nNegative emotion? Use: **1 → 2 → 3**","option_1":"You, Rohan and I","option_2":"I, you and Rohan","option_3":"Rohan, you and I","option_4":"Me, Rohan and you","option_5":"You, I and Rohan"},{"id":"56","question":"**Q56. Error Detection**\n\nThe President repeated again the need for environmental resilience.\n\n(A) President\n(B) repeated again\n(C) environmental resilience\n(D) need\n(E) No Error","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) repeated again\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\n**🔍 Detailed Explanation**\nRepeat already means: say again\n\nUsing both:\n❌ repeated again (Redundancy)\n\nCorrect:\n✔ repeated\n\n**Hidden Grammar Clue**\nCompetitive exam traps:\n❌ repeat again | ❌ return back | ❌ discuss about | ❌ merge together\n\n**❌ Why Other Parts Wrong**\nNo issue elsewhere. Only superfluous phrase wrong.\n\n**💡 Shortcut Tip**\nMeaning repeated? Remove extra word.","option_1":"President","option_2":"repeated again","option_3":"environmental resilience","option_4":"need","option_5":"No Error"},{"id":"57","question":"**Q57. Identify Incorrect Sentence**\n\n(A) The company merged with an EV manufacturer.\n(B) Scientists discussed climate adaptation.\n(C) The diplomat returned home.\n(D) The committee assembled together.\n(E) Satellite systems failed unexpectedly.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) The committee assembled together.\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\nSuperfluous expression.\n\n**🔍 Detailed Explanation**\n\"Assemble\" means: gather together\n\nAdding together:\n❌ assembled together\n\nCorrect:\n✔ assembled\n\n**💡 Shortcut Tip**\nVerb meaning already complete? Remove unnecessary adverb.","option_1":"The company merged with an EV manufacturer.","option_2":"Scientists discussed climate adaptation.","option_3":"The diplomat returned home.","option_4":"The committee assembled together.","option_5":"Satellite systems failed unexpectedly."},{"id":"58","question":"**Q58. Fill in the Blank**\n\nThe conference was hosted at Dr. Harris ___ institute.\n\n(A) Harris'\n(B) Harris's\n(C) Harris's\n(D) Harrises\n(E) Harrises'","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) Harris's\n\n**📘 Rule Applied**\n**Rule 44 — Apostrophe S**\n\n**🔍 Detailed Explanation**\nSingular noun: Harris\n\nPossession need:\n✔ Harris's institute\n\n**Hidden Grammar Clue**\nSingular owner: noun + 's\n\n**❌ Other Options Wrong**\n*(A) Harris'* ❌ Exam source prefers Harris's.\n*(B) Harris's* ✔ Correct (duplicated in options but marks correct choice).\n*(D) Harrises* ❌ Plural noun.\n*(E) Harrises'* ❌ Plural possessive.\n\n**💡 Shortcut Tip**\nSingular ownership: Always think: **noun + apostrophe + s**","option_1":"Harris'","option_2":"Harris's","option_3":"Harris's","option_4":"Harrises","option_5":"Harrises'"},{"id":"59","question":"**Q59. Fill in the Blank**\n\nThe report was finalized in 2022 and immediately ___ to regulators.\n\n(A) has submitted\n(B) had submitted\n(C) was submitted\n(D) submits\n(E) submitting","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) was submitted\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\n**🔍 Detailed Explanation**\nTrigger:\n==2022==\n\nSpecific year. Need Simple Past passive construction.\n\nCorrect:\n✔ was submitted\n\n**Hidden Grammar Clue**\nPast year blocks Present Perfect.\n\n**❌ Why Others Wrong**\n*(A) has submitted* ❌ Present Perfect invalid.\n*(B) had submitted* ❌ No earlier past event.\n*(D) submits* ❌ Present tense.\n*(E) submitting* ❌ Parallelism broken.\n\n**💡 Shortcut Tip**\nPast year given? Use Simple Past.","option_1":"has submitted","option_2":"had submitted","option_3":"was submitted","option_4":"submits","option_5":"submitting"},{"id":"60","question":"**Q60. Error Detection**\n\nThe renewable energy initiative has started in 2018.\n\n(A) renewable energy initiative\n(B) has started\n(C) in 2018\n(D) No Error\n(E) initiative","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) has started\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\nPast point → Simple Past.\n\n**🔍 Detailed Explanation**\nTrigger:\n==2018==\n\nIncorrect:\n❌ has started\n\nCorrect:\n✔ started\n\nPresent Perfect cannot take definite past time.\n\n**💡 Shortcut Tip**\nPresent Perfect + specific year = error.","option_1":"renewable energy initiative","option_2":"has started","option_3":"in 2018","option_4":"No Error","option_5":"initiative"},{"id":"61","question":"**Q61. Fill in the Blank**\n\nThe cybersecurity architecture is ___ unique.\n\n(A) most\n(B) highly most\n(C) quite\n(D) very more\n(E) all quite","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) quite\n\n**📘 Rule Applied**\n**Rule 46 — Words Not Used with MOST**\n\n**🔍 Explanation**\n\"Unique\" is absolute.\n\nIncorrect:\n❌ most unique\n\nCorrect:\n✔ quite unique\n\n**💡 Shortcut**\nAbsolute adjectives like *Perfect, Unique, Entire, Complete* avoid MOST.","option_1":"most","option_2":"highly most","option_3":"quite","option_4":"very more","option_5":"all quite"},{"id":"62","question":"**Q62. Error Detection**\n\nThe algorithm became quite after optimization.\n\n(A) algorithm\n(B) became quite\n(C) optimization\n(D) No Error\n(E) algorithm became","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) became quite\n\n**📘 Rule Applied**\n**Rule 47 — Quiet vs Quite**\n\n**🔍 Explanation**\nNeed adjective.\n\nCorrect:\n✔ became quiet\n\n*Quite* = degree adverb. *Quiet* = silent.","option_1":"algorithm","option_2":"became quite","option_3":"optimization","option_4":"No Error","option_5":"algorithm became"},{"id":"63","question":"**Q63. Fill in the Blank**\n\nThe disaster recovery center became ___ after evacuation orders.\n\n(A) quite\n(B) quietly\n(C) quiet\n(D) quieterly\n(E) all quiet quite","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) quiet\n\n**📘 Rule Applied**\n**Rule 47 — Quiet vs Quite**\n\n**🔍 Explanation**\nLinking verb *became* needs adjective.\n\nCorrect:\n✔ quiet","option_1":"quite","option_2":"quietly","option_3":"quiet","option_4":"quieterly","option_5":"all quiet quite"},{"id":"64","question":"**Q64. Fill in the Blank**\n\nThe Mars mission launched six years ___.\n\n(A) before\n(B) earlier\n(C) ago\n(D) since\n(E) prior","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) ago\n\n**📘 Rule Applied**\n**Rule 48A — Use of AGO**\n\nAgo → backward from present.","option_1":"before","option_2":"earlier","option_3":"ago","option_4":"since","option_5":"prior"},{"id":"65","question":"**Q65. Fill in the Blank**\n\nThe climate scientist presented findings three weeks ___ COP discussions began.\n\n(A) ago\n(B) before\n(C) since\n(D) from\n(E) until","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) before\n\n**📘 Rule Applied**\n**Rule 48 — Use of BEFORE**\n\nBefore → earlier than past event.","option_1":"ago","option_2":"before","option_3":"since","option_4":"from","option_5":"until"},{"id":"66","question":"**Q66. Identify Possession Type**\n\nNeha and Arjun's research paper won an award.\n\n(A) Split Possession\n(B) Common Possession\n(C) Independent Possession\n(D) Double Possession\n(E) None","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) Common Possession\n\n**📘 Rule Applied**\n**Rule 49 — Common Possession**\n\nOne ownership = One apostrophe at the end.","option_1":"Split Possession","option_2":"Common Possession","option_3":"Independent Possession","option_4":"Double Possession","option_5":"None"},{"id":"67","question":"**Q67. Identify Possession Type**\n\nNeha's and Arjun's doctoral theses were published.\n\n(A) Common Possession\n(B) Joint Ownership\n(C) Split Possession\n(D) Shared Ownership\n(E) None","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) Split Possession\n\n**📘 Rule Applied**\n**Rule 49A — Split Possession**\n\nSeparate ownership = Separate apostrophes.","option_1":"Common Possession","option_2":"Joint Ownership","option_3":"Split Possession","option_4":"Shared Ownership","option_5":"None"},{"id":"68","question":"**Q68. Fill in the Blank**\n\nThe machine learning system updated ___ neural parameters.\n\n(A) it's\n(B) its'\n(C) its\n(D) it is\n(E) its's","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) its\n\n**📘 Rule Applied**\n**Rule 50 — ITS vs IT'S**\n\nIts = possession.","option_1":"it's","option_2":"its'","option_3":"its","option_4":"it is","option_5":"its's"},{"id":"69","question":"**Q69. Error Detection**\n\nThe spacecraft adjusted it's trajectory during solar interference.\n\n(A) spacecraft\n(B) adjusted it's trajectory\n(C) solar interference\n(D) No Error\n(E) trajectory","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) adjusted it's trajectory\n\n**📘 Rule Applied**\n**Rule 50 — ITS vs IT'S**\n\nCorrect:\n✔ its trajectory","option_1":"spacecraft","option_2":"adjusted it's trajectory","option_3":"solar interference","option_4":"No Error","option_5":"trajectory"},{"id":"70","question":"**Q70. Fill in the Blank**\n\nThe treaty negotiations occurred between ambassadors and ___.\n\n(A) we\n(B) mine\n(C) them\n(D) they\n(E) ourselves","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) them\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nObjective pronoun required after preposition.","option_1":"we","option_2":"mine","option_3":"them","option_4":"they","option_5":"ourselves"},{"id":"71","question":"**Q71. Rearranged Grammar Logic**\n\nPositive sequence:\n\n(A) Rahul, I and you\n(B) You, Rahul and I\n(C) I, Rahul and you\n(D) Rahul, you and me\n(E) Me, Rahul and you","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) You, Rahul and I\n\n**📘 Rule Applied**\n**Rule 42 — Positive Sequence Pronoun Order**\n\n**2 → 3 → 1**","option_1":"Rahul, I and you","option_2":"You, Rahul and I","option_3":"I, Rahul and you","option_4":"Rahul, you and me","option_5":"Me, Rahul and you"},{"id":"72","question":"**Q72. Rearranged Grammar Logic**\n\nNegative sequence:\n\n(A) Rahul, you and I\n(B) You, Rahul and I\n(C) Rahul, I and you\n(D) I, Rahul and you\n(E) Me, Rahul and I","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) I, Rahul and you\n\n**📘 Rule Applied**\n**Rule 42A — Negative Sequence**\n\n**1 → 2 → 3**","option_1":"Rahul, you and I","option_2":"You, Rahul and I","option_3":"Rahul, I and you","option_4":"I, Rahul and you","option_5":"Me, Rahul and I"},{"id":"73","question":"**Q73. Error Detection**\n\nThe diplomat entered into inside the negotiation chamber.\n\n(A) diplomat\n(B) entered into inside\n(C) chamber\n(D) negotiation\n(E) No Error","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) entered into inside\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\nSuperfluous words. Correct: *entered chamber* OR *went inside chamber*","option_1":"diplomat","option_2":"entered into inside","option_3":"chamber","option_4":"negotiation","option_5":"No Error"},{"id":"74","question":"**Q74. Fill in the Blank**\n\nThe policy draft belongs to Professor Williams ___ department.\n\n(A) William's\n(B) Williams's\n(C) Williams\n(D) Williamses\n(E) Williamses","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) Williams's\n\n**📘 Rule Applied**\n**Rule 44 — Apostrophe S**\n\nSingular possession for names ending in 's'.","option_1":"William's","option_2":"Williams's","option_3":"Williams","option_4":"Williamses","option_5":"Williamses"},{"id":"75","question":"**Q75. Fill in the Blank**\n\nThe global semiconductor initiative began in 2020 and ___ rapidly.\n\n(A) has expanded\n(B) expands\n(C) expanding\n(D) expanded\n(E) had expanded","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) expanded\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\nPast year → Simple Past.","option_1":"has expanded","option_2":"expands","option_3":"expanding","option_4":"expanded","option_5":"had expanded"},{"id":"76","question":"**Q76. Error Detection**\n\nThe platform became quietly after emergency cybersecurity shutdown.\n\n(A) platform\n(B) quietly\n(C) cybersecurity shutdown\n(D) No Error\n(E) emergency","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) quietly\n\n**📘 Rule Applied**\n**Rule 47 — Quiet vs Quite**\n\nSub-rule: After a linking verb (become, seem, appear, remain, look), use an adjective, not an adverb.\n\n**🔍 Detailed Explanation**\nSentence:\nThe platform became quietly after emergency cybersecurity shutdown.\n\nTrigger word:\n==became==\n\n\"Become\" is a linking verb. Linking verbs require: Subject + Linking Verb + Adjective\n\nIncorrect:\n❌ became quietly (\"Quietly\" = adverb)\n\nCorrect:\n✔ became quiet\n\nCorrect sentence:\n> The platform became quiet after emergency cybersecurity shutdown.\n\n**Hidden Grammar Clue**\nWords like *become, appear, seem, remain* generally require adjectives.\n\n**❌ Why Other Possibilities Wrong**\n\"Quietly\" describes action. But here platform is becoming something. Need quality. Not action.\n\n**💡 Shortcut Tip**\n**Linking Verb → Adjective** (Usually check Adjective OR Adverb?)","option_1":"platform","option_2":"quietly","option_3":"cybersecurity shutdown","option_4":"No Error","option_5":"emergency"},{"id":"77","question":"**Q77. Fill in the Blank**\n\nThe defense infrastructure became ___ resilient.\n\n(A) all quite\n(B) most complete\n(C) quite\n(D) highly fullest\n(E) very entire","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) quite\n\n**📘 Rule Applied**\n**Rule 46 — Words Not Used with MOST**\n\nCertain absolute adjectives should not take: *most, fullest, entire + very*\n\n**🔍 Detailed Explanation**\nSentence:\ndefense infrastructure became ___ resilient\n\nNeed intensifier.\n\nCorrect:\n✔ quite resilient\n\n**Hidden Grammar Clue**\nIncorrect combinations:\n* ❌ highly fullest (Double degree error)\n* ❌ very entire (Absolute adjective)\n* ❌ most complete (Source rule avoids MOST with complete)\n\n**❌ Why Other Options Wrong**\n*(A) all quite* ❌ Rule 47A: Never use \"all quite\".\n*(B) most complete* ❌ Complete = absolute.\n*(D) highly fullest* ❌ Double degree error.\n*(E) very entire* ❌ Absolute adjective.\n\n**💡 Shortcut Tip**\nAvoid: **MOST + perfect** | **MOST + complete** | **MOST + unique**","option_1":"all quite","option_2":"most complete","option_3":"quite","option_4":"highly fullest","option_5":"very entire"},{"id":"78","question":"**Q78. Fill in the Blank**\n\nThe AI regulation framework emerged four months ___.\n\n(A) until\n(B) before\n(C) ago\n(D) during\n(E) formerly","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) ago\n\n**📘 Rule Applied**\n**Rule 48A — Use of AGO**\n\n**🔍 Detailed Explanation**\nTrigger:\n==four months==\n\nAgo means: backward counting from present\n\nCorrect:\n✔ four months ago\n\nSentence:\n> framework emerged four months ago\n\n**Hidden Grammar Clue**\nAGO connects: Present → Past\n\n**❌ Why Others Wrong**\n*(A) until* ❌ Wrong connector.\n*(B) before* ❌ Needs another past reference point.\n*(D) during* ❌ Shows period.\n*(E) formerly* ❌ Wrong meaning.\n\n**💡 Shortcut Tip**\nPresent reference? Backward counting? → **Use AGO**","option_1":"until","option_2":"before","option_3":"ago","option_4":"during","option_5":"formerly"},{"id":"79","question":"**Q79. Fill in the Blank**\n\nThe biodiversity summit occurred one month ___ monsoon restoration initiatives began.\n\n(A) ago\n(B) before\n(C) until\n(D) since\n(E) from","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) before\n\n**📘 Rule Applied**\n**Rule 48 — Use of BEFORE**\n\n**🔍 Detailed Explanation**\nSentence contains:\n* Past Event 1: biodiversity summit occurred\n* Past Event 2: monsoon initiatives began\n\nNeed relation between two past events.\n\nCorrect:\n✔ before\n\n**Hidden Grammar Clue**\nAGO → present reference | BEFORE → past reference\n\n**❌ Why Others Wrong**\n*(A) ago* ❌ No present reference.\n*(C) until* ❌ Wrong meaning.\n*(D) since* ❌ Present Perfect trigger.\n*(E) from* ❌ Wrong connector.\n\n**💡 Shortcut Tip**\nPast event + earlier past event → **BEFORE**","option_1":"ago","option_2":"before","option_3":"until","option_4":"since","option_5":"from"},{"id":"80","question":"**Q80. Error Detection**\n\nThe company discussed about carbon neutrality goals.\n\n(A) company\n(B) discussed about\n(C) neutrality goals\n(D) No Error\n(E) carbon","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) discussed about\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\n**🔍 Detailed Explanation**\nDiscuss means: talk about\n\nAdding about again:\n❌ discussed about\n\nCorrect:\n✔ discussed carbon neutrality goals\n\n**Hidden Grammar Clue**\nCompetitive traps:\n❌ discuss about | ❌ return back | ❌ repeat again | ❌ merge together\n\n**❌ Why Other Parts Correct**\n\"The company\" ✔\n\"carbon neutrality goals\" ✔\nOnly connector wrong.\n\n**💡 Shortcut Tip**\n**DISCUSS never takes ABOUT.**","option_1":"company","option_2":"discussed about","option_3":"neutrality goals","option_4":"No Error","option_5":"carbon"},{"id":"81","question":"**Q81. Fill in the Blank**\n\nThe robotics system recalibrated ___ predictive modules.\n\n(A) it's\n(B) its\n(C) it is\n(D) its'\n(E) its's","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) its\n\n**📘 Rule Applied**\n**Rule 50 — ITS vs IT'S**\n\n**🔍 Detailed Explanation**\nPredictive modules belong to robotics system. Need possession.\n\nCorrect:\n✔ its predictive modules\n\nIncorrect:\n❌ it's predictive modules (Expand: *it is predictive modules* - Wrong.)\n\n**Hidden Grammar Clue**\nPossession: **ITS** | Contraction: **IT'S**\n\n**❌ Why Others Wrong**\n*(A) it's* ❌ Contraction.\n*(C) it is* ❌ Grammar broken.\n*(D) its'* ❌ Invalid.\n*(E) its's* ❌ Invalid.\n\n**💡 Shortcut Tip**\nExpand mentally. If \"it is\" fits → **IT'S** | Otherwise → **ITS**","option_1":"it's","option_2":"its","option_3":"it is","option_4":"its'","option_5":"its's"},{"id":"82","question":"**Q82. Fill in the Blank**\n\nThe climate resilience workshop was conducted between stakeholders and ___.\n\n(A) we\n(B) mine\n(C) they\n(D) us\n(E) ourselves","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) us\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nAfter preposition → objective pronoun.\n\n**🔍 Detailed Explanation**\nTrigger:\n==between==\n\nNeed objective pronoun.\n\nCorrect:\n✔ between stakeholders and us\n\n**❌ Why Others Wrong**\n*(A) we* ❌ Subjective.\n*(B) mine* ❌ Possessive.\n*(C) they* ❌ Subjective.\n*(E) ourselves* ❌ Reflexive unnecessary.\n\n**💡 Shortcut Tip**\nBetween → objective pronoun.","option_1":"we","option_2":"mine","option_3":"they","option_4":"us","option_5":"ourselves"},{"id":"83","question":"**Q83. Fill in the Blank**\n\n___, Rohan and I participated in the environmental innovation challenge.\n\n(A) Him\n(B) Myself\n(C) You\n(D) Me\n(E) Mine","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) You\n\n**📘 Rule Applied**\n**Rule 42 — Positive Sequence Pronoun Order**\n\nPositive sequence: **2 → 3 → 1**\n\n**🔍 Detailed Explanation**\nPositive action: Participation.\n\nCorrect order:\nYou → Rohan → I\n\n**💡 Shortcut Tip**\nGood work? **2 → 3 → 1**","option_1":"Him","option_2":"Myself","option_3":"You","option_4":"Me","option_5":"Mine"},{"id":"84","question":"**Q84. Fill in the Blank**\n\nThe committee declared ___ guilty for leaking confidential AI safety documentation.\n\n(A) Rahul, you and I\n(B) I, Rahul and you\n(C) Rahul, I and you\n(D) You, Rahul and I\n(E) Me, Rahul and I","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) I, Rahul and you\n\n**📘 Rule Applied**\n**Rule 42A — Negative Sequence**\n\nNegative sequence: **1 → 2 → 3**\n\n**🔍 Detailed Explanation**\nTrigger:\n==guilty==\n\nNegative situation.\n\nCorrect order:\nI → Rahul → You\n\n**💡 Shortcut Tip**\nMistake/Guilt? **1 → 2 → 3**","option_1":"Rahul, you and I","option_2":"I, Rahul and you","option_3":"Rahul, I and you","option_4":"You, Rahul and I","option_5":"Me, Rahul and I"},{"id":"85","question":"**Q85. Error Detection**\n\nThe climate envoy returned back from Arctic discussions.\n\n(A) envoy\n(B) returned back\n(C) Arctic discussions\n(D) climate\n(E) No Error","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) returned back\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\n**🔍 Detailed Explanation**\nReturn already means: come back\n\nIncorrect:\n❌ returned back\n\nCorrect:\n✔ returned\n\n**💡 Shortcut Tip**\nReturn = Back already included.","option_1":"envoy","option_2":"returned back","option_3":"Arctic discussions","option_4":"climate","option_5":"No Error"},{"id":"86","question":"**Q86. Fill in the Blank**\n\nThe framework was implemented in 2021 and ___ measurable outcomes.\n\n(A) has shown\n(B) showed\n(C) showing\n(D) had shown\n(E) shows","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) showed\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\nSpecific past point → Simple Past.\n\n**🔍 Detailed Explanation**\nTrigger:\n==2021==\n\nNeed Simple Past.\n\nCorrect:\n✔ showed","option_1":"has shown","option_2":"showed","option_3":"showing","option_4":"had shown","option_5":"shows"},{"id":"87","question":"**Q87. Fill in the Blank**\n\nThe biotechnology framework is ___ perfect.\n\n(A) most\n(B) highly\n(C) quite\n(D) very most\n(E) all quite","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) quite\n\n**📘 Rule Applied**\n**Rule 46 — Words Not Used with MOST**\n\nPerfect = absolute adjective.\n\n**🔍 Detailed Explanation**\nIncorrect:\n❌ most perfect\n\nCorrect:\n✔ quite perfect\n\n**💡 Shortcut Tip**\nPerfect cannot become \"more perfect.\"","option_1":"most","option_2":"highly","option_3":"quite","option_4":"very most","option_5":"all quite"},{"id":"88","question":"**Q88. Error Detection**\n\nThe negotiation hall became quite after evacuation.\n\n(A) negotiation hall\n(B) became quite\n(C) evacuation\n(D) No Error\n(E) hall","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) became quite\n\n**📘 Rule Applied**\n**Rule 47 — Quiet vs Quite**\n\n**🔍 Detailed Explanation**\nNeed adjective.\n\nCorrect:\n✔ became quiet\n\n*Quite* = degree adverb.","option_1":"negotiation hall","option_2":"became quite","option_3":"evacuation","option_4":"No Error","option_5":"hall"},{"id":"89","question":"**Q89. Fill in the Blank**\n\nThe geopolitical review occurred two weeks ___ border consultations began.\n\n(A) ago\n(B) before\n(C) since\n(D) during\n(E) until","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) before\n\n**📘 Rule Applied**\n**Rule 48 — Use of BEFORE**\n\nPast event relationship.\n\n**🔍 Detailed Explanation**\nTwo past events. Need BEFORE.","option_1":"ago","option_2":"before","option_3":"since","option_4":"during","option_5":"until"},{"id":"90","question":"**Q90. Fill in the Blank**\n\nThe sustainability report belongs to Dr. Lewis ___ division.\n\n(A) Lewis\n(B) Lewises\n(C) Lewis's\n(D) Lewises'\n(E) Lewis' division's","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) Lewis's\n\n**📘 Rule Applied**\n**Rule 44 — Apostrophe S**\n\nPossession. Singular noun + apostrophe s.","option_1":"Lewis","option_2":"Lewises","option_3":"Lewis's","option_4":"Lewises'","option_5":"Lewis' division's"},{"id":"91","question":"**Q91. Identify Correct Sentence**\n\n(A) The company merged together with a startup.\n(B) The diplomat returned back home.\n(C) Scientists discussed climate migration trends.\n(D) Team assembled together rapidly.\n(E) Policy makers repeated again warnings.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) Scientists discussed climate migration trends.\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\n**🔍 Explanation**\nCorrect because it contains no superfluous expressions. Others have redundancies like *merged together, returned back, assembled together, repeated again*.","option_1":"The company merged together with a startup.","option_2":"The diplomat returned back home.","option_3":"Scientists discussed climate migration trends.","option_4":"Team assembled together rapidly.","option_5":"Policy makers repeated again warnings."},{"id":"92","question":"**Q92. Fill in the Blank**\n\nThe platform improved ___ adaptive algorithms.\n\n(A) it's\n(B) its\n(C) its'\n(D) it is\n(E) its's","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) its\n\n**📘 Rule Applied**\n**Rule 50 — ITS vs IT'S**\n\nPossession.","option_1":"it's","option_2":"its","option_3":"its'","option_4":"it is","option_5":"its's"},{"id":"93","question":"**Q93. Fill in the Blank**\n\nThe cybersecurity protocol evolved five years ___.\n\n(A) before\n(B) since\n(C) ago\n(D) until\n(E) formerly","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) ago\n\n**📘 Rule Applied**\n**Rule 48A — Use of AGO**\n\nAGO.","option_1":"before","option_2":"since","option_3":"ago","option_4":"until","option_5":"formerly"},{"id":"94","question":"**Q94. Error Detection**\n\nThe AI summit has launched in 2023.\n\n(A) summit\n(B) has launched\n(C) in 2023\n(D) AI\n(E) No Error","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) has launched\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\nPast point → Simple Past.\n\nCorrect:\n✔ launched","option_1":"summit","option_2":"has launched","option_3":"in 2023","option_4":"AI","option_5":"No Error"},{"id":"95","question":"**Q95. Fill in the Blank**\n\nThe laboratory became ___ after radiation alerts.\n\n(A) quietly\n(B) quite\n(C) quiet\n(D) all quiet quite\n(E) quieterly","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) quiet\n\n**📘 Rule Applied**\n**Rule 47 — Quiet vs Quite**\n\nNeed adjective.","option_1":"quietly","option_2":"quite","option_3":"quiet","option_4":"all quiet quite","option_5":"quieterly"},{"id":"96","question":"**Q96. Fill in the Blank**\n\nThe renewable energy center belongs to Neha and Rahul ___ institution.\n\n(A) Rahul's\n(B) Rahul's\n(C) Neha's Rahul's\n(D) institutions\n(E) Rahul","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) Rahul's\n\n**📘 Rule Applied**\n**Rule 49 — Common Possession**\n\nCommon possession.\n\n**🔍 Explanation**\nShared institution. Only last noun gets apostrophe.\n\nCorrect:\n✔ Neha and Rahul's institution.","option_1":"Rahul's","option_2":"Rahul's","option_3":"Neha's Rahul's","option_4":"institutions","option_5":"Rahul"},{"id":"97","question":"**Q97. Error Detection**\n\nThe analyst entered into inside secure server environment.\n\n(A) analyst\n(B) entered into inside\n(C) secure server\n(D) No Error\n(E) environment","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) entered into inside\n\n**📘 Rule Applied**\n**Rule 43 — Superfluous Words**\n\nSuperfluous words.\n\n**🔍 Explanation**\nIncorrect:\n❌ entered into inside\n\nCorrect:\n✔ entered secure server OR ✔ went inside secure server","option_1":"analyst","option_2":"entered into inside","option_3":"secure server","option_4":"No Error","option_5":"environment"},{"id":"98","question":"**Q98. Fill in the Blank**\n\nThe biodiversity treaty updated ___ conservation framework.\n\n(A) its'\n(B) its\n(C) it's\n(D) it is\n(E) its's","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) its\n\n**📘 Rule Applied**\n**Rule 50 — ITS vs IT'S**\n\nPossession.","option_1":"its'","option_2":"its","option_3":"it's","option_4":"it is","option_5":"its's"},{"id":"99","question":"**Q99. Fill in the Blank**\n\nThe climate adaptation policy was designed between regulators and ___.\n\n(A) we\n(B) ourselves\n(C) them\n(D) they\n(E) mine","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) them\n\n**📘 Rule Applied**\n**Rule 41 — After Preposition Always Use Objective Pronouns**\n\nObjective pronoun.","option_1":"we","option_2":"ourselves","option_3":"them","option_4":"they","option_5":"mine"},{"id":"100","question":"**Q100. Fill in the Blank**\n\nThe digital governance initiative started in 2019 and ___ globally.\n\n(A) expands\n(B) expanded\n(C) has expanded\n(D) expanding\n(E) had expanded","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) expanded\n\n**📘 Rule Applied**\n**Rule 45 — Past Point of Time → Simple Past**\n\nPast year → Simple Past.","option_1":"expands","option_2":"expanded","option_3":"has expanded","option_4":"expanding","option_5":"had expanded"}],TITLE="Rule 41-50 (Set 02) - 120 Rules of Grammar",TIME_SECS=1200,LT=["A","B","C","D","E"];
+var charts=[],cur=0,qmode=false,secs=0,tick=null,ans={};
+function $$$(id){return document.getElementById(id);}
+function fmtT(s){var m=Math.floor(s/60),sc=s%60;return String(m).padStart(2,"0")+":"+String(sc).padStart(2,"0");}
+
+/* ── stylizeTxt: markdown → styled HTML ── */
+function stylizeTxt(s){
+  if(!s) return "";
+  s=s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  s=s.replace(/\*\*\*(.*?)\*\*\*/g,"<strong><em>$1</em></strong>");
+  s=s.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
+  s=s.replace(/\*(.*?)\*/g,"<em>$1</em>");
+  s=s.replace(/__(.*?)__/g,"<u>$1</u>");
+  s=s.replace(/==(.*?)==/g,"<mark>$1</mark>");
+  s=s.replace(/\\n/g,"<br>").replace(/\n/g,"<br>");
+  return s;
+}
+
+function toggleAgree(){var c=$$$("agreeChk");c.checked=!c.checked;checkReady();}
+function checkReady(){var b=$$$("startBtn");$$$("agreeChk").checked?b.classList.add("ready"):b.classList.remove("ready");}
+
+window.addEventListener("DOMContentLoaded",function(){
+  $$$("sTitle").textContent=TITLE;
+  $$$("qTot").textContent=QS.length;
+  buildPal(); updProg();
+});
+
+function startQuiz(){$$$("startScr").style.display="none";$$$("quizUI").style.display="block";render(0);startTick();}
+
+function startTick(){
+  if(tick)clearInterval(tick);
+  tick=setInterval(function(){
+    secs++;var rem=TIME_SECS-secs,el=$$$("timerEl");
+    if(rem<=300&&rem>0){el.classList.add("warn");el.textContent="⚠️ "+fmtT(rem);}
+    else{el.classList.remove("warn");el.textContent=fmtT(secs);}
+    if(secs>=TIME_SECS){clearInterval(tick);doSubmit();}
+  },1000);
+}
+
+function updProg(){var p=$$$("pb");if(p)p.style.width=((cur+1)/QS.length*100).toFixed(1)+"%";}
+
+function render(i){
+  cur=i;var q=QS[i],k="q"+i;
+  $$$("qIdx").textContent=i+1;$$$("qBadge").textContent=i+1;
+  $$$("qCtr").textContent=(i+1)+" / "+QS.length;
+  var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+  $$$("qPos").textContent="+"+pm+" Correct";
+  $$$("qNeg").textContent=nm>0?"-"+nm+" Wrong":"No Negative";
+  // Question text: stylize then append image
+  var qh=stylizeTxt(q.question||"");
+  if(q.image_url) qh+='<img src="'+q.image_url+'" style="max-width:100%;border-radius:8px;margin-top:10px;display:block">';
+  $$$("qTxt").innerHTML=qh;
+  $$$("expl").style.display="none";
+  var ob=$$$("opts");ob.innerHTML="";
+  ["option_1","option_2","option_3","option_4","option_5"].forEach(function(ok2,idx){
+    if(!q[ok2])return;
+    var val=String(idx+1);
+    var d=document.createElement("div");d.className="opt";d.dataset.v=val;
+    // Option text: stylize it
+    var optTxt=stylizeTxt(q[ok2]||"");
+    var optImg=q["option_"+(idx+1)+"_image"]?'<div style="margin-top:5px"><img src="'+q["option_"+(idx+1)+"_image"]+'" style="max-width:100%;border-radius:6px;display:block"></div>':"";
+    d.innerHTML='<div class="oltr">'+LT[idx]+'</div><div class="otxt">'+optTxt+optImg+'</div><div class="och"></div>';
+    d.addEventListener("click",function(){pick(q,i,val,d);});
+    if(ans[k]===val)d.classList.add("sel");
+    ob.appendChild(d);
+  });
+  if(qmode&&ans[k])feedback(q);
+  syncPal();updProg();
+}
+
+function pick(q,i,val,div){
+  var k="q"+i;ans[k]=val;
+  Array.from($$$("opts").children).forEach(function(o){o.classList.remove("sel","cor","wrg");});
+  div.classList.add("sel");
+  if(qmode)feedback(q);
+  syncPal();
+}
+
+function feedback(q){
+  var cv=String(q.answer),uv=ans["q"+cur];
+  Array.from($$$("opts").children).forEach(function(o){
+    o.classList.remove("sel","cor","wrg");
+    if(o.dataset.v===cv)o.classList.add("cor");
+    else if(uv&&o.dataset.v===uv)o.classList.add("wrg");
+  });
+  // Explanation with formatting
+  if(q.solution_text){
+    $$$("expl").innerHTML=stylizeTxt(q.solution_text);
+    $$$("expl").style.display="block";
+  }
+}
+
+function toggleMode(){qmode=!qmode;$$$("modeTog").classList.toggle("qm",qmode);render(cur);}
+function nav(d){var n=cur+d;if(n>=0&&n<QS.length)render(n);}
+function clrAns(){delete ans["q"+cur];render(cur);}
+
+function openSub(){
+  var done=Object.keys(ans).length,left=QS.length-done;
+  $$$("subMsg").innerHTML="You answered <strong>"+done+"</strong>. <strong style=\"color:#c82d3f\">"+left+"</strong> unanswered. Submit?";
+  $$$("subMod").style.display="flex";
+}
+function closeSub(){$$$("subMod").style.display="none";}
+
+function doSubmit(){
+  closeSub();if(tick)clearInterval(tick);
+  var cor=0,wrg=0,tot=0;
+  QS.forEach(function(q,i){
+    var a=ans["q"+i],ok=a&&String(a)===String(q.answer);
+    var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+    if(ok){cor++;tot+=pm;}else if(a){wrg++;tot-=nm;}
+  });
+  var att=Object.keys(ans).length,unatt=QS.length-att;
+  var acc=att?((cor/att)*100).toFixed(1):"0.0";
+  var pct=((cor/QS.length)*100).toFixed(1);
+  var grade=cor>=QS.length*.9?"A+":cor>=QS.length*.75?"A":cor>=QS.length*.6?"B":cor>=QS.length*.4?"C":"D";
+  var h='<div class="rhero"><h2>🎯 '+TITLE+'</h2><p>Quiz completed!</p>'+
+    '<div class="rscore">'+tot+' / '+QS.length+'</div>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">Grade: <span style="color:#fbbf24">'+grade+'</span></span>'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">⏱️ '+fmtT(secs)+'</span>'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">'+pct+'%</span>'+
+    '</div></div>'+
+    '<div class="rstats">'+
+    '<div class="rstat rs-c"><h4>✅ Correct</h4><p>'+cor+'</p></div>'+
+    '<div class="rstat rs-w"><h4>❌ Wrong</h4><p>'+wrg+'</p></div>'+
+    '<div class="rstat rs-s"><h4>⏭️ Skipped</h4><p>'+unatt+'</p></div>'+
+    '<div class="rstat rs-a"><h4>🎯 Accuracy</h4><p>'+acc+'%</p></div>'+
+    '<div class="rstat rs-sc"><h4>📊 Score</h4><p>'+tot+'</p></div>'+
+    '<div class="rstat rs-t"><h4>⏱️ Time</h4><p>'+fmtT(secs)+'</p></div>'+
+    '</div>'+
+    '<div class="charts-sec"><h3>📈 Performance Analysis</h3><div class="cgrid">'+
+    '<div class="ccard"><h4>Distribution</h4><canvas id="pieC"></canvas></div>'+
+    '<div class="ccard"><h4>Score Breakdown</h4><canvas id="barC"></canvas></div>'+
+    '<div class="ccard cwide"><h4>Question-wise</h4><canvas id="lineC"></canvas></div>'+
+    '</div></div>'+
+    '<div class="charts-sec"><h3>📝 Detailed Answers</h3></div>';
+
+  QS.forEach(function(q,i){
+    var a=ans["q"+i],ok=a&&String(a)===String(q.answer);
+    var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+    var scH=ok?'<span style="color:#15803d;font-weight:800">+'+pm+' ✓</span>':a?'<span style="color:#991b1b;font-weight:800">-'+nm+' ✗</span>':"<span>0 (Skipped)</span>";
+    h+='<div class="rcard '+( ok?"cor":a?"wrg":"skp" )+'">'+
+       '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px;margin-bottom:9px">'+
+       '<span style="font-weight:800;color:var(--acc)">Q'+( i+1 )+'</span><span>'+scH+'</span></div>'+
+       // Question with formatting
+       '<div class="qtxt" style="font-size:14px;margin-bottom:10px">'+stylizeTxt(q.question||"")+'</div>';
+    ["option_1","option_2","option_3","option_4","option_5"].forEach(function(ok2,j){
+      if(!q[ok2])return;
+      var idx=String(j+1),isC=idx===String(q.answer),isU=a&&idx===String(a)&&!isC;
+      // Option text with formatting
+      h+='<div class="ropt '+( isC?"rc":isU?"rw":"rp" )+'">'+
+         '<span class="rl">'+LT[j]+'</span>'+( isC?"✓ ":isU?"✗ ":"" )+stylizeTxt(q[ok2]||"")+'</div>';
+    });
+    h+='<div style="margin-top:8px;font-size:13px;font-weight:700">Score: '+scH+'</div>';
+    // Solution with formatting
+    if(q.solution_text) h+='<div class="res-expl">'+stylizeTxt(q.solution_text)+'</div>';
+    h+='</div>';
+  });
+
+  $$$("resultArea").innerHTML=h;$$$("resultArea").style.display="block";
+  $$$("qCard").style.display="none";$$$("fbar").style.display="none";$$$("pal").style.display="none";
+  renderCharts(cor,wrg,unatt);
+
+  var hdr=$$$("hdrCtrls");hdr.innerHTML="";
+  var L=document.createElement("div");L.style.cssText="display:flex;align-items:center;gap:10px";
+  L.innerHTML='<h1 style="margin:0;color:#fff;font-size:15px">'+TITLE+'</h1>';
+  var R=document.createElement("div");R.style.cssText="display:flex;gap:7px";
+  [["Re-Attempt",function(){location.reload();}],["Print",function(){window.print();}]].forEach(function(x){
+    var b=document.createElement("button");b.className="btn";b.textContent=x[0];b.addEventListener("click",x[1]);R.appendChild(b);
+  });
+  hdr.appendChild(L);hdr.appendChild(R);
+}
+
+function renderCharts(cor,wrg,unatt){
+  charts.forEach(function(c){try{c.destroy();}catch(e){}});charts=[];
+  var pie=document.getElementById("pieC");
+  if(pie){
+    var c=new Chart(pie,{type:"doughnut",data:{labels:["Correct","Wrong","Skipped"],datasets:[{data:[cor,wrg,unatt],backgroundColor:["rgba(31,158,90,.85)","rgba(242,63,84,.85)","rgba(148,163,184,.7)"],borderColor:["#1f9e5a","#f23f54","#94a3b8"],borderWidth:2,spacing:2}]},options:{responsive:true,cutout:"65%",plugins:{legend:{position:"bottom",labels:{font:{size:11,weight:"600"},padding:12}}}}});
+    pie.parentElement.style.cssText+="border-radius:14%;padding:16px;background:radial-gradient(145deg,#f0f4ff,#d9e2f3);box-shadow:12px 12px 24px #bebebe,-12px -12px 24px #fff;width:fit-content;margin:auto;";
+    charts.push(c);
+  }
+  var bar=document.getElementById("barC");
+  if(bar){
+    var cx=bar.getContext("2d");
+    function grad(a,b){var g=cx.createLinearGradient(0,0,0,300);g.addColorStop(0,a);g.addColorStop(.5,b);g.addColorStop(1,a);return g;}
+    var sc=QS.reduce(function(t,q,i){var a=ans["q"+i],ok=a&&String(a)===String(q.answer),pm=Number(q.positive_marks||1),nm=Number(q.negative_marks||0);return t+(ok?pm:a?-nm:0);},0);
+    var c2=new Chart(bar,{type:"bar",data:{labels:["Score","Max","Correct","Wrong"],datasets:[{data:[parseFloat(sc.toFixed(2)),QS.length,cor,wrg],backgroundColor:[grad("#2563eb","#1e3a8a"),grad("#60a5fa","#2563eb"),grad("#4ade80","#166534"),grad("#f87171","#991b1b")],borderColor:["#000787","#127DE5","#16a34a","#dc2626"],borderWidth:1,borderRadius:8,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:"rgba(0,0,0,.05)"}},x:{grid:{display:false}}}}});
+    charts.push(c2);
+  }
+  var line=document.getElementById("lineC");
+  if(line){
+    var lb=QS.map(function(_,i){return "Q"+(i+1);});
+    var dt=QS.map(function(q,i){var a=ans["q"+i];if(!a)return 0;return String(a)===String(q.answer)?1:-1;});
+    var cl=dt.map(function(v){return v===1?"rgba(34,197,94,.85)":v===-1?"rgba(239,68,68,.85)":"rgba(148,163,184,.65)";});
+    var c3=new Chart(line,{type:"bar",data:{labels:lb,datasets:[{data:dt,backgroundColor:cl,borderColor:cl,borderWidth:1,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw===1?"✅ Correct":c.raw===-1?"❌ Wrong":"⏭️ Skipped";}}}},scales:{y:{min:-1.5,max:1.5,ticks:{callback:function(v){return v===1?"✅":v===-1?"❌":"—";},font:{size:10}},grid:{color:"rgba(0,0,0,.05)"}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+    charts.push(c3);
+  }
+}
+
+function buildPal(){
+  var p=$$$("pal");while(p.children.length>1)p.removeChild(p.lastChild);
+  QS.forEach(function(_,i){
+    var b=document.createElement("button");b.className="pq";b.textContent=i+1;
+    b.addEventListener("click",function(e){e.stopPropagation();render(i);closePal();});
+    p.appendChild(b);
+  });
+  var s=document.createElement("div");s.id="pal-sum";p.appendChild(s);
+  syncPal();
+}
+
+function syncPal(){
+  var p=$$$("pal");if(!p)return;
+  var tot=QS.length,done=Object.keys(ans).length,idx=0;
+  Array.from(p.children).forEach(function(c){
+    if(c.id==="pal-hd"||c.id==="pal-sum")return;
+    c.className="pq";
+    if(idx===cur)c.classList.add("act");else if(ans["q"+idx])c.classList.add("ans");
+    idx++;
+  });
+  var s=$$$("pal-sum");if(s)s.textContent="Total: "+tot+" · Done: "+done+" · Left: "+(tot-done);
+}
+
+function togglePal(){var p=$$$("pal");if(p.style.display==="flex")closePal();else{p.style.display="flex";syncPal();}}
+function closePal(){$$$("pal").style.display="none";}
+document.addEventListener("click",function(e){var p=$$$("pal"),pb=$$$("palBtn");if(p&&p.style.display==="flex"&&!p.contains(e.target)&&e.target!==pb&&!pb.contains(e.target))closePal();});
+document.addEventListener("keydown",function(e){if(e.key==="ArrowRight"&&cur<QS.length-1)render(cur+1);if(e.key==="ArrowLeft"&&cur>0)render(cur-1);if(e.key==="Escape")closePal();});
+</script>
+</body>
+</html>

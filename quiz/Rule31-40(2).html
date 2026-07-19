@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Rule 31-40 (Set 02) - 120 Rules of Grammar</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>:root{--acc:#000787;--adk:#127DE5;--ok:#1f9e5a;--bad:#f23f54;--bg:#f0f4ff;--card:#fff;--mx:860px;--gold:#f59e0b;--sh:0 8px 32px rgba(0,7,135,.13)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:#111;padding-bottom:90px;min-height:100vh}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#c0c8d8;border-radius:4px}
+.wrap{max-width:var(--mx);margin:auto;padding:12px 16px}
+header{background:linear-gradient(135deg,#000787,#127DE5);box-shadow:0 4px 20px rgba(0,7,135,.3);position:sticky;top:0;z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px;flex-wrap:wrap}
+.tog{position:relative;width:96px;height:30px;background:rgba(255,255,255,.18);border-radius:999px;cursor:pointer;display:flex;align-items:center;padding:0 6px;user-select:none;border:1px solid rgba(255,255,255,.25)}
+.tog span{z-index:2;flex:1;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);transition:color .2s}
+.tog::before{content:"";position:absolute;top:3px;left:3px;width:44px;height:24px;background:#fff;border-radius:999px;transition:transform .28s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tog.qm::before{transform:translateX(44px)}.tog span:first-child{color:#000787}.tog.qm span:first-child{color:rgba(255,255,255,.7)}.tog.qm span:last-child{color:#000787}
+.timer{font-weight:800;font-size:18px;color:#fff;font-variant-numeric:tabular-nums;background:rgba(0,0,0,.2);padding:4px 10px;border-radius:8px;min-width:68px;text-align:right}
+.timer.warn{color:#fbbf24;animation:tp 1s infinite}@keyframes tp{0%,100%{opacity:1}50%{opacity:.6}}
+.btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}.btn-sub{background:linear-gradient(135deg,#f59e0b,#ef4444);border:none}
+.btn-o{background:#fff;color:var(--acc);border:2px solid var(--acc);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}.btn-o:hover{background:var(--acc);color:#fff}
+.pbr{background:rgba(255,255,255,.2);height:4px;overflow:hidden}.pb{height:100%;background:linear-gradient(90deg,#fbbf24,#34d399);transition:width .4s}
+.card{background:var(--card);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh);border:1px solid rgba(0,7,135,.06);animation:fiu .3s ease}
+@keyframes fiu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.qbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.qmeta{font-size:13px;color:#69707a;font-weight:600}
+.qnum{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-radius:50%;font-size:13px;font-weight:800;margin-right:4px}
+.sbdg{display:flex;gap:6px}.sbdg span{padding:3px 9px;border-radius:6px;font-weight:700;font-size:13px}
+.sp{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}.sn{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
+.qtxt{font-size:15.5px;line-height:1.85;margin:10px 0 14px;padding:13px 16px;background:linear-gradient(135deg,#f8faff,#eef2ff);border-radius:10px;border-left:4px solid var(--acc)}
+.qtxt strong{font-weight:800;color:#00087a}.qtxt em{font-style:italic;color:#1a56db}.qtxt u{text-decoration:underline;text-underline-offset:3px}.qtxt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.qtxt img{max-width:100%;border-radius:8px;margin:8px 0;display:block}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;transition:all .18s}
+.opt:hover:not(.cor):not(.wrg){border-color:#93c5fd;background:#f0f9ff;transform:translateX(3px)}
+.opt.sel{border-color:var(--acc);background:rgba(0,7,135,.05);transform:translateX(3px)}
+.opt.cor{border-color:var(--ok);background:rgba(31,158,90,.1);transform:translateX(3px)}
+.opt.wrg{border-color:var(--bad);background:rgba(200,45,63,.08);transform:translateX(3px)}
+.oltr{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#64748b;margin-top:2px;transition:all .18s}
+.opt.sel .oltr{background:var(--acc);border-color:var(--acc);color:#fff}
+.opt.cor .oltr{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrg .oltr{background:var(--bad);border-color:var(--bad);color:#fff}
+.otxt{font-size:15px;line-height:1.6;flex:1}
+.otxt strong{font-weight:800;color:#00087a}.otxt em{font-style:italic;color:#1a56db}.otxt u{text-decoration:underline;text-underline-offset:3px}.otxt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.och{margin-left:auto;font-size:16px;flex-shrink:0}
+.opt.cor .och::before{content:"✓";color:var(--ok)}.opt.wrg .och::before{content:"✗";color:var(--bad)}
+.expl{margin-top:12px;padding:13px 16px 13px 42px;border-radius:10px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:14px;line-height:1.75;display:none;position:relative}
+.expl::before{content:"💡";position:absolute;left:13px;top:13px;font-size:18px}
+.expl strong{font-weight:800;color:#065f46}.expl em{font-style:italic;color:#0f766e}.expl u{text-decoration:underline}.expl mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.fbar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 -4px 20px rgba(0,7,135,.1);display:flex;justify-content:center;z-index:50;border-top:1px solid rgba(0,7,135,.07)}
+.fbar-in{display:flex;align-items:center;gap:8px;max-width:var(--mx);width:100%;padding:10px 14px}
+.nb{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;flex:1;max-width:130px}
+.nb:hover{transform:translateY(-2px)}.nb-clr{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}.nb-clr:hover{background:#e2e8f0;transform:translateY(-1px)}
+.qctr{flex:1;text-align:center;font-size:13px;font-weight:700;color:#69707a}
+#pal{position:fixed;top:62px;right:14px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,7,135,.18);padding:14px;display:none;flex-wrap:wrap;gap:6px;z-index:200;max-width:305px;border:1px solid rgba(0,7,135,.08)}
+#pal-hd{width:100%;font-size:11px;font-weight:800;color:var(--acc);padding-bottom:8px;border-bottom:2px solid #eef2ff;margin-bottom:2px;text-transform:uppercase;letter-spacing:.4px}
+.pq{width:40px;height:40px;border-radius:8px;border:2px solid #e2e8f0;background:#f8faff;cursor:pointer;font-weight:800;font-size:12px;transition:all .15s;color:#374151}
+.pq:hover{border-color:var(--adk);transform:scale(1.08)}.pq.ans{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border-color:var(--acc)}.pq.act{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid var(--gold);color:#92400e}
+#pal-sum{width:100%;text-align:center;font-size:10px;color:#69707a;padding-top:7px;border-top:1px solid #eef2ff;margin-top:3px;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(0,0,50,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:300}
+.mbox{background:#fff;border-radius:18px;padding:26px;max-width:410px;width:94%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:mbu .3s ease}
+@keyframes mbu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.mbox h3{color:var(--acc);margin:8px 0 10px;font-size:20px;font-weight:900}.mbox p{color:#555;font-size:14px;margin-bottom:20px;line-height:1.6}
+.macts{display:flex;gap:9px;justify-content:center}.bp{background:linear-gradient(135deg,var(--acc),var(--adk));color:#fff;border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px;transition:all .18s}.bp:hover{transform:translateY(-2px)}
+.start{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 20% 20%,rgba(107,228,255,.3),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(0,7,135,.15),transparent 50%),linear-gradient(160deg,#bff1fc,#eefbfe 40%,#dde9ff 70%,#aaeeff);text-align:center;padding:24px;position:relative;overflow:hidden}
+.logo-wrap{position:relative;margin-bottom:18px}.logo-glow{position:absolute;inset:-18px;background:radial-gradient(circle,rgba(0,7,135,.15),transparent 70%);border-radius:50%;animation:glw 3s ease-in-out infinite}
+@keyframes glw{0%,100%{opacity:.5}50%{opacity:1;transform:scale(1.08)}}.logo-img{width:100px;height:100px;border-radius:50%;object-fit:cover;filter:drop-shadow(0 8px 24px rgba(0,7,135,.3));animation:fly 4s ease-in-out infinite;position:relative}
+@keyframes fly{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.start h1{font-size:clamp(20px,4vw,28px);font-weight:900;color:#000787;margin-bottom:5px}.start-sub{font-size:14px;color:#0369a1;margin-bottom:20px;font-weight:600}
+.start-card{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);padding:22px;border-radius:18px;max-width:600px;width:100%;text-align:left;box-shadow:0 14px 48px rgba(0,7,135,.12);margin-bottom:16px;border:1px solid rgba(255,255,255,.6)}
+.start-card h2{color:var(--acc);margin-bottom:12px;font-size:14px;font-weight:800}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ii{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#374151;line-height:1.55;padding:9px 12px;background:rgba(0,7,135,.03);border-radius:9px;border:1px solid rgba(0,7,135,.06)}
+.ii-ico{font-size:16px;flex-shrink:0;margin-top:1px}.ii p{flex:1}.ii strong{color:#000787}
+.meta-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mp{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;font-size:12px;font-weight:700;flex:1;min-width:90px;justify-content:center}
+.mp-b{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border:1px solid #93c5fd}.mp-g{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46;border:1px solid #6ee7b7}.mp-o{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;border:1px solid #fcd34d}.mp-r{background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b;border:1px solid #f87171}
+.agree{display:flex;align-items:center;gap:11px;padding:13px 15px;background:linear-gradient(135deg,rgba(0,7,135,.07),rgba(18,125,229,.05));border-radius:11px;margin-top:12px;border:2px dashed rgba(0,7,135,.2);cursor:pointer;transition:border-color .2s}.agree:hover{border-color:rgba(0,7,135,.4)}
+.agree input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc);cursor:pointer;flex-shrink:0}.agree label{font-size:13px;color:#1e3a8a;cursor:pointer;font-weight:700;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#22d3ee,#4f39f6);color:#fff;padding:13px 34px;border:0;border-radius:50px;font-weight:900;font-size:15px;cursor:pointer;margin-top:14px;transition:all .25s;box-shadow:0 8px 28px rgba(79,57,246,.3);opacity:.45;pointer-events:none}
+.start-btn.ready{opacity:1;pointer-events:all;animation:sbp 2.2s ease-in-out infinite}.start-btn.ready:hover{transform:translateY(-3px) scale(1.03)}
+@keyframes sbp{0%,100%{box-shadow:0 8px 28px rgba(79,57,246,.4)}50%{box-shadow:0 14px 44px rgba(79,57,246,.65),0 0 0 8px rgba(79,57,246,.1)}}
+.sf{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:10px}.sf p{font-size:12px;color:#0369a1;font-weight:600}
+.tg-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#2196F3,#0d47a1);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;box-shadow:0 5px 18px rgba(13,71,161,.3);transition:all .22s}.tg-btn:hover{transform:translateY(-2px)}.tg-btn svg{width:18px;height:18px;fill:#fff}
+.rhero{background:linear-gradient(135deg,#000787,#127DE5 60%,#0d9488);color:#fff;border-radius:18px;padding:26px;margin-bottom:16px}
+.rhero h2{font-size:20px;font-weight:900;margin-bottom:4px}.rhero p{opacity:.8;font-size:13px}
+.rscore{font-size:48px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}
+.rstat{padding:13px 10px;border-radius:11px;text-align:center}.rstat h4{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;opacity:.8}.rstat p{font-weight:900;font-size:20px}
+.rs-c{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #6ee7b7;color:#065f46}.rs-w{background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px solid #f87171;color:#991b1b}.rs-s{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #cbd5e1;color:#475569}.rs-a{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px solid #a78bfa;color:#5b21b6}.rs-sc{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fcd34d;color:#92400e}.rs-t{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #93c5fd;color:#1e40af}
+.charts-sec{margin:16px 0}.charts-sec h3{font-size:16px;font-weight:800;color:var(--acc);margin-bottom:12px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ccard{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sh);border:1px solid rgba(0,7,135,.05)}.ccard h4{font-size:11px;font-weight:800;color:#374151;margin-bottom:12px;text-align:center;text-transform:uppercase;letter-spacing:.4px}.ccard canvas{max-height:200px}.cwide{grid-column:1/-1}
+.rcard{border-radius:13px;padding:16px;margin:10px 0;box-shadow:0 2px 10px rgba(0,7,135,.07);border:1px solid rgba(0,7,135,.05);background:#fff;animation:fiu .3s ease}
+.rcard.cor{border-left:5px solid var(--ok)}.rcard.wrg{border-left:5px solid var(--bad)}.rcard.skp{border-left:5px solid #94a3b8}
+.ropt{padding:9px 12px;margin:4px 0;border-radius:8px;font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.6}
+.ropt.rc{border:2px solid var(--ok);background:rgba(31,158,90,.07);color:#065f46}.ropt.rw{border:2px solid var(--bad);background:rgba(200,45,63,.07);color:#991b1b}.ropt.rp{border:1px solid #e2e8f0;background:#f8faff;color:#64748b}
+.rl{font-weight:800;font-size:12px;min-width:20px;flex-shrink:0;margin-top:2px}
+.ropt strong{font-weight:800}.ropt em{font-style:italic}.ropt u{text-decoration:underline}.ropt mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+.res-expl{margin-top:9px;padding:11px 14px 11px 38px;border-radius:9px;background:linear-gradient(135deg,#f0fdf9,#dcfce7);border:1px solid #a7f3d0;font-size:13px;line-height:1.7;position:relative}
+.res-expl::before{content:"💡";position:absolute;left:11px;top:11px;font-size:15px}
+.res-expl strong{font-weight:800;color:#065f46}.res-expl em{font-style:italic;color:#0f766e}.res-expl u{text-decoration:underline}.res-expl mark{background:#fef08a;color:#78350f;border-radius:3px;padding:0 3px}
+@media(max-width:540px){.cgrid{grid-template-columns:1fr}.cwide{grid-column:1}.rstats{grid-template-columns:repeat(2,1fr)}.rscore{font-size:36px}.hdr{padding:8px 10px}.timer{font-size:14px}.fbar-in{gap:5px;padding:8px 10px}.nb{padding:9px 11px;font-size:12px}#pal{right:8px;max-width:270px}.pq{width:36px;height:36px;font-size:11px}}
+@media print{.fbar,header,.modal,#pal,.start,button,.tog,.timer{display:none!important}body{background:#fff;padding:0}.rhero{background:#000787!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.card,.rcard{box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid}}</style>
+</head>
+<body>
+<div class="start" id="startScr">
+<div class="logo-wrap"><div class="logo-glow"></div><img class="logo-img" src="https://i.ibb.co/W8PWFVB/20260406-005258.jpg" alt="Logo" width="100" height="100"/></div>
+<h1 id="sTitle">Rule 31-40 (Set 02) - 120 Rules of Grammar</h1>
+<div class="start-sub">50 Questions</div>
+<div class="start-card">
+<h2>📋 Instructions</h2>
+<ul class="instr-list">
+<li class="ii"><span class="ii-ico">⏱️</span><p>Total time: <strong>20 minutes</strong>. Auto-submits when time runs out.</p></li>
+<li class="ii"><span class="ii-ico">✅</span><p>Correct = <strong>+1 mark</strong>. There is <strong>-0.25 negative marking</strong> for wrong answers.</p></li>
+<li class="ii"><span class="ii-ico">🔄</span><p><strong>Test Mode</strong>: Attempt all → Submit → See results. <strong>Quiz Mode</strong>: Instant feedback per answer.</p></li>
+<li class="ii"><span class="ii-ico">📌</span><p>Use <strong>Palette</strong> to jump between questions.</p></li>
+</ul>
+<div class="meta-pills">
+<div class="mp mp-b">📝 50 Questions</div>
+<div class="mp mp-g">⏱️ 20 minutes</div>
+<div class="mp mp-o">+1 Correct</div>
+<div class="mp mp-r">-0.25 Negative</div>
+</div>
+<div class="agree" onclick="toggleAgree()">
+<input type="checkbox" id="agreeChk" onchange="checkReady()" onclick="event.stopPropagation()"/>
+<label for="agreeChk">I have read all instructions and I am ready to begin.</label>
+</div>
+</div>
+<button class="start-btn" id="startBtn" onclick="startQuiz()">Start Quiz →</button>
+<div class="sf"><p>Created with Quiz Studio</p>
+<a class="tg-btn" href="https://t.me/VictoryBanker" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.857l-2.96-.924c-.643-.203-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.702z"/></svg>
+Victory Banker
+</a></div>
+</div>
+<div id="quizUI" style="display:none">
+<header id="mainHdr">
+<div class="hdr" id="hdrCtrls">
+<div style="display:flex;align-items:center;gap:10px"><div class="tog" id="modeTog" onclick="toggleMode()"><span>Test</span><span>Quiz</span></div></div>
+<div style="display:flex;align-items:center;gap:8px">
+<div class="timer" id="timerEl">00:00</div>
+<button class="btn btn-sub" onclick="openSub()">Submit</button>
+<button class="btn" id="palBtn" onclick="togglePal()">📋 Palette</button>
+</div></div>
+<div class="pbr"><div class="pb" id="pb" style="width:0%"></div></div>
+</header>
+<div class="wrap">
+<div id="qCard" class="card">
+<div class="qbar">
+<span class="qmeta"><span class="qnum" id="qBadge">1</span>Q <span id="qIdx">1</span> / <span id="qTot">0</span></span>
+<div class="sbdg"><span class="sp" id="qPos"></span><span class="sn" id="qNeg"></span></div>
+</div>
+<div class="qtxt" id="qTxt"></div>
+<div class="opts" id="opts"></div>
+<div class="expl" id="expl"></div>
+</div>
+<div id="resultArea" style="display:none"></div>
+</div>
+<div class="fbar" id="fbar"><div class="fbar-in">
+<button class="nb" onclick="nav(-1)">← Prev</button>
+<button class="nb nb-clr" onclick="clrAns()">✕ Clear</button>
+<span class="qctr" id="qCtr"></span>
+<button class="nb" onclick="nav(1)">Next →</button>
+</div></div>
+</div>
+<div id="pal" aria-hidden="true"><div id="pal-hd">Question Palette</div></div>
+<div class="modal" id="subMod">
+<div class="mbox">
+<div style="font-size:44px">📤</div>
+<h3>Submit Quiz?</h3>
+<p id="subMsg"></p>
+<div class="macts"><button class="btn-o" onclick="closeSub()">Cancel</button><button class="bp" onclick="doSubmit()">Submit Now</button></div>
+</div></div>
+<script>
+var QS=[{"id":"51","question":"**Q51. Fill in the Blank**\n\nThe research consortium decided ___ additional AI safety protocols before deployment.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) to implement\n\n**📘 Rule Applied**\nRule 31 — Certain Words Followed by Only \"TO\"\nExact Rule:\nCertain verbs take:\nVerb + TO + V₁\n\nExamples:\ndecide → to do\nagree → to help\nrefuse → to reveal\nplan → to execute\n\n**🔍 Detailed Explanation**\nTrigger Word:\n==decided==\n\nVerb:\ndecide\n\nalways follows:\nto + infinitive\n\nCorrect:\ndecided to implement\n\nCorrect sentence:\n> The research consortium decided to implement additional AI safety protocols.\n\n*Hidden Grammar Clue*\nCompetitive exams trap students with:\n❌ decided implementing\n❌ decided implement\nBut grammar demands:\n✔ decided to implement\n\n**❌ Why Other Options Are Wrong**\n(A) implementing ❌ Gerund not allowed.\n(B) implement ❌ Missing infinitive marker.\n(D) implemented ❌ Wrong verb form.\n(E) having implemented ❌ Structure violation.\n\n**💡 Shortcut Tip**\nRemember:\nDecide / Agree / Refuse / Plan\n→ Always TO + Verb","option_1":"implementing","option_2":"implement","option_3":"to implement","option_4":"implemented","option_5":"having implemented"},{"id":"52","question":"**Q52. Error Detection**\n\nThe climate advisory board agreed launching a nationwide carbon audit initiative.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (B)\n\nCorrection:\n==agreed to launch==\n\n**📘 Rule Applied**\nRule 31\nVerb:\nAgree\n\nPattern:\nAgree + TO + Verb\n\n**🔍 Detailed Explanation**\nIncorrect:\n==agreed launching==\n\nCorrect:\nagreed to launch\n\nSentence becomes:\n> The climate advisory board agreed to launch a nationwide carbon audit initiative.\n\n*Hidden Grammar Clue*\n\"Agree\" never directly takes gerund.\n\n**❌ Why Other Options Are Wrong**\n(A) climate advisory board ✔\n(C) nationwide carbon audit ✔\n(D) initiative ✔\n\n**💡 Shortcut Tip**\nAgree → TO + Verb","option_1":"climate advisory board","option_2":"agreed launching","option_3":"nationwide carbon audit","option_4":"initiative","option_5":"No error"},{"id":"53","question":"**Q53. Improvement of Sentence**\n\nScientists refused ___ confidential satellite coordinates publicly.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) to reveal\n\n**📘 Rule Applied**\nRule 31\nRefuse + To + Verb\n\n**🔍 Detailed Explanation**\nTrigger:\n==refused==\n\nCorrect structure:\nrefused to reveal\n\nSentence:\n> Scientists refused to reveal confidential satellite coordinates publicly.\n\n**❌ Why Other Options Are Wrong**\n(A) revealing ❌ Wrong pattern.\n(B) reveal ❌ Missing TO.\n(C) revealed ❌ Incorrect form.\n(E) having revealed ❌ Wrong structure.\n\n**💡 Shortcut Tip**\nRefuse → TO + Verb","option_1":"revealing","option_2":"reveal","option_3":"revealed","option_4":"to reveal","option_5":"having revealed"},{"id":"54","question":"**Q54. Fill in the Blank**\n\nThe semiconductor company plans ___ production capacity next year.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) to expand\n\n**📘 Rule Applied**\nRule 31\nPlan + TO + Verb\n\n**🔍 Detailed Explanation**\nTrigger:\n==plans==\n\nCorrect:\nplans to expand\n\n**❌ Why Other Options Are Wrong**\n(A) expanding ❌ Gerund wrong.\n(B) expansion ❌ Noun incorrect.\n(D) expanded ❌ Wrong tense.\n(E) expands ❌ Wrong structure.\n\n**💡 Shortcut Tip**\nPlan → TO + Verb","option_1":"expanding","option_2":"expansion","option_3":"to expand","option_4":"expanded","option_5":"expands"},{"id":"55","question":"**Q55. Identify Correct Sentence**\n\n(A) The startup avoided to disclose investor data.\n(B) The startup avoided disclosed investor data.\n(C) The startup avoided disclosing investor data.\n(D) The startup avoided disclose investor data.\n(E) The startup avoiding disclose investor data.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) The startup avoided disclosing investor data.\n\n**📘 Rule Applied**\nRule 31 Exception\nSome verbs take:\nVerb + ING\n\nExamples:\nAvoid\nEnjoy\nFinish\nConsider\n\n**🔍 Detailed Explanation**\nTrigger:\n==avoided==\n\nAvoid takes:\nV₁ + ing\n\nCorrect:\navoided disclosing\n\n**❌ Why Other Options Are Wrong**\n(A) avoided to disclose ❌ Wrong verb pattern.\n(B) avoided disclosed ❌ Verb form wrong.\n(D) avoided disclose ❌ Missing gerund.\n(E) avoiding disclose ❌ Grammar error.\n\n**💡 Shortcut Tip**\nAvoid → ING\nNever TO","option_1":"The startup avoided to disclose investor data.","option_2":"The startup avoided disclosed investor data.","option_3":"The startup avoided disclosing investor data.","option_4":"The startup avoided disclose investor data.","option_5":"The startup avoiding disclose investor data."},{"id":"56","question":"**Q56. Fill in the Blank**\n\nElectric vehicles are ⸺ efficient ⸺ hydrogen vehicles in urban conditions.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) as, as\n\n**📘 Rule Applied**\nRule 32 — AS...AS\nStructure:\nAs + Positive Degree + As\n\n**🔍 Detailed Explanation**\nComparison equality.\n\nCorrect:\nas efficient as\n\n*Hidden Grammar Clue*\nEqual comparison.\nNeed:\nAS + adjective + AS\n\n**❌ Why Other Options Are Wrong**\n(A) so, than ❌ Wrong connector.\n(B) more, as ❌ Mixed comparison.\n(D) more, than ❌ Changes meaning.\n(E) same, as ❌ Structure incomplete.\n\n**💡 Shortcut Tip**\nEqual comparison:\nAS...AS","option_1":"so, than","option_2":"more, as","option_3":"as, as","option_4":"more, than","option_5":"same, as"},{"id":"57","question":"**Q57. Error Detection**\n\nHydrogen propulsion systems are not so scalable than lithium battery systems.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (B)\n\nCorrection:\n==so scalable as==\n\n**📘 Rule Applied**\nRule 32\nNegative comparison:\nNot So + adjective + As\n\n**🔍 Detailed Explanation**\nIncorrect:\n==so scalable than==\n\nCorrect:\nso scalable as\n\n*Hidden Grammar Clue*\nSO pairs with:\n✔ AS\nNever THAN.\n\n**💡 Shortcut Tip**\nSO → AS\nNever THAN.","option_1":"Hydrogen propulsion systems","option_2":"not so scalable than","option_3":"lith battery systems","option_4":"transportation sector","option_5":"No error"},{"id":"58","question":"**Q58. Fill in the Blank**\n\nThe satellite network is twice ⸺ resilient ⸺ the older communication system.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) as, as\n\n**📘 Rule Applied**\nRule 33\nTimes concept.\n\nCorrect structure:\nTwice as adjective as\n\n**🔍 Detailed Explanation**\nTrigger:\n==twice==\n\nRule:\nNo comparative after twice.\n\nCorrect:\ntwice as resilient as\n\n**❌ Why Other Options Are Wrong**\n(A) more, than ❌ Comparative forbidden.\n(C) much, than ❌ Wrong connector.\n(D) very, as ❌ Incorrect.\n(E) highly, than ❌ Wrong pattern.\n\n**💡 Shortcut Tip**\nTwice → AS...AS","option_1":"more, than","option_2":"as, as","option_3":"much, than","option_4":"very, as","option_5":"highly, than"},{"id":"59","question":"**Q59. Improvement of Sentence**\n\nThis AI processor performs three times faster than its predecessor.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) three times as fast as\n\n**📘 Rule Applied**\nRule 33\nDon't use:\n❌ Times + comparative\nUse:\n✔ Times + AS + adjective + AS\n\n**🔍 Detailed Explanation**\nIncorrect:\n==three times faster than==\n\nCorrect:\nthree times as fast as\n\n**💡 Shortcut Tip**\nTimes never directly takes comparative.","option_1":"three times fast than","option_2":"three times as fast as","option_3":"three times fastest than","option_4":"three times more fast than","option_5":"No improvement"},{"id":"60","question":"**Q60. Fill in the Blank**\n\nSolar energy adoption increased four times ⸺ rapidly ⸺ previous estimates suggested.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) as, as\n\n**📘 Rule Applied**\nRule 33\n\n**🔍 Detailed Explanation**\nTrigger:\n==four times==\n\nCorrect:\nfour times as rapidly as\n\n*Hidden Grammar Clue*\nTimes structure fixed.\n\n**💡 Shortcut Tip**\nTimes → AS...AS","option_1":"more, than","option_2":"much, than","option_3":"as, as","option_4":"very, than","option_5":"comparative, than"},{"id":"61","question":"**Q61. Error Detection**\n\nThe researcher asked where was the environmental sensor installed.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (B)\n\nCorrection:\n==where the environmental sensor was==\n\n**📘 Rule Applied**\nRule 34 — Difference Between Statement and Question\nIndirect question:\nSubject + Verb\n\n**🔍 Detailed Explanation**\nIncorrect:\n==where was==\n\nCorrect:\nwhere environmental sensor was installed\n\nIndirect speech requires statement order (no inversion).\n\n**💡 Shortcut Tip**\nAsked → No inversion.","option_1":"researcher asked","option_2":"where was","option_3":"environmental sensor","option_4":"installed","option_5":"No error"},{"id":"62","question":"**Q62. Fill in the Blank**\n\nThe scientist wondered how the ecosystem ___ recovered after the wildfire.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) had\n\n**📘 Rule Applied**\nRule 34\nPast wondering.\nRecovery before wondering.\nNeed:\nPast Perfect.\n\n**🔍 Detailed Explanation**\nStructure:\nWondered → past event\nRecovered → earlier event\n\nNeed:\nhad recovered\n\n*Hidden Grammar Clue*\nEarlier past action:\nPast Perfect.\n\n**💡 Shortcut Tip**\nPast before Past → Had + V₃\n*(Note: Both options B and D are 'had', making B correct)*","option_1":"did","option_2":"had","option_3":"has","option_4":"had","option_5":"does"},{"id":"63","question":"**Q63. Improvement of Sentence**\n\nThe investor asked when will quantum encryption become commercially viable.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) when quantum encryption would become\n\n**📘 Rule Applied**\nRule 34\nIndirect question.\n\n**🔍 Detailed Explanation**\nIncorrect:\n==when will==\n\nNeed statement structure and past tense adaptation (will -> would).\n\nCorrect:\nwhen quantum encryption would become\n\n**💡 Shortcut Tip**\nIndirect speech → Statement order.","option_1":"when quantum encryption will become","option_2":"when quantum encryption became","option_3":"when quantum encryption would become","option_4":"when did quantum encryption become","option_5":"No improvement"},{"id":"64","question":"**Q64. Fill in the Blank**\n\nNeither renewable subsidies nor carbon taxation ___ sufficient independently.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) is\n\n**📘 Rule Applied**\nRule 35\nNearest Subject Rule.\n\n**🔍 Detailed Explanation**\nNearest noun to the blank:\n==carbon taxation==\nSingular.\n\nNeed:\nis\n\n**💡 Shortcut Tip**\nEither/Neither\nNearest noun decides verb.","option_1":"are","option_2":"have","option_3":"is","option_4":"were","option_5":"being"},{"id":"65","question":"**Q65. Fill in the Blank**\n\nNot only AI algorithms but also predictive analytics ___ transformed healthcare diagnostics.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) have\n\n**📘 Rule Applied**\nRule 35\nNearest noun:\n==predictive analytics==\nPlural.\n\nNeed:\nhave\n\n**🔍 Detailed Explanation**\nRule:\nNot only...but also\nNearest subject controls verb.\n\n**💡 Shortcut Tip**\nIgnore first noun.\nNearest noun controls verb.","option_1":"has","option_2":"is","option_3":"have","option_4":"was","option_5":"being"},{"id":"66","question":"**Q66. Error Detection**\n\nEither climate adaptation strategies or financial regulation have reduced systemic risks.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (C)\n\nCorrection:\n==has==\n\n**📘 Rule Applied**\nRule 35\n\n**🔍 Detailed Explanation**\nNearest noun to the verb:\n==financial regulation==\nSingular.\nTherefore, the verb must be singular ('has').\n\n**💡 Shortcut Tip**\nEither...or / Neither...nor → closest subject defines the verb.","option_1":"climate adaptation","option_2":"financial regulation","option_3":"have","option_4":"systemic risks","option_5":"No error"},{"id":"67","question":"**Q67. Identify Correct Sentence**\n\n(A) Neither inflation nor unemployment have stabilized.\n(B) Neither inflation nor unemployment has stabilized.\n(C) Neither inflation nor unemployment stabilize.\n(D) Neither inflation nor unemployment stabilizing.\n(E) Neither inflation nor unemployment were stabilized.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) Neither inflation nor unemployment has stabilized.\n\n**📘 Rule Applied**\nRule 35\nNearest noun:\n==unemployment==\nSingular.\n\nNeed:\nhas.\n\n**💡 Shortcut Tip**\nWith 'neither...nor', focus on the final subject.","option_1":"Neither inflation nor unemployment have stabilized.","option_2":"Neither inflation nor unemployment has stabilized.","option_3":"Neither inflation nor unemployment stabilize.","option_4":"Neither inflation nor unemployment stabilizing.","option_5":"Neither inflation nor unemployment were stabilized."},{"id":"68","question":"**Q68. Fill in the Blank**\n\nThe new semiconductor architecture is ___ efficient than scalable.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) more\n\n**📘 Rule Applied**\nRule 36\nOne object, two qualities compared.\n\n**🔍 Detailed Explanation**\nWhen comparing two qualities of the same object, use:\nMore + positive adjective + than\n\n**💡 Shortcut Tip**\nComparing qualities of 1 item → Use 'more', not '-er'.","option_1":"better","option_2":"much","option_3":"more","option_4":"highly","option_5":"greater"},{"id":"69","question":"**Q69. Improvement of Sentence**\n\nThe AI assistant is smarter than adaptive.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) more smart than adaptive\n\n**📘 Rule Applied**\nRule 36\nSame thing, two qualities comparison.\n\n**🔍 Detailed Explanation**\nIncorrect:\n==smarter than adaptive==\n\nCorrect:\nmore smart than adaptive\n\n**💡 Shortcut Tip**\nTwo qualities of same entity = More + Adj 1 + Than + Adj 2.","option_1":"smarter than adaptive","option_2":"more smarter than adaptive","option_3":"more smart than adaptive","option_4":"smartest than adaptive","option_5":"No improvement"},{"id":"70","question":"**Q70. Fill in the Blank**\n\nThe electric aircraft is ___ sustainable than profitable.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) more\n\n**📘 Rule Applied**\nRule 36\n\n**🔍 Detailed Explanation**\nComparing two attributes of the single entity (electric aircraft).\nNeed:\nMore + adjective.\n\n**💡 Shortcut Tip**\nQuality vs Quality → More X than Y.","option_1":"smarter","option_2":"much","option_3":"more","option_4":"fewer","option_5":"many"},{"id":"71","question":"**Q71. Fill in the Blank**\n\nMore than one climate researcher ___ expressed concerns.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) has\n\n**📘 Rule Applied**\nRule 37\n\n**🔍 Detailed Explanation**\n'More than one' followed by a singular countable noun takes a singular verb.\n→ Singular verb required.\n\n**💡 Shortcut Tip**\nMore than one + Singular Noun → Singular Verb.","option_1":"have","option_2":"were","option_3":"has","option_4":"are","option_5":"had been"},{"id":"72","question":"**Q72. Fill in the Blank**\n\nMany a sustainability initiative ___ failed due to funding shortages.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) has\n\n**📘 Rule Applied**\nRule 37\n\n**🔍 Detailed Explanation**\n'Many a' structure always leads to:\nMany a + singular noun + singular verb.\n\n**💡 Shortcut Tip**\nMany a = Singular rule.","option_1":"have","option_2":"are","option_3":"were","option_4":"has","option_5":"being"},{"id":"73","question":"**Q73. Error Detection**\n\nMany a technology companies have invested in green computing.","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (A)\n\nCorrection:\n==Many a technology company==\n\n**📘 Rule Applied**\nRule 37\nMany a\nNeeds:\nSingular noun and Singular verb.\n\n**🔍 Detailed Explanation**\nIncorrect:\n==Many a technology companies==\n\nCorrect:\nMany a technology company has invested.\n\n**💡 Shortcut Tip**\nChange plural elements to singular after 'Many a'.","option_1":"technology companies","option_2":"have","option_3":"green computing","option_4":"invested","option_5":"No error"},{"id":"74","question":"**Q74. Fill in the Blank**\n\nThere is no doubt ___ renewable grids require modernization.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) that\n\n**📘 Rule Applied**\nRule 38\nNo doubt + THAT.\n\n**🔍 Detailed Explanation**\nIn affirmative assertions or when there is 'no doubt', use 'that' as the conjunction.\n\n**💡 Shortcut Tip**\nNo doubt → THAT.","option_1":"if","option_2":"whether","option_3":"because","option_4":"that","option_5":"why"},{"id":"75","question":"**Q75. Fill in the Blank**\n\nScientists doubt ___ carbon capture technology can scale globally.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) whether\n\n**📘 Rule Applied**\nRule 38\nDoubt → WHETHER\nNo doubt → THAT\n\n**🔍 Detailed Explanation**\nWhen 'doubt' is used in an affirmative sentence, it is paired with 'whether' or 'if'.\n\n**💡 Shortcut Tip**\nPositive sentence with Doubt = whether/if.","option_1":"because","option_2":"whether","option_3":"that","option_4":"why","option_5":"hence"},{"id":"76","question":"**Q76. Rearrange Logic**\n\nP – carbon pricing expanded\nQ – industrial emissions reduced\nR – climate regulations strengthened\nS – sustainable investment increased","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) RSQP\n\n**📘 Rule Applied**\nRule 39 — Sequence of Sentences\nExact Rule:\nArrange sentences logically:\nCause → Development → Intermediate Result → Final Outcome\n\n**🔍 Detailed Explanation**\nCorrect flow:\n R → Climate regulations strengthened\n ↓\n S → Sustainable investment increased\n ↓\n Q → Industrial emissions reduced\n ↓\n P → Carbon pricing expanded impact\n\nCorrect order:\nRSQP\n\n*Hidden Grammar Clue*\nPolicy actions generally initiate processes. Outcomes usually appear last.\n\n**❌ Why Other Options Are Wrong**\n(A) PQRS ❌ Starts with outcome.\n(C) SPRQ ❌ Breaks logical chronology.\n(D) QRSP ❌ Emission reduction before regulation impossible.\n(E) PRSQ ❌ Sequence disorder.\n\n**💡 Shortcut Tip**\nSequence questions:\nFind:\n✔ Beginning cause\n✔ Final consequence\nArrange middle logically.","option_1":"PQRS","option_2":"RSQP","option_3":"SPRQ","option_4":"QRSP","option_5":"PRSQ"},{"id":"77","question":"**Q77. Rearrange Logic**\n\nP – glacier melting accelerated\nQ – ocean levels increased\nR – atmospheric warming intensified\nS – coastal vulnerabilities expanded","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) RQPS\n\n**📘 Rule Applied**\nRule 39 — Sequence Of Sentences\n\n**🔍 Detailed Explanation**\nCorrect chronology:\nAtmospheric warming intensified (R)\n↓\nGlacier melting accelerated (P)\n↓\nOcean levels increased (Q)\n↓\nCoastal vulnerabilities expanded (S)\n\nCorrect:\nRQPS\n\n*Hidden Grammar Clue*\nClimate process follows scientific progression. Cause first, effect last.\n\n**❌ Why Other Options Are Wrong**\n(A) Effect appears before cause.\n(B) Melting before warming impossible.\n(D) Ocean increase before warming wrong.\n(E) Coastal vulnerability cannot begin sequence.\n\n**💡 Shortcut Tip**\nScience sequence:\nCause → Mechanism → Impact.","option_1":"RPQS","option_2":"PQRS","option_3":"RQPS","option_4":"QRSP","option_5":"SQRP"},{"id":"78","question":"**Q78. Fill in the Blank**\n\nThe drought-stricken region received ___ rainfall last year.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) little\n\n**📘 Rule Applied**\nRule 40 — Little / A Little / The Little\nExact Rule:\nLittle: Almost no quantity\nUsed with: Uncountable noun (Rainfall → uncountable).\n\n**🔍 Detailed Explanation**\nTrigger:\n==rainfall==\n\nRainfall cannot be counted. Context: Drought region.\nMeaning:\nVery small quantity (almost none).\n\nCorrect:\nlittle rainfall\n\n*Hidden Grammar Clue*\nDrought suggests scarcity. Need negative quantity.\n\n**❌ Why Other Options Are Wrong**\n(A) few ❌ Countable only.\n(C) many ❌ Countable.\n(D) several ❌ Countable.\n(E) fewer ❌ Comparative.\n\n**💡 Shortcut Tip**\nUncountable + almost none → LITTLE","option_1":"few","option_2":"little","option_3":"many","option_4":"several","option_5":"fewer"},{"id":"79","question":"**Q79. Fill in the Blank**\n\nThe villagers survived on ___ water stored before the disaster.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) the little\n\n**📘 Rule Applied**\nRule 40\n\n**🔍 Detailed Explanation**\nWater → uncountable noun.\nSpecific limited quantity exists due to the clause \"stored before the disaster\".\nNeed:\nthe little\n\nMeaning:\nEntire small amount available.\n\nCorrect:\nthe little water\n\n*Hidden Grammar Clue*\nSpecificity present. Not merely small quantity, but the entire available quantity.\n\n**❌ Why Other Options Are Wrong**\n(A) Few → countable.\n(B) Little = almost none.\n(D) Several → countable.\n(E) Much → context mismatch.\n\n**💡 Shortcut Tip**\nSpecific small quantity available? → THE LITTLE","option_1":"few","option_2":"little","option_3":"the little","option_4":"several","option_5":"much"},{"id":"80","question":"**Q80. Fill in the Blank**\n\nResearchers had ___ evidence supporting the theory.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) little\n\n**📘 Rule Applied**\nRule 40\nEvidence → uncountable.\n\n**🔍 Detailed Explanation**\nNeed negative meaning matching research doubt context (almost no evidence).\n\nCorrect:\nlittle evidence\n\n*Hidden Grammar Clue*\nEvidence cannot be counted.\n\n**❌ Why Other Options Are Wrong**\n(A) Many → countable.\n(C) Few → countable.\n(D) Several → countable.\n(E) Enoughs ❌ Grammar violation.\n\n**💡 Shortcut Tip**\nEvidence / information / money → LITTLE","option_1":"many","option_2":"little","option_3":"few","option_4":"several","option_5":"enoughs"},{"id":"81","question":"**Q81. Fill in the Blank**\n\n___ biodiversity experts contributed significantly.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) A few\n\n**📘 Rule Applied**\nRule 40A — Few / A Few / The Few\nExact Rule:\nFew: Almost none\nA few: Some quantity (positive)\nThe few: Specific limited quantity\nExperts = countable.\n\n**🔍 Detailed Explanation**\nNeed positive meaning because they \"contributed significantly\".\n\nCorrect:\nA few biodiversity experts\n\n*Hidden Grammar Clue*\nContribution occurred. Therefore quantity exists. Need positive meaning.\n\n**❌ Why Other Options Are Wrong**\n(A) Little → uncountable.\n(C) Much → uncountable.\n(D) Less → comparative.\n(E) Several little ❌ Wrong determiner.\n\n**💡 Shortcut Tip**\nPositive limited quantity → A FEW","option_1":"Little","option_2":"A few","option_3":"Much","option_4":"Less","option_5":"Several little"},{"id":"82","question":"**Q82. Fill in the Blank**\n\n___ students qualified despite difficult examination conditions.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) Few\n\n**📘 Rule Applied**\nRule 40A\n\n**🔍 Detailed Explanation**\nStudents → countable.\nContext: \"despite difficult examination conditions\" implies a very small negative percentage passed.\n\nNeed:\nFew students\n\n*Hidden Grammar Clue*\nNegative idea. Small quantity.\n\n**❌ Why Other Options Are Wrong**\n(A) Little → uncountable.\n(B) Much → uncountable.\n(D) The little → wrong category.\n(E) Less → comparative.\n\n**💡 Shortcut Tip**\nCountable + almost none → FEW","option_1":"Little","option_2":"Much","option_3":"Few","option_4":"The little","option_5":"Less"},{"id":"83","question":"**Q83. Fill in the Blank**\n\n___ scientists available handled the crisis efficiently.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) The few\n\n**📘 Rule Applied**\nRule 40A\n\n**🔍 Detailed Explanation**\nScientists → countable noun.\nSpecific limited group identified by the word \"available\".\n\nNeed:\nThe few scientists\n\nMeaning:\nEntire available small group.\n\n*Hidden Grammar Clue*\nAvailable = specificity.\n\n**💡 Shortcut Tip**\nSpecific limited countable quantity → THE FEW","option_1":"Little","option_2":"Few","option_3":"The few","option_4":"Less","option_5":"Some little"},{"id":"84","question":"**Q84. Fill in the Blank**\n\nDid researchers observe ___ abnormal atmospheric pattern?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) any\n\n**📘 Rule Applied**\nRule 40B — Some / Any\nExact Rule:\nQuestion sentence / Interrogative sentence → ANY\n\n**🔍 Detailed Explanation**\nTrigger:\n==Did==\n\nInterrogative sentence template.\nNeed:\nany\n\n*Hidden Grammar Clue*\nQuestion structure pairs with ANY.\n\n**❌ Why Other Options Are Wrong**\n(A) Some generally avoided in basic questions.\n(C) Little incorrect format here.\n(D) Much incorrect.\n(E) Fewer incorrect.\n\n**💡 Shortcut Tip**\nQuestion? Negative? → ANY","option_1":"some","option_2":"any","option_3":"little","option_4":"much","option_5":"fewer"},{"id":"85","question":"**Q85. Fill in the Blank**\n\nClimate experts identified ___ anomalies during ocean monitoring.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) some\n\n**📘 Rule Applied**\nRule 40B\n\n**🔍 Detailed Explanation**\nAffirmative statement.\nNeed:\nsome\n\n*Hidden Grammar Clue*\nPositive sentence. No negation.\n\n**💡 Shortcut Tip**\nPositive sentence → SOME","option_1":"any","option_2":"some","option_3":"fewer","option_4":"little","option_5":"less"},{"id":"86","question":"**Q86. Error Detection**\n\nScientists did not observe some unusual atmospheric changes.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** Error in (B)\n\nCorrection:\n==any unusual atmospheric changes==\n\n**📘 Rule Applied**\nRule 40B\n\n**🔍 Detailed Explanation**\nTrigger:\n==did not==\n\nNegative sentence converts 'some' to 'any'.\nCorrect:\n> Scientists did not observe any unusual changes.\n\n**💡 Shortcut Tip**\nNOT present? → ANY","option_1":"Scientists did not observe","option_2":"some unusual atmospheric changes","option_3":"during monitoring","option_4":"recently","option_5":"No error"},{"id":"87","question":"**Q87. Fill in the Blank**\n\nThe board agreed ___ environmental safeguards.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) to implement\n\n**📘 Rule Applied**\nRule 31\nAgree + TO + Verb\n\n**🔍 Detailed Explanation**\nTrigger:\n==agreed==\n\nCorrect:\nagreed to implement\n\n**💡 Shortcut Tip**\nAgree → TO Verb","option_1":"implementing","option_2":"to implement","option_3":"implemented","option_4":"implement","option_5":"implementation"},{"id":"88","question":"**Q88. Fill in the Blank**\n\nAI infrastructure expanded three times ⸺ rapidly ⸺ forecasted.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) as, as\n\n**📘 Rule Applied**\nRule 33\nTimes concept.\n\n**🔍 Detailed Explanation**\nCorrect:\nthree times as rapidly as\nNo comparative degree format after multiplicative expressions like 'times'.\n\n**💡 Shortcut Tip**\nTimes → AS...AS","option_1":"more, than","option_2":"as, as","option_3":"comparative, than","option_4":"highly, than","option_5":"greater, than"},{"id":"89","question":"**Q89. Improvement of Sentence**\n\nThe analyst asked where were the renewable targets finalized.","answer":"1","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (A) where renewable targets were finalized\n\n**📘 Rule Applied**\nRule 34\nIndirect question layout structure.\n\n**🔍 Detailed Explanation**\nWrong:\n==where were==\n\nCorrect:\nStatement structure order without auxiliary inversion.\n\n**💡 Shortcut Tip**\nAsked/Wondered → No inversion.","option_1":"where renewable targets were finalized","option_2":"where renewable targets finalize","option_3":"where did renewable targets finalize","option_4":"where renewable targets finalized were","option_5":"No improvement"},{"id":"90","question":"**Q90. Fill in the Blank**\n\nNot only sustainability initiatives but also policy reforms ___ improved outcomes.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) have\n\n**📘 Rule Applied**\nRule 35\nNearest subject rule.\n\n**🔍 Detailed Explanation**\nNearest noun to blank:\n==reforms==\nPlural structure noun context.\n\nNeed:\nhave.\n\n**💡 Shortcut Tip**\nNot only... but also pairs verb with subject closer to it.","option_1":"has","option_2":"is","option_3":"have","option_4":"was","option_5":"being"},{"id":"91","question":"**Q91. Fill in the Blank**\n\nThe processor is ___ powerful than energy-efficient.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) more\n\n**📘 Rule Applied**\nRule 36\nSingle thing compared across two separate qualities.\n\n**🔍 Detailed Explanation**\nNeed:\nMore adjective than adjective.\n\n**💡 Shortcut Tip**\nComparing attributes of single unit → More + Adj.","option_1":"smartest","option_2":"better","option_3":"more","option_4":"fewer","option_5":"many"},{"id":"92","question":"**Q92. Fill in the Blank**\n\nMore than one economist ___ warned about inflation.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) has\n\n**📘 Rule Applied**\nRule 37\n\n**🔍 Detailed Explanation**\nMore than one + Singular Noun takes a singular verb context.\n\n**💡 Shortcut Tip**\nMore than one → Singular verb.","option_1":"have","option_2":"were","option_3":"has","option_4":"are","option_5":"being"},{"id":"93","question":"**Q93. Fill in the Blank**\n\nThere is no doubt ___ biodiversity conservation needs stronger funding.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) that\n\n**📘 Rule Applied**\nRule 38\n\n**🔍 Detailed Explanation**\nNo doubt → THAT\n\n**💡 Shortcut Tip**\nClear affirmation without doubt takes 'that'.","option_1":"if","option_2":"because","option_3":"whether","option_4":"that","option_5":"where"},{"id":"94","question":"**Q94. Fill in the Blank**\n\nExperts doubt ___ carbon neutrality can be achieved by 2050.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) whether\n\n**📘 Rule Applied**\nRule 38\nDoubt → WHETHER\n\n**💡 Shortcut Tip**\nUncertain statement + Doubt context = Whether.","option_1":"because","option_2":"that","option_3":"whether","option_4":"therefore","option_5":"while"},{"id":"95","question":"**Q95. Fill in the Blank**\n\nThe arid landscape retained ___ moisture.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) little\n\n**📘 Rule Applied**\nRule 40\nMoisture → uncountable noun context.\n\n**🔍 Detailed Explanation**\nArid implies negative lack of moisture, meaning almost none.\nNeed:\nlittle.\n\n**💡 Shortcut Tip**\nDry/Arid + Uncountable = Little.","option_1":"few","option_2":"little","option_3":"many","option_4":"fewer","option_5":"several"},{"id":"96","question":"**Q96. Fill in the Blank**\n\n___ environmental engineers handled emergency restoration.","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) A few\n\n**📘 Rule Applied**\nRule 40A\nPositive limited countable quantity.\n\n**🔍 Detailed Explanation**\nEngineers are countable. Since restoration was handled successfully, some positive number worked.\nNeed:\nA few.\n\n**💡 Shortcut Tip**\nCountable positive presence = A few.","option_1":"Little","option_2":"A few","option_3":"Less","option_4":"Several little","option_5":"Much"},{"id":"97","question":"**Q97. Fill in the Blank**\n\nHave scientists identified ___ long-term climate signal?","answer":"2","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (B) any\n\n**📘 Rule Applied**\nRule 40B\nQuestion context marker sets structure to any.\n\n**💡 Shortcut Tip**\nQuestion → Any.","option_1":"some","option_2":"any","option_3":"little","option_4":"much","option_5":"several"},{"id":"98","question":"**Q98. Fill in the Blank**\n\nThe company refused ___ confidential supply-chain data.","answer":"4","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (D) to release\n\n**📘 Rule Applied**\nRule 31\nRefuse + TO Verb.\n\n**💡 Shortcut Tip**\nRefuse requires base infinitive format with to.","option_1":"releasing","option_2":"released","option_3":"release","option_4":"to release","option_5":"releases"},{"id":"99","question":"**Q99. Fill in the Blank**\n\nNeither climate funding nor international cooperation ___ sufficient alone.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) is\n\n**📘 Rule Applied**\nRule 35\nNearest subject layout alignment.\n\n**🔍 Detailed Explanation**\nNearest noun element:\n==cooperation==\nSingular matching form requirement.\n\nNeed:\nis.\n\n**💡 Shortcut Tip**\nNeither...nor selects status from final entity component.","option_1":"are","option_2":"were","option_3":"is","option_4":"have","option_5":"being"},{"id":"100","question":"**Q100. Fill in the Blank**\n\nThe technology platform is ___ reliable than scalable.","answer":"3","positive_marks":"1","negative_marks":"0.25","solution_text":"**✅ Correct Answer:** (C) more\n\n**📘 Rule Applied**\nRule 36\nSingle object compared crosswise across two qualities.\n\n**🔍 Detailed Explanation**\nNeed:\nMore adjective than adjective layout.\n\n**💡 Shortcut Tip**\nDual quality comparative balance values always use more.","option_1":"smarter","option_2":"much","option_3":"more","option_4":"greater","option_5":"fewer"}],TITLE="Rule 31-40 (Set 02) - 120 Rules of Grammar",TIME_SECS=1200,LT=["A","B","C","D","E"];
+var charts=[],cur=0,qmode=false,secs=0,tick=null,ans={};
+function $$$(id){return document.getElementById(id);}
+function fmtT(s){var m=Math.floor(s/60),sc=s%60;return String(m).padStart(2,"0")+":"+String(sc).padStart(2,"0");}
+
+/* ── stylizeTxt: markdown → styled HTML ── */
+function stylizeTxt(s){
+  if(!s) return "";
+  s=s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  s=s.replace(/\*\*\*(.*?)\*\*\*/g,"<strong><em>$1</em></strong>");
+  s=s.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
+  s=s.replace(/\*(.*?)\*/g,"<em>$1</em>");
+  s=s.replace(/__(.*?)__/g,"<u>$1</u>");
+  s=s.replace(/==(.*?)==/g,"<mark>$1</mark>");
+  s=s.replace(/\\n/g,"<br>").replace(/\n/g,"<br>");
+  return s;
+}
+
+function toggleAgree(){var c=$$$("agreeChk");c.checked=!c.checked;checkReady();}
+function checkReady(){var b=$$$("startBtn");$$$("agreeChk").checked?b.classList.add("ready"):b.classList.remove("ready");}
+
+window.addEventListener("DOMContentLoaded",function(){
+  $$$("sTitle").textContent=TITLE;
+  $$$("qTot").textContent=QS.length;
+  buildPal(); updProg();
+});
+
+function startQuiz(){$$$("startScr").style.display="none";$$$("quizUI").style.display="block";render(0);startTick();}
+
+function startTick(){
+  if(tick)clearInterval(tick);
+  tick=setInterval(function(){
+    secs++;var rem=TIME_SECS-secs,el=$$$("timerEl");
+    if(rem<=300&&rem>0){el.classList.add("warn");el.textContent="⚠️ "+fmtT(rem);}
+    else{el.classList.remove("warn");el.textContent=fmtT(secs);}
+    if(secs>=TIME_SECS){clearInterval(tick);doSubmit();}
+  },1000);
+}
+
+function updProg(){var p=$$$("pb");if(p)p.style.width=((cur+1)/QS.length*100).toFixed(1)+"%";}
+
+function render(i){
+  cur=i;var q=QS[i],k="q"+i;
+  $$$("qIdx").textContent=i+1;$$$("qBadge").textContent=i+1;
+  $$$("qCtr").textContent=(i+1)+" / "+QS.length;
+  var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+  $$$("qPos").textContent="+"+pm+" Correct";
+  $$$("qNeg").textContent=nm>0?"-"+nm+" Wrong":"No Negative";
+  // Question text: stylize then append image
+  var qh=stylizeTxt(q.question||"");
+  if(q.image_url) qh+='<img src="'+q.image_url+'" style="max-width:100%;border-radius:8px;margin-top:10px;display:block">';
+  $$$("qTxt").innerHTML=qh;
+  $$$("expl").style.display="none";
+  var ob=$$$("opts");ob.innerHTML="";
+  ["option_1","option_2","option_3","option_4","option_5"].forEach(function(ok2,idx){
+    if(!q[ok2])return;
+    var val=String(idx+1);
+    var d=document.createElement("div");d.className="opt";d.dataset.v=val;
+    // Option text: stylize it
+    var optTxt=stylizeTxt(q[ok2]||"");
+    var optImg=q["option_"+(idx+1)+"_image"]?'<div style="margin-top:5px"><img src="'+q["option_"+(idx+1)+"_image"]+'" style="max-width:100%;border-radius:6px;display:block"></div>':"";
+    d.innerHTML='<div class="oltr">'+LT[idx]+'</div><div class="otxt">'+optTxt+optImg+'</div><div class="och"></div>';
+    d.addEventListener("click",function(){pick(q,i,val,d);});
+    if(ans[k]===val)d.classList.add("sel");
+    ob.appendChild(d);
+  });
+  if(qmode&&ans[k])feedback(q);
+  syncPal();updProg();
+}
+
+function pick(q,i,val,div){
+  var k="q"+i;ans[k]=val;
+  Array.from($$$("opts").children).forEach(function(o){o.classList.remove("sel","cor","wrg");});
+  div.classList.add("sel");
+  if(qmode)feedback(q);
+  syncPal();
+}
+
+function feedback(q){
+  var cv=String(q.answer),uv=ans["q"+cur];
+  Array.from($$$("opts").children).forEach(function(o){
+    o.classList.remove("sel","cor","wrg");
+    if(o.dataset.v===cv)o.classList.add("cor");
+    else if(uv&&o.dataset.v===uv)o.classList.add("wrg");
+  });
+  // Explanation with formatting
+  if(q.solution_text){
+    $$$("expl").innerHTML=stylizeTxt(q.solution_text);
+    $$$("expl").style.display="block";
+  }
+}
+
+function toggleMode(){qmode=!qmode;$$$("modeTog").classList.toggle("qm",qmode);render(cur);}
+function nav(d){var n=cur+d;if(n>=0&&n<QS.length)render(n);}
+function clrAns(){delete ans["q"+cur];render(cur);}
+
+function openSub(){
+  var done=Object.keys(ans).length,left=QS.length-done;
+  $$$("subMsg").innerHTML="You answered <strong>"+done+"</strong>. <strong style=\"color:#c82d3f\">"+left+"</strong> unanswered. Submit?";
+  $$$("subMod").style.display="flex";
+}
+function closeSub(){$$$("subMod").style.display="none";}
+
+function doSubmit(){
+  closeSub();if(tick)clearInterval(tick);
+  var cor=0,wrg=0,tot=0;
+  QS.forEach(function(q,i){
+    var a=ans["q"+i],ok=a&&String(a)===String(q.answer);
+    var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+    if(ok){cor++;tot+=pm;}else if(a){wrg++;tot-=nm;}
+  });
+  var att=Object.keys(ans).length,unatt=QS.length-att;
+  var acc=att?((cor/att)*100).toFixed(1):"0.0";
+  var pct=((cor/QS.length)*100).toFixed(1);
+  var grade=cor>=QS.length*.9?"A+":cor>=QS.length*.75?"A":cor>=QS.length*.6?"B":cor>=QS.length*.4?"C":"D";
+  var h='<div class="rhero"><h2>🎯 '+TITLE+'</h2><p>Quiz completed!</p>'+
+    '<div class="rscore">'+tot+' / '+QS.length+'</div>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">Grade: <span style="color:#fbbf24">'+grade+'</span></span>'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">⏱️ '+fmtT(secs)+'</span>'+
+    '<span style="background:rgba(255,255,255,.2);padding:4px 10px;border-radius:7px;font-weight:700">'+pct+'%</span>'+
+    '</div></div>'+
+    '<div class="rstats">'+
+    '<div class="rstat rs-c"><h4>✅ Correct</h4><p>'+cor+'</p></div>'+
+    '<div class="rstat rs-w"><h4>❌ Wrong</h4><p>'+wrg+'</p></div>'+
+    '<div class="rstat rs-s"><h4>⏭️ Skipped</h4><p>'+unatt+'</p></div>'+
+    '<div class="rstat rs-a"><h4>🎯 Accuracy</h4><p>'+acc+'%</p></div>'+
+    '<div class="rstat rs-sc"><h4>📊 Score</h4><p>'+tot+'</p></div>'+
+    '<div class="rstat rs-t"><h4>⏱️ Time</h4><p>'+fmtT(secs)+'</p></div>'+
+    '</div>'+
+    '<div class="charts-sec"><h3>📈 Performance Analysis</h3><div class="cgrid">'+
+    '<div class="ccard"><h4>Distribution</h4><canvas id="pieC"></canvas></div>'+
+    '<div class="ccard"><h4>Score Breakdown</h4><canvas id="barC"></canvas></div>'+
+    '<div class="ccard cwide"><h4>Question-wise</h4><canvas id="lineC"></canvas></div>'+
+    '</div></div>'+
+    '<div class="charts-sec"><h3>📝 Detailed Answers</h3></div>';
+
+  QS.forEach(function(q,i){
+    var a=ans["q"+i],ok=a&&String(a)===String(q.answer);
+    var pm=Number(q.positive_marks||q.marks||1),nm=Number(q.negative_marks||0);
+    var scH=ok?'<span style="color:#15803d;font-weight:800">+'+pm+' ✓</span>':a?'<span style="color:#991b1b;font-weight:800">-'+nm+' ✗</span>':"<span>0 (Skipped)</span>";
+    h+='<div class="rcard '+( ok?"cor":a?"wrg":"skp" )+'">'+
+       '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px;margin-bottom:9px">'+
+       '<span style="font-weight:800;color:var(--acc)">Q'+( i+1 )+'</span><span>'+scH+'</span></div>'+
+       // Question with formatting
+       '<div class="qtxt" style="font-size:14px;margin-bottom:10px">'+stylizeTxt(q.question||"")+'</div>';
+    ["option_1","option_2","option_3","option_4","option_5"].forEach(function(ok2,j){
+      if(!q[ok2])return;
+      var idx=String(j+1),isC=idx===String(q.answer),isU=a&&idx===String(a)&&!isC;
+      // Option text with formatting
+      h+='<div class="ropt '+( isC?"rc":isU?"rw":"rp" )+'">'+
+         '<span class="rl">'+LT[j]+'</span>'+( isC?"✓ ":isU?"✗ ":"" )+stylizeTxt(q[ok2]||"")+'</div>';
+    });
+    h+='<div style="margin-top:8px;font-size:13px;font-weight:700">Score: '+scH+'</div>';
+    // Solution with formatting
+    if(q.solution_text) h+='<div class="res-expl">'+stylizeTxt(q.solution_text)+'</div>';
+    h+='</div>';
+  });
+
+  $$$("resultArea").innerHTML=h;$$$("resultArea").style.display="block";
+  $$$("qCard").style.display="none";$$$("fbar").style.display="none";$$$("pal").style.display="none";
+  renderCharts(cor,wrg,unatt);
+
+  var hdr=$$$("hdrCtrls");hdr.innerHTML="";
+  var L=document.createElement("div");L.style.cssText="display:flex;align-items:center;gap:10px";
+  L.innerHTML='<h1 style="margin:0;color:#fff;font-size:15px">'+TITLE+'</h1>';
+  var R=document.createElement("div");R.style.cssText="display:flex;gap:7px";
+  [["Re-Attempt",function(){location.reload();}],["Print",function(){window.print();}]].forEach(function(x){
+    var b=document.createElement("button");b.className="btn";b.textContent=x[0];b.addEventListener("click",x[1]);R.appendChild(b);
+  });
+  hdr.appendChild(L);hdr.appendChild(R);
+}
+
+function renderCharts(cor,wrg,unatt){
+  charts.forEach(function(c){try{c.destroy();}catch(e){}});charts=[];
+  var pie=document.getElementById("pieC");
+  if(pie){
+    var c=new Chart(pie,{type:"doughnut",data:{labels:["Correct","Wrong","Skipped"],datasets:[{data:[cor,wrg,unatt],backgroundColor:["rgba(31,158,90,.85)","rgba(242,63,84,.85)","rgba(148,163,184,.7)"],borderColor:["#1f9e5a","#f23f54","#94a3b8"],borderWidth:2,spacing:2}]},options:{responsive:true,cutout:"65%",plugins:{legend:{position:"bottom",labels:{font:{size:11,weight:"600"},padding:12}}}}});
+    pie.parentElement.style.cssText+="border-radius:14%;padding:16px;background:radial-gradient(145deg,#f0f4ff,#d9e2f3);box-shadow:12px 12px 24px #bebebe,-12px -12px 24px #fff;width:fit-content;margin:auto;";
+    charts.push(c);
+  }
+  var bar=document.getElementById("barC");
+  if(bar){
+    var cx=bar.getContext("2d");
+    function grad(a,b){var g=cx.createLinearGradient(0,0,0,300);g.addColorStop(0,a);g.addColorStop(.5,b);g.addColorStop(1,a);return g;}
+    var sc=QS.reduce(function(t,q,i){var a=ans["q"+i],ok=a&&String(a)===String(q.answer),pm=Number(q.positive_marks||1),nm=Number(q.negative_marks||0);return t+(ok?pm:a?-nm:0);},0);
+    var c2=new Chart(bar,{type:"bar",data:{labels:["Score","Max","Correct","Wrong"],datasets:[{data:[parseFloat(sc.toFixed(2)),QS.length,cor,wrg],backgroundColor:[grad("#2563eb","#1e3a8a"),grad("#60a5fa","#2563eb"),grad("#4ade80","#166534"),grad("#f87171","#991b1b")],borderColor:["#000787","#127DE5","#16a34a","#dc2626"],borderWidth:1,borderRadius:8,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:"rgba(0,0,0,.05)"}},x:{grid:{display:false}}}}});
+    charts.push(c2);
+  }
+  var line=document.getElementById("lineC");
+  if(line){
+    var lb=QS.map(function(_,i){return "Q"+(i+1);});
+    var dt=QS.map(function(q,i){var a=ans["q"+i];if(!a)return 0;return String(a)===String(q.answer)?1:-1;});
+    var cl=dt.map(function(v){return v===1?"rgba(34,197,94,.85)":v===-1?"rgba(239,68,68,.85)":"rgba(148,163,184,.65)";});
+    var c3=new Chart(line,{type:"bar",data:{labels:lb,datasets:[{data:dt,backgroundColor:cl,borderColor:cl,borderWidth:1,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw===1?"✅ Correct":c.raw===-1?"❌ Wrong":"⏭️ Skipped";}}}},scales:{y:{min:-1.5,max:1.5,ticks:{callback:function(v){return v===1?"✅":v===-1?"❌":"—";},font:{size:10}},grid:{color:"rgba(0,0,0,.05)"}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+    charts.push(c3);
+  }
+}
+
+function buildPal(){
+  var p=$$$("pal");while(p.children.length>1)p.removeChild(p.lastChild);
+  QS.forEach(function(_,i){
+    var b=document.createElement("button");b.className="pq";b.textContent=i+1;
+    b.addEventListener("click",function(e){e.stopPropagation();render(i);closePal();});
+    p.appendChild(b);
+  });
+  var s=document.createElement("div");s.id="pal-sum";p.appendChild(s);
+  syncPal();
+}
+
+function syncPal(){
+  var p=$$$("pal");if(!p)return;
+  var tot=QS.length,done=Object.keys(ans).length,idx=0;
+  Array.from(p.children).forEach(function(c){
+    if(c.id==="pal-hd"||c.id==="pal-sum")return;
+    c.className="pq";
+    if(idx===cur)c.classList.add("act");else if(ans["q"+idx])c.classList.add("ans");
+    idx++;
+  });
+  var s=$$$("pal-sum");if(s)s.textContent="Total: "+tot+" · Done: "+done+" · Left: "+(tot-done);
+}
+
+function togglePal(){var p=$$$("pal");if(p.style.display==="flex")closePal();else{p.style.display="flex";syncPal();}}
+function closePal(){$$$("pal").style.display="none";}
+document.addEventListener("click",function(e){var p=$$$("pal"),pb=$$$("palBtn");if(p&&p.style.display==="flex"&&!p.contains(e.target)&&e.target!==pb&&!pb.contains(e.target))closePal();});
+document.addEventListener("keydown",function(e){if(e.key==="ArrowRight"&&cur<QS.length-1)render(cur+1);if(e.key==="ArrowLeft"&&cur>0)render(cur-1);if(e.key==="Escape")closePal();});
+</script>
+</body>
+</html>
