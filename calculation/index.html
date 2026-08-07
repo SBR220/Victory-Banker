@@ -77,7 +77,23 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .mcard{border-radius:var(--r);padding:16px 13px;cursor:pointer;color:#fff;display:flex;flex-direction:column;gap:7px;min-height:100px;position:relative;overflow:hidden;transition:transform .15s;user-select:none}
 .mcard::after{content:'';position:absolute;bottom:-14px;right:-14px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.1)}
 .mcard:active{transform:scale(.95)}
-.mcard-ic{font-size:1.7rem;line-height:1}.mcard-name{font-weight:900;font-size:.9rem}.mcard-sub{font-size:.62rem;opacity:.8;font-weight:600}
+.mcard-ic{font-size:1.7rem;line-height:1;text-shadow: 0 0 6px rgba(255, 255, 255, 0.6)}
+
+/* Added text-shadow for a white glow effect */
+.mcard-name{
+  font-weight:900;
+  font-size:.9rem;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Added text-shadow for a subtle white glow effect */
+.mcard-sub{
+  font-size:.62rem;
+  opacity:.8;
+  font-weight:600;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
 .mc-add{background:linear-gradient(135deg,#4f8ef7,#1a6fd4)}.mc-sub{background:linear-gradient(135deg,#f76c6c,#c0392b)}
 .mc-mul{background:linear-gradient(135deg,#1abc9c,#0e7a6a)}.mc-div{background:linear-gradient(135deg,#f5a623,#d35400)}
 .mc-sq{background:linear-gradient(135deg,#e84393,#a0006e)}.mc-cb{background:linear-gradient(135deg,#00b4d8,#0077b6)}
@@ -217,6 +233,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .kbtn:active{transform:scale(.9);box-shadow:none}
 .kbtn.span2{grid-column:span 2}
 .kbtn.kdel{background:#fff0f0;color:var(--red);font-size:1rem}.kbtn.kneg{background:#fff8e6;color:var(--med)}.kbtn.kdot{background:#f0f4ff;color:var(--add)}
+.kp-style-toggle{display:flex;align-items:center;gap:4px;border:none;cursor:pointer;padding:7px 12px;border-radius:50px;font-family:var(--font);font-weight:800;font-size:.68rem;background:var(--white);color:var(--ink2);box-shadow:var(--sh);white-space:nowrap;flex-shrink:0}
+.kp-style-toggle:active{transform:scale(.92)}
 .abar{display:flex;gap:7px;padding:8px 10px 12px;background:var(--bg);flex-shrink:0;border-top:1px solid rgba(0,0,0,.05)}
 .abar .btn{flex:1;border-radius:var(--r-sm);font-size:.82rem;padding:14px 8px}
 
@@ -420,7 +438,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="rtab" onclick="showRef('Mensuration',this)">Mensuration</button>
           <button class="rtab" onclick="showRef('formula',this)">Formula Sheet</button>
           <button class="rtab" onclick="showRef('tricks',this)">Speed Tricks</button>
-          <button class="rtab" onclick="showRef('Reasoning',this)">Reasoning</button>
+          <button class="rtab" onclick="showRef('geo',this)">Geometry</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;margin-bottom:12px">
           <div style="padding:10px 12px 4px;font-weight:800;font-size:.82rem;color:var(--ink2)" id="ref-hdr">Squares (1–150)</div>
@@ -545,12 +563,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div class="submode-row" id="submode-btns"></div>
     </div>
     <div class="fblock" id="range-block">
-      <div class="flabel">Number Range</div>
+      <div class="flabel" id="range-flabel">Number Range</div>
       <div class="range-row">
         <input type="number" class="sinput" id="s-from" value="1">
         <div class="range-sep">—</div>
         <input type="number" class="sinput" id="s-to" value="100">
       </div>
+      <div id="range-hint" style="display:none;font-size:.68rem;color:var(--ink3);margin-top:9px;text-align:center;line-height:1.4"></div>
     </div>
     <div class="fblock">
       <div class="flabel">Attempt Type</div>
@@ -637,6 +656,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <button class="mt on" id="mt-key" onclick="setAnsMode('key')">⌨️ Keys</button>
         <button class="mt" id="mt-mcq" onclick="setAnsMode('mcq')">📝 MCQ</button>
       </div>
+      <button class="kp-style-toggle" id="kp-style-btn" onclick="toggleKpStyle()">🔀 1-2-3</button>
       <div style="flex:1"></div>
       <div class="auto-wrap">
         <span class="auto-lbl">Auto</span>
@@ -654,16 +674,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <div id="mcq-wrap" style="display:none"><div class="mcq-grid" id="mcq-grid"></div></div>
     <div id="kp-wrap">
       <div class="kp-disp" id="kp-disp">_</div>
-      <div class="kp">
-        <button class="kbtn" onclick="kp('7')">7</button><button class="kbtn" onclick="kp('8')">8</button>
-        <button class="kbtn" onclick="kp('9')">9</button><button class="kbtn kdel" onclick="kpDel()">⌫ Del</button>
-        <button class="kbtn" onclick="kp('4')">4</button><button class="kbtn" onclick="kp('5')">5</button>
-        <button class="kbtn" onclick="kp('6')">6</button><button class="kbtn kneg" onclick="kpNeg()">± Neg</button>
-        <button class="kbtn" onclick="kp('1')">1</button><button class="kbtn" onclick="kp('2')">2</button>
-        <button class="kbtn" onclick="kp('3')">3</button><button class="kbtn kdot" onclick="kp('.')">.</button>
-        <button class="kbtn span2" onclick="kp('0')">0</button>
-        <button class="kbtn" onclick="kp('00')">00</button><button class="kbtn" onclick="kp('000')">000</button>
-      </div>
+      <div class="kp" id="kp-grid"></div>
     </div>
   </div>
   <div class="abar" id="abar">
@@ -717,9 +728,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* ══ CONFIGURABLE CONSTANTS ══ */
 const AVATAR_URL = 'https://i.postimg.cc/vmzWPjQK/20260507-001353.png';
 const LEARN_IMAGES = {
-  'Mensuration': 'https://lh3.googleusercontent.com/u/0/d/1TG2MXSyxkeS8rKL3pvEyQNvC1TxZy2v9',
-  'formula':  'https://lh3.googleusercontent.com/u/0/d/1QzDHADwR9GP3LMovximAq7go_hEvF_6n',
-  'Reasoning':      'https://lh3.googleusercontent.com/u/0/d/1S0LadxeSeoGIVDIv53_wKqmYxeeLrok2',
+  'Mensuration': 'https://iili.io/BZj1lhF.md.png',
+  'formul':  'https://i.imgur.com/0KFBHTB.jpg',
+  'ge':      'https://i.imgur.com/0KFBHTB.jpg',
   'tricks':   null
 };
 const LEARN_TEXT = {
@@ -923,8 +934,18 @@ function openSetup(mode) {
   const pill=g('setup-pill'); pill.innerText=lbl; pill.style.background=col;
   const df=RANGE_DEFAULTS[mode]||[1,100];
   g('s-from').value=df[0]; g('s-to').value=df[1];
-  const hideRange=['pct','alp','mens','sq','cb'].includes(mode);
+  const hideRange=['pct','alp','mens'].includes(mode);
   g('range-block').style.display=hideRange?'none':'';
+  const rf=g('range-flabel'), rh=g('range-hint');
+  if(mode==='sq'){
+    rf.innerText='Select Range of Numbers (n)';
+    rh.style.display=''; rh.innerText='Only n² for n between your From–To values will be asked. Example: From 10 to 20 → only 10²…20².';
+  } else if(mode==='cb'){
+    rf.innerText='Select Range of Numbers (n)';
+    rh.style.display=''; rh.innerText='Only n³ for n between your From–To values will be asked. Example: From 10 to 20 → only 10³…20³.';
+  } else {
+    rf.innerText='Number Range'; rh.style.display='none';
+  }
   if(SUBMODE_MAP[mode]) {
     const sm=SUBMODE_MAP[mode]; g('submode-block').style.display=''; g('submode-lbl').innerText=sm.lbl;
     subMode=sm.opts[0];
@@ -997,16 +1018,26 @@ const MENS_3D=[
 const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const diffMul=d=>({easy:1,med:2,hard:5,xhard:12}[d]||1);
+/* Normalizes a user-entered From/To pair into a safe, ordered [lo,hi] range
+   that never goes below 1 — used so generated questions never fall outside
+   the numbers the user actually picked. */
+function normRange(fr,to){
+  let lo=Math.min(fr,to), hi=Math.max(fr,to);
+  lo=Math.max(1,isFinite(lo)?lo:1); hi=Math.max(lo,isFinite(hi)?hi:lo);
+  return [lo,hi];
+}
 
 function genQ(mode, fr, to, diff, sm) {
-  const mul=diffMul(diff), mx=Math.min(to*mul,999999);
+  const mul=diffMul(diff);
+  const [rlo,rhi]=normRange(fr,to);
+  fr=rlo; const mx=rhi; /* mx now strictly equals the user's upper bound — questions never exceed the selected range */
   const ops=['+','-','×','÷'];
   const opMap={add:'+',sub:'-',mul:'×',div:'÷','blitz-add':'+','blitz-sub':'-','blitz-mul':'×','blitz-div':'÷'};
   let q,ans,method,label,ansLen;
   if(mode==='sq'){
-    const n=rnd(1,Math.min(fr+49,150)); q=`${n}² = ?`; ans=String(n*n); method=`${n}²=${n}×${n}=${n*n}`; label='Squares'; ansLen=ans.length;
+    const n=rnd(rlo,rhi); q=`${n}² = ?`; ans=String(n*n); method=`${n}²=${n}×${n}=${n*n}`; label='Squares'; ansLen=ans.length;
   } else if(mode==='cb'){
-    const n=rnd(1,Math.min(fr+19,50)); q=`${n}³ = ?`; ans=String(n*n*n); method=`${n}³=${n}×${n}×${n}=${n*n*n}`; label='Cubes'; ansLen=ans.length;
+    const n=rnd(rlo,rhi); q=`${n}³ = ?`; ans=String(n*n*n); method=`${n}³=${n}×${n}×${n}=${n*n*n}`; label='Cubes'; ansLen=ans.length;
   } else if(mode==='pct'){
     const item=PERC_DB[rnd(0,PERC_DB.length-1)];
     const toFrac=!sm||sm.includes('%');
@@ -1053,7 +1084,11 @@ let Q={}, rCharts={}, sChInst={}, qItv, qStartTs;
 function beginCD() {
   const fr=parseInt(g('s-from').value)||1, to=parseInt(g('s-to').value)||100;
   const qsIdx=+g('qs-slider').value||2, tmIdx=+g('tm-slider').value||1;
-  if(!['pct','alp','mens','sq','cb'].includes(setupMode) && fr>=to){ toast('Range: From must be less than To','red'); return; }
+  if(['sq','cb'].includes(setupMode)){
+    if(fr>to){ toast('Range: From must be less than or equal to To','red'); return; }
+  } else if(!['pct','alp','mens'].includes(setupMode) && fr>=to){
+    toast('Range: From must be less than To','red'); return;
+  }
   window._lastSetup={mode:setupMode,attType,diff:diffLv,from:fr,to,qsIdx,tmIdx,subMode};
   Q={mode:setupMode,fr,to,diff:diffLv,att:attType,totalQ:attType==='qs'?QS_VALS[qsIdx]:99999,tLimit:attType==='tm'?TM_VALS[tmIdx]:0,
     qs:[],cur:0,right:0,wrong:0,skip:0,qtimes:[],elapsed:0,
@@ -1121,6 +1156,26 @@ function pickMCQ(val, el, q) {
   if(Q.auto) setTimeout(nextQ,500);
 }
 
+/* ══ KEYPAD STYLE (789-top ⇄ 123-top) ══ */
+function renderKeypad(){
+  const style=(S.kpStyle==='123')?'123':'789';
+  const rows= style==='123' ? [[1,2,3],[4,5,6],[7,8,9]] : [[7,8,9],[4,5,6],[1,2,3]];
+  const html=
+    `<button class="kbtn" onclick="kp('${rows[0][0]}')">${rows[0][0]}</button><button class="kbtn" onclick="kp('${rows[0][1]}')">${rows[0][1]}</button><button class="kbtn" onclick="kp('${rows[0][2]}')">${rows[0][2]}</button><button class="kbtn kdel" onclick="kpDel()">⌫ Del</button>`+
+    `<button class="kbtn" onclick="kp('${rows[1][0]}')">${rows[1][0]}</button><button class="kbtn" onclick="kp('${rows[1][1]}')">${rows[1][1]}</button><button class="kbtn" onclick="kp('${rows[1][2]}')">${rows[1][2]}</button><button class="kbtn kneg" onclick="kpNeg()">± Neg</button>`+
+    `<button class="kbtn" onclick="kp('${rows[2][0]}')">${rows[2][0]}</button><button class="kbtn" onclick="kp('${rows[2][1]}')">${rows[2][1]}</button><button class="kbtn" onclick="kp('${rows[2][2]}')">${rows[2][2]}</button><button class="kbtn kdot" onclick="kp('.')">.</button>`+
+    `<button class="kbtn span2" onclick="kp('0')">0</button><button class="kbtn" onclick="kp('00')">00</button><button class="kbtn" onclick="kp('000')">000</button>`;
+  const grid=g('kp-grid'); if(grid) grid.innerHTML=html;
+  const btn=g('kp-style-btn');
+  if(btn) btn.innerHTML = style==='789' ? '🔀 1-2-3' : '🔀 7-8-9';
+}
+function toggleKpStyle(){
+  S.kpStyle=(S.kpStyle==='123')?'789':'123';
+  save();
+  renderKeypad();
+  toast('Keypad set to '+(S.kpStyle==='123'?'1-2-3 style':'7-8-9 style'),'green');
+}
+
 function kp(v) {
   if(Q.locked) return;
   if(v==='00'||v==='000'){if(Q.kv&&Q.kv!=='-') Q.kv+=v;}
@@ -1172,6 +1227,7 @@ function setAnsMode(m) {
   Q.ansMode=m;
   g('mt-key').classList.toggle('on',m==='key'); g('mt-mcq').classList.toggle('on',m==='mcq');
   g('kp-wrap').style.display=m==='key'?'':'none'; g('mcq-wrap').style.display=m==='mcq'?'':'none';
+  const ksb=g('kp-style-btn'); if(ksb) ksb.style.display=m==='key'?'':'none';
   if(m==='mcq'&&Q.qs&&Q.qs[Q.cur]) renderMCQ(Q.qs[Q.cur]);
 }
 function onAutoToggle(){Q.auto=g('auto-sw').checked; updateAbar(); if(Q.auto) toast('Auto mode ON!','green');}
@@ -1419,7 +1475,7 @@ function showRef(type, btn){
   wrap.innerHTML=''; wrap.style.flexDirection=''; wrap.style.width='max-content';
   scroll.style.maxHeight=''; scroll.style.overflowY=''; scroll.style.overflowX='auto';
 
-  if(['Mensuration','formula','Reasoning','tricks'].includes(type)){loadLearnImage(type);return;}
+  if(['Mensuration','formula','geo','tricks'].includes(type)){loadLearnImage(type);return;}
 
   if(type==='sq'){
     hdr.innerText='Squares — 1 to 150 (scroll →)';
@@ -1473,6 +1529,7 @@ function importData(ev){
 updateStreak(); updateTopBar(); refreshToday(); updateAvatar();
 showRef('sq', g('rtabs').children[0]);
 g('kp-wrap').style.display=''; g('mcq-wrap').style.display='none';
+renderKeypad();
 onQsSlide(2); onTmSlide(1);
 if(!S.mistakes) S.mistakes=[];
 if(!S.badgeShown) S.badgeShown={};
